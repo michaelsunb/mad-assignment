@@ -1,9 +1,13 @@
-package student.rmit.edu.au.s3110401mad_assignment;
+package student.rmit.edu.au.s3110401mad_assignment.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import student.rmit.edu.au.s3110401mad_assignment.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,6 +15,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ListView drawerList = (ListView) findViewById(R.id.left_drawer);
+        String[] navDrawerArray = getResources().getStringArray(R.array.navigation_array);
+        drawerList.setAdapter(
+                new ArrayAdapter<String>(
+                        this,
+                        R.layout.drawer_list_item,
+                        navDrawerArray)
+        );
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override

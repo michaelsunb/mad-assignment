@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">S3110401 MAD-Assignment</string>
 
-    <string name="hello_world">Hello world!</string>
+    <!-- navigation drawer item labels  -->
+    <string-array name="navigation_array">
+        <item>@string/title_activity_main</item>
+    </string-array>
+
+    <string name="title_activity_main">Home</string>
+
+    <string name="placeholder">Placeholder</string>
     <string name="action_settings">Settings</string>
 </resources>
