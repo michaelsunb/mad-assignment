@@ -1,8 +1,7 @@
-package student.rmit.edu.au.s3110401mad_assignment.view;
+package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.app.Instrumentation;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;

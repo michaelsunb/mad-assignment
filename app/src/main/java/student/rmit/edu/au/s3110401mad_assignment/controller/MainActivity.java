@@ -1,4 +1,4 @@
-package student.rmit.edu.au.s3110401mad_assignment.view;
+package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
