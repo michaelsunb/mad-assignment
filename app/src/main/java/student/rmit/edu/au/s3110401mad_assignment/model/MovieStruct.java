@@ -16,6 +16,7 @@ public class MovieStruct implements Movie {
     private String fullPlot;
     private int imageResource;
     private String id;
+
     private int rating = 0;
 
     // Expect to be parsed properly from controller
@@ -56,6 +57,15 @@ public class MovieStruct implements Movie {
     @Override
     public int getPoster() {
         return imageResource;
+    }
+
+    @Override
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public void setYear(String year) {

@@ -1,11 +1,13 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.app.Instrumentation;
+import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
@@ -15,9 +17,9 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
  * instructions: https://youtu.be/ar28jvdoTnY?t=761
  */
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
-    private static String TAG = MainActivity.class.getSimpleName();
     private Instrumentation instrumentation;
     private MainActivity activity;
+    private ListView list;
 
     public MainActivityTest() {
         super(MainActivity.class);
@@ -26,33 +28,43 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
+        setActivityInitialTouchMode(false);
         instrumentation = getInstrumentation();
         activity = getActivity();
+        list = (ListView) activity.findViewById(R.id.listView);
     }
 
     @SmallTest
-    public void testSSwipeNavDrawer() throws Exception {
-        swipeNavDrawhichSide(GravityCompat.START);
-        ListView drawerList = (ListView) activity.findViewById(R.id.left_drawer);
-        TouchUtils.clickView(this, drawerList.getChildAt(0));
-
-        assertEquals("Activity should be Main activity",activity,getActivity());
+    public void testListViewRow() {
+        assertNotNull(list);
+        for (int i = 0; i <= list.getLastVisiblePosition() - list.getFirstVisiblePosition(); i++) {
+            assertTrue("Is type of LinearLayout",(list.getChildAt(i) instanceof LinearLayout));
+        }
     }
 
-    private void swipeNavDrawhichSide(int whichSide) {
-        int[] xy = new int[2];
-        View v = activity.getCurrentFocus();
-        v.getLocationOnScreen(xy);
-        final int viewWidth = v.getWidth();
-        final int viewHeight = v.getHeight();
-        final float x = xy[0] + (viewWidth / 2.0f);
-        float fromY = xy[1] + (viewHeight / 2.0f);
-        int screenWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
-        //Drag from centre of screen to Leftmost edge of
-        if(whichSide == GravityCompat.END)
-            TouchUtils.drag(this, (screenWidth - 1), x, fromY, fromY, 5);
-        else if(whichSide == GravityCompat.START)
-            TouchUtils.drag(this, 0, x, fromY, fromY, 5);
+    @SmallTest
+    public void testListViewClick() {
+        Instrumentation.ActivityMonitor activityMonitor =
+                instrumentation.addMonitor(MovieDetailActivity.class.getName(), null, false);
+        assertNotNull(list.getChildAt(0));
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+
+                list.performItemClick(list.getAdapter().getView(0, null, null),
+                        0, list.getAdapter().getItemId(0));
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        getInstrumentation().waitForIdleSync();
+        MovieDetailActivity childActivity = (MovieDetailActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        // ChildActivity is created and gain focus on screen:
+        assertNotNull(childActivity);
+        childActivity.onOptionsItemSelected(null);
     }
 }

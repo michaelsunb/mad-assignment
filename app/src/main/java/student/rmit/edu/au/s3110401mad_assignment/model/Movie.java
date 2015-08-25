@@ -17,4 +17,6 @@ public interface Movie {
     String getFullPlot();
 
     int getPoster();
+
+    int getRating();
 }
