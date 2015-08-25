@@ -29,17 +29,17 @@ public class MainActivity extends AppCompatActivity {
     public static final int IMDB_SHORT_PLOT = 3;
     public static final int IMDB_FULL_PLOT = 4;
 
+    private static MovieModel theModel = MovieModel.getSingleton();
+    private ListView movieListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ListView movieListView = (ListView) findViewById(R.id.listView);
+        movieListView = (ListView) findViewById(R.id.listView);
+        this.retrieveMovies(); // load from movies_sample.xml
 
-        MovieModel theModel = MovieModel.getSingleton();
-        for (Movie movie : retrieveMovies()) {
-            theModel.addMovie(movie);
-        }
         MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(this, theModel.getAllMovies());
         movieListView.setAdapter(movieArrayAdapter);
 
@@ -51,26 +51,35 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         movieListView.setOnItemClickListener(listener);
+    }
 
+    public MovieModel getTheModel() {
+        return theModel;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        movieListView.setAdapter(new MovieArrayAdapter(this, theModel.getAllMovies()));
     }
 
     private void nextActivity(Movie movieSelected) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra(getString(R.string.movie_id), movieSelected.getId());
-        startActivity(intent);
-        //finish();
+        startActivityForResult(intent, 1);
     }
 
     /**
      * Get from movies_sample.xml
      * @return List<Movie>  List of movies from the movies_sample.xml
      */
-    private List<Movie> retrieveMovies() {
+    private void retrieveMovies() {
+        if(theModel.getAllMovies().size() > 0)
+            return;
+
         TypedArray movieArray  = getResources().obtainTypedArray(R.array.movie_array);
 
         int movieArrayLength = movieArray.length();
 
-        List<Movie> movieList = new ArrayList<>();
         for (int i = 0; i < movieArrayLength; ++i) {
             int id = movieArray.getResourceId(i, 0);
             if (id > 0) {
@@ -78,18 +87,16 @@ public class MainActivity extends AppCompatActivity {
                 int imageResourceId = getResources().getIdentifier(newArray[IMDB_ID],
                         DRAWABLE,
                         getPackageName());
-                movieList.add(
-                        new MovieStruct(newArray[IMDB_ID],
-                                newArray[IMDB_TITLE],
-                                newArray[IMDB_YEAR],
-                                newArray[IMDB_SHORT_PLOT],
-                                newArray[IMDB_FULL_PLOT],
-                                imageResourceId)
-                );
+
+                theModel.addMovie(new MovieStruct(newArray[IMDB_ID],
+                        newArray[IMDB_TITLE],
+                        newArray[IMDB_YEAR],
+                        newArray[IMDB_SHORT_PLOT],
+                        newArray[IMDB_FULL_PLOT],
+                        imageResourceId));
             }
         }
         movieArray.recycle(); // Important!
-        return movieList;
     }
 
     @Override

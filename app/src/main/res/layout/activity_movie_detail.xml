@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
     android:layout_height="wrap_content">
     <TextView
         android:layout_width="wrap_content"
@@ -17,34 +19,31 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
             tools:context=".MovieDetailActivity">
 
             <ImageView
                 android:scaleType="center"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:id="@+id/movie_detail_poster"
                 android:contentDescription="@string/image_description"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:src="@drawable/placeholder" />
 
             <TextView
-                android:gravity="center"
-                android:layout_width="250dp"
+                android:gravity="start"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder"
                 android:id="@+id/movie_detail_plot_view"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/movie_detail_poster" />
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/movie_detail_poster"
+                android:layout_marginLeft="10dp" />
         </RelativeLayout>
     </ScrollView>
     <RatingBar
         android:gravity="center"
+        android:fillViewport="true"
         android:id="@+id/move_detail_rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
