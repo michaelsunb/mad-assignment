@@ -11,12 +11,12 @@ import java.util.Date;
  */
 public class PartyModel {
     private Date date;
-    private Address venue;
-    private LatLng location;
+    private String venue;
+    private String location;
     private ArrayList<String> emailInvites;
 
-    public void scheduleParty(Address venue,
-                              LatLng location,
+    public void scheduleParty(String venue,
+                              String location,
                               ArrayList<String> emailInvites) {
 
     }

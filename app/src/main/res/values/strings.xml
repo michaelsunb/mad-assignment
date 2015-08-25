@@ -2,7 +2,7 @@
     <string name="app_name">S3110401 MAD-Assignment</string>
 
     <!-- navigation drawer item labels  -->
-    <string-array name="movie_array">
+    <string-array name="movie_list">
         <item>@string/title_activity_main</item>
     </string-array>
 
@@ -10,4 +10,8 @@
 
     <string name="placeholder">Placeholder</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_movie_detail">MovieDetailActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="movie_id">movie_id</string>
 </resources>

@@ -1,32 +1,93 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
+import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
+import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String DRAWABLE = "drawable";
+    public static final int IMDB_ID = 0;
+    public static final int IMDB_TITLE = 1;
+    public static final int IMDB_YEAR = 2;
+    public static final int IMDB_SHORT_PLOT = 3;
+    public static final int IMDB_FULL_PLOT = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView drawerList = (ListView) findViewById(R.id.left_drawer);
-        String[] navDrawerArray = getResources().getStringArray(R.array.movie_array);
-        drawerList.setAdapter(
-                new ArrayAdapter<String>(
-                        this,
-                        R.layout.drawer_list_item,
-                        navDrawerArray)
-        );
+        final ListView movieListView = (ListView) findViewById(R.id.listView);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        MovieModel theModel = MovieModel.getSingleton();
+        for (Movie movie : retrieveMovies()) {
+            theModel.addMovie(movie);
+        }
+        MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(this, theModel.getAllMovies());
+        movieListView.setAdapter(movieArrayAdapter);
+        movieListView.setOnItemClickListener(
+                new ListView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Movie movieSelected = (Movie) movieListView.getItemAtPosition(position);
+                        nextActivity(movieSelected);
+                    }
+                }
+        );
+    }
+
+    private void nextActivity(Movie movieSelected) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra(getString(R.string.movie_id), movieSelected.getId());
+        startActivity(intent);
+        //finish();
+    }
+
+    /**
+     * Get from movies_sample.xml
+     * @return List<Movie>  List of movies from the movies_sample.xml
+     */
+    private List<Movie> retrieveMovies() {
+        TypedArray movieArray  = getResources().obtainTypedArray(R.array.movie_array);
+
+        int movieArrayLength = movieArray.length();
+
+        List<Movie> movieList = new ArrayList<>();
+        for (int i = 0; i < movieArrayLength; ++i) {
+            int id = movieArray.getResourceId(i, 0);
+            if (id > 0) {
+                String[] newArray = getResources().getStringArray(id);
+                int imageResourceId = getResources().getIdentifier(newArray[IMDB_ID],
+                        DRAWABLE,
+                        getPackageName());
+                movieList.add(
+                        new MovieStruct(newArray[IMDB_ID],
+                                newArray[IMDB_TITLE],
+                                newArray[IMDB_YEAR],
+                                newArray[IMDB_SHORT_PLOT],
+                                newArray[IMDB_FULL_PLOT],
+                                imageResourceId)
+                );
+            }
+        }
+        movieArray.recycle(); // Important!
+        return movieList;
     }
 
     @Override

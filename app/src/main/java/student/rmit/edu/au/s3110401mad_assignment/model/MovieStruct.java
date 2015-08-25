@@ -9,49 +9,53 @@ import java.util.List;
 /**
  * Created by Michaelsun Baluyos on 24/08/2015.
  */
-public class MovieStruct {
+public class MovieStruct implements Movie {
     private String title;
     private String year;
     private String shortPlot;
     private String fullPlot;
-    private ImageView poster;
+    private int imageResource;
     private String id;
     private int rating = 0;
 
-    // Expect to be parsed properly from sample data
-    public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot) {
-        this.id = imdbID;
-        this.title = title;
-    }
-
     // Expect to be parsed properly from controller
-    public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot, ImageView poster) {
+    public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot, int imageResource) {
         this.id = imdbID;
         this.title = title;
+        this.year = year;
+        this.shortPlot = shortPlot;
+        this.fullPlot = fullPlot;
+        this.imageResource = imageResource;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public String getYear() {
         return year;
     }
 
+    @Override
     public String getShortPlot() {
         return shortPlot;
     }
 
+    @Override
     public String getFullPlot() {
         return fullPlot;
     }
 
-    public ImageView getPoster() {
-        return poster;
+    @Override
+    public int getPoster() {
+        return imageResource;
     }
 
     public void setYear(String year) {
@@ -66,7 +70,7 @@ public class MovieStruct {
         this.fullPlot = fullPlot;
     }
 
-    public void setPoster(ImageView poster) {
-        this.poster = poster;
+    public void setPoster(int poster) {
+        this.imageResource = imageResource;
     }
 }
