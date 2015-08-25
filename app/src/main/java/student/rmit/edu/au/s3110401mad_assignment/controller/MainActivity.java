@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView drawerList = (ListView) findViewById(R.id.left_drawer);
-        String[] navDrawerArray = getResources().getStringArray(R.array.navigation_array);
+        String[] navDrawerArray = getResources().getStringArray(R.array.movie_array);
         drawerList.setAdapter(
                 new ArrayAdapter<String>(
                         this,

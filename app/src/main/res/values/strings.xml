@@ -2,7 +2,7 @@
     <string name="app_name">S3110401 MAD-Assignment</string>
 
     <!-- navigation drawer item labels  -->
-    <string-array name="navigation_array">
+    <string-array name="movie_array">
         <item>@string/title_activity_main</item>
     </string-array>
 
