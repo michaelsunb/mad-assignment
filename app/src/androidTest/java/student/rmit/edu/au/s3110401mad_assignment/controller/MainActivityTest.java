@@ -9,6 +9,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 
@@ -28,7 +29,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setActivityInitialTouchMode(false);
         instrumentation = getInstrumentation();
         activity = getActivity();
         list = (ListView) activity.findViewById(R.id.listView);
@@ -38,7 +38,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testListViewRow() {
         assertNotNull(list);
         for (int i = 0; i <= list.getLastVisiblePosition() - list.getFirstVisiblePosition(); i++) {
-            assertTrue("Is type of LinearLayout",(list.getChildAt(i) instanceof LinearLayout));
+            assertTrue("Is type of LinearLayout", (list.getChildAt(i) instanceof LinearLayout));
+            assertNotSame("Should not equal placeholder",
+                    ((TextView)list.getChildAt(i).findViewById(R.id.title)).getText(),
+                    R.string.placeholder);
         }
     }
 

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,16 @@ public class MainActivity extends AppCompatActivity {
         }
         MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(this, theModel.getAllMovies());
         movieListView.setAdapter(movieArrayAdapter);
-        movieListView.setOnItemClickListener(
-                new ListView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Movie movieSelected = (Movie) movieListView.getItemAtPosition(position);
-                        nextActivity(movieSelected);
-                    }
-                }
-        );
+
+        AdapterView.OnItemClickListener listener = new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie movieSelected = (Movie) movieListView.getItemAtPosition(position);
+                nextActivity(movieSelected);
+            }
+        };
+        movieListView.setOnItemClickListener(listener);
+
     }
 
     private void nextActivity(Movie movieSelected) {

@@ -1,12 +1,12 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -48,6 +48,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         TextView yearView = (TextView) movieItemView.findViewById(R.id.year);
         TextView plotView = (TextView) movieItemView.findViewById(R.id.plot);
         ImageView imageView = (ImageView) movieItemView.findViewById(R.id.imageView);
+        RatingBar ratingBar = (RatingBar) movieItemView.findViewById(R.id.rating_bar);
 
         // Fill in the Views with content
 
@@ -55,6 +56,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         yearView.setText(movie.getYear());
         plotView.setText(movie.getShortPlot());
         imageView.setImageResource(movie.getPoster());
+        ratingBar.setRating(movie.getRating());
 
         return movieItemView;
     }

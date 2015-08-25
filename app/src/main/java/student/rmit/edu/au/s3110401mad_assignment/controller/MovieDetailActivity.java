@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
@@ -16,14 +18,28 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        Bundle extras = getIntent().getExtras();
-        String movieId = extras.getString(getString(R.string.movie_id));
+        ImageView imageView = (ImageView) findViewById(R.id.movie_detail_poster);
+        TextView titleView = (TextView) findViewById(R.id.movie_detail_title);
+        TextView plotView = (TextView) findViewById(R.id.movie_detail_plot_view);
+        try {
+            Bundle extras = getIntent().getExtras();
+            String movieId = extras.getString(getString(R.string.movie_id));
 
-        MovieModel theModel = MovieModel.getSingleton();
-        Movie movie = theModel.getMovieById(movieId);
+            Movie movie = getMovie(movieId);
+            imageView.setImageResource(movie.getPoster());
+            plotView.setText(movie.getShortPlot());
+            titleView.setText(movie.getTitle());
+        } catch (Exception e) {
+            System.out.println("Oh no! Something happened: " + e.getMessage());
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    public Movie getMovie(String movieId) {
+        MovieModel theModel = MovieModel.getSingleton();
+        return theModel.getMovieById(movieId);
     }
 
     @Override
