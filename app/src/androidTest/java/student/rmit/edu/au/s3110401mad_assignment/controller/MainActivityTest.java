@@ -1,21 +1,14 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
-import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
-import android.support.v4.view.GravityCompat;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
-import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
-import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 /**
  * Created by Michaelsun Baluyos on 10/08/2015.
@@ -35,7 +28,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         super.setUp();
         instrumentation = getInstrumentation();
         activity = getActivity();
-        list = (ListView) activity.findViewById(R.id.listView);
+        list = (ListView) activity.findViewById(R.id.movie_list);
     }
 
     @SmallTest

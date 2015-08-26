@@ -15,6 +15,10 @@
     <string name="movie_id">movie_id</string>
     <string name="rating">rating</string>
     <string name="image_description">move poster</string>
+    <string name="add_movie_party">Add</string>
 
     <integer name="max_ratings">5</integer>
+    <string name="title_activity_party">PartyActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -47,9 +49,24 @@ public class MovieDetailActivity extends AppCompatActivity {
                 onRatingTouched(rating);
             }
         });
+        final MovieDetailActivity context = this;
+        Button mEmailSignInButton = (Button) findViewById(R.id.add_movie_party);
+        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextActivity();
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void nextActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(getString(R.string.movie_id), movieId);
+        startActivity(intent);
+        finish();
     }
 
     public String getMovieId() {

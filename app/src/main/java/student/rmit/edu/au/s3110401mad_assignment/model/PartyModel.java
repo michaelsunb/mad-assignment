@@ -1,8 +1,5 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import android.location.Address;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -8,13 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
@@ -37,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        movieListView = (ListView) findViewById(R.id.listView);
+        movieListView = (ListView) findViewById(R.id.movie_list);
         this.retrieveMovies(); // load from movies_sample.xml
 
         MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(this, theModel.getAllMovies());
@@ -56,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public MovieModel getTheModel() {
         return theModel;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -68,27 +63,32 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     /**
-     * Get from movies_sample.xml
-     * @return List<Movie>  List of movies from the movies_sample.xml
+     * Get hard coded values from /res/values/movies_sample.xml
      */
     private void retrieveMovies() {
         if(theModel.getAllMovies().size() > 0)
             return;
-
         TypedArray movieArray  = getResources().obtainTypedArray(R.array.movie_array);
-
         int movieArrayLength = movieArray.length();
-
         for (int i = 0; i < movieArrayLength; ++i) {
             int id = movieArray.getResourceId(i, 0);
             if (id > 0) {
                 String[] newArray = getResources().getStringArray(id);
-                int imageResourceId = getResources().getIdentifier(newArray[IMDB_ID],
+                int imageResourceId = getResources().getIdentifier(
+                        newArray[IMDB_ID],
                         DRAWABLE,
                         getPackageName());
 
-                theModel.addMovie(new MovieStruct(newArray[IMDB_ID],
+                theModel.addMovie(new MovieStruct(
+                        newArray[IMDB_ID],
                         newArray[IMDB_TITLE],
                         newArray[IMDB_YEAR],
                         newArray[IMDB_SHORT_PLOT],
@@ -97,27 +97,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         movieArray.recycle(); // Important!
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -32,12 +32,12 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     {
         View movieItemView;
 
-//        if (cachedView == null) {
+        if (cachedView == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             movieItemView = inflater.inflate(R.layout.movie_row, parent, false);
-//        } else {
-//            movieItemView = cachedView;
-//        }
+        } else {
+            movieItemView = cachedView;
+        }
 
         // Get The model
         Movie movie = getItem(position);
