@@ -20,6 +20,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private Movie movie;
     private String movieId;
+    private String movieTitle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,14 @@ public class MovieDetailActivity extends AppCompatActivity {
             imageView.setImageResource(movie.getPoster());
             plotView.setText(movie.getShortPlot());
             titleView.setText(movie.getTitle());
+
+            movieTitle = movie.getTitle();
         } catch (Exception e) {
             System.out.println("Oh no! Something happened: " + e.getMessage());
         }
+
+        CharSequence titleChar = (movieTitle != null) ? movieTitle : getTitle();
+        setTitle(titleChar);
 
         RatingBar ratingBar = (RatingBar) findViewById(R.id.move_detail_rating_bar);
         ratingBar.setRating(movie.getRating());
@@ -49,7 +55,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                 onRatingTouched(rating);
             }
         });
-        final MovieDetailActivity context = this;
         Button mEmailSignInButton = (Button) findViewById(R.id.add_movie_party);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +68,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void nextActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, CreatePartyActivity.class);
         intent.putExtra(getString(R.string.movie_id), movieId);
         startActivity(intent);
         finish();

@@ -21,4 +21,41 @@
     <string name="title_activity_party">PartyActivity</string>
 
     <string name="hello_world">Hello world!</string>
+
+
+    <string name="add_event_button_name">New Event</string>
+    <string name="list_events_button_name">List Events</string>
+    <string name="view_calendar_button_name">View Calendar</string>
+    <string name="title_activity_new_event">New Event</string>
+    <string name="eventTitleText">Event Title</string>
+    <string name="eventDateText">Date</string>
+    <string name="eventVenueText">Venue</string>
+    <string name="eventNoteText">Note</string>
+    <string name="createEventButtonText">Create New Event</string>
+    <string name="eventCreatedToastText">Event Created</string>
+    <string name="title_activity_event_list">Event List</string>
+    <string name="attendeeCountText">Attendees: </string>
+    <string name="row_eventTitleText">Event Title</string>
+    <string name="row_eventDateText">Event Date</string>
+    <string name="row_eventAttendeeCountText">Attendees: </string>
+    <string name="row_deleteButtonText">Delete</string>
+    <string name="row_editButtonText">Edit</string>
+    <string name="title_activity_calendar_view">Calendar View</string>
+    <string name="previousWeekButtonText">&lt;</string>
+    <string name="nextWeekButtonText">&gt;</string>
+    <string name="weekNumberTextViewText">Week </string>
+    <string name="forYearTextViewText"> for </string>
+    <string name="title_activity_edit_event">Edit Event</string>
+    <string name="title_activity_invitee_manager">Select Invitees</string>
+    <string name="selectInviteesTextViewText">Invitees</string>
+    <string name="inviteesButtonText">Invitee&#40;s&#41;</string>
+    <string name="confirmInviteesButtonText">Confirm Invitees</string>
+    <string name="selectInviteesHeaderTextViewText">Choose your invitees:</string>
+
+    <string name="eventLocationText">Location</string>
+    <string name="eventLocationLatHint">Latitude</string>
+    <string name="eventLocationLongHint">Longtitude</string>
+    <string name="addInviteeFromContactsButtonText">Add</string>
+
+    <string name="editEventButtonText">Edit Event</string>
 </resources>
