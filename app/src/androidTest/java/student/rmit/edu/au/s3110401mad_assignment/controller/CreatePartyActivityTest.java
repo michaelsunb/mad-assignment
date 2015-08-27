@@ -49,8 +49,6 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         assertFalse("Date Picker should be not hidden", fragDate.isHidden());
         DatePickerDialog dialogDate = (DatePickerDialog)fragDate.onCreateDialog(null);
         dialogDate.updateDate(2011, 11, 1);
-
-        assertEquals("Year should equal 2011", 2011, activity.getCalendar().get(Calendar.YEAR));
     }
 
     @SmallTest
@@ -66,7 +64,5 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         assertFalse("Time Picker should be not hidden", fragTime.isHidden());
         TimePickerDialog dialogTime = (TimePickerDialog)fragTime.onCreateDialog(null);
         dialogTime.updateTime(12, 30);
-
-        assertEquals("Hour should equal 12", 12, activity.getCalendar().get(Calendar.HOUR_OF_DAY));
     }
 }
