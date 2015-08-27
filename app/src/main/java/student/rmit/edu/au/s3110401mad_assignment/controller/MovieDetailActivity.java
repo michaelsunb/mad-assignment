@@ -63,6 +63,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
 
+        if(getSupportActionBar() == null)
+            return;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
