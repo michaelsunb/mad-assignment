@@ -2,12 +2,13 @@ package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -15,13 +16,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
+import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerFragment;
-import student.rmit.edu.au.s3110401mad_assignment.view.MovieListFragment;
+import student.rmit.edu.au.s3110401mad_assignment.view.MultiSelectListFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerFragment;
 
 public class CreatePartyActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class CreatePartyActivity extends AppCompatActivity {
     private DatePickerFragment date;
     private Calendar datetime;
     private String movieId;
+    private AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
 
     public TimePickerFragment getTime() {
         return time;
@@ -45,6 +50,8 @@ public class CreatePartyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
+
+        asyncContactsTask = new ContactsModel().execute(this);
 
         try {
             Bundle extras = getIntent().getExtras();
@@ -77,12 +84,10 @@ public class CreatePartyActivity extends AppCompatActivity {
             }
         });
 
-        final Context context = this;
         findViewById(R.id.create_party_invitees_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, TempContactsActivity.class);
-                startActivity(intent);
+                showContactsSelectList();
             }
         });
     }
@@ -90,11 +95,32 @@ public class CreatePartyActivity extends AppCompatActivity {
     private void showMovieSelectList() {
         Bundle args = new Bundle();
         String[] movieIds = {"asfasf","asfasfasfasfasf","33521624623"};
-        args.putStringArray("movie_ids", movieIds);
+        args.putStringArray("list_title", movieIds);
 
-        MovieListFragment movieList = new MovieListFragment();
+        MultiSelectListFragment movieList = new MultiSelectListFragment();
         movieList.setArguments(args);
-        movieList.show(getSupportFragmentManager(), "Date Picker");
+        movieList.show(getSupportFragmentManager(), "Movie Select");
+    }
+
+    private void showContactsSelectList() {
+        Bundle args = new Bundle();
+        String[] contactNames;
+        try {
+            Map<String, Contacts> contactsMap = asyncContactsTask.get();
+            contactNames = new String[contactsMap.size()];
+            int i = 0;
+            for (Map.Entry<String, Contacts> entry : contactsMap.entrySet()) {
+                contactNames[i] = entry.getValue().getName();
+                i++;
+            }
+        } catch(Exception e) {
+            contactNames = new String[0];
+        }
+        args.putStringArray("list_title", contactNames);
+
+        MultiSelectListFragment movieList = new MultiSelectListFragment();
+        movieList.setArguments(args);
+        movieList.show(getSupportFragmentManager(), "Contact Select Picker");
     }
 
     private void showDatePicker() {

@@ -92,8 +92,6 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
     // TODO
     @SmallTest
     public void testInviteesSelect() throws Exception {
-        Instrumentation.ActivityMonitor activityMonitor =
-                instrumentation.addMonitor(TempContactsActivity.class.getName(), null, false);
         final Button button = (Button) activity.findViewById(R.id.create_party_invitees_button);
         activity.runOnUiThread(new Runnable() {
             public void run() {
@@ -102,9 +100,5 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         });
         getInstrumentation().waitForIdleSync();
         assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
-        TempContactsActivity temp = (TempContactsActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-        assertNotNull(temp);
-        temp.onOptionsItemSelected(null); // should go back
-        getInstrumentation().waitForIdleSync();
     }
 }

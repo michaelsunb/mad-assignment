@@ -2,33 +2,25 @@ package student.rmit.edu.au.s3110401mad_assignment.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.app.ListFragment;
 
-import student.rmit.edu.au.s3110401mad_assignment.R;
+public class MultiSelectListFragment extends DialogFragment {
 
-public class MovieListFragment extends DialogFragment {
-
-    private String[] movieIds;
+    private String[] listTitle;
 
 
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        movieIds = args.getStringArray("movie_ids");
+        listTitle = args.getStringArray("list_title");
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-        builderSingle.setTitle("Select Names:-");
+        builderSingle.setTitle("Select:-");
         builderSingle.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
 
@@ -37,9 +29,9 @@ public class MovieListFragment extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
-        CharSequence[] items = movieIds;
-        boolean[] checkedItems = new boolean[movieIds.length];
-        for(int i=0; i < movieIds.length; i++) {
+        CharSequence[] items = listTitle;
+        boolean[] checkedItems = new boolean[listTitle.length];
+        for(int i=0; i < listTitle.length; i++) {
             checkedItems[i] = false;
         }
 

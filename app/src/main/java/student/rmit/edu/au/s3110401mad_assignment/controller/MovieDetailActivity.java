@@ -55,8 +55,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 onRatingTouched(rating);
             }
         });
-        Button mEmailSignInButton = (Button) findViewById(R.id.add_movie_party);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.add_movie_party).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextActivity();

@@ -36,10 +36,6 @@
             android:name=".controller.CreatePartyActivity"
             android:label="@string/title_activity_create_party" >
         </activity>
-        <activity
-            android:name=".controller.TempContactsActivity"
-            android:label="@string/title_activity_temp_contacts" >
-        </activity>
     </application>
 
 </manifest>

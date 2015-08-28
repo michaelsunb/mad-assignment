@@ -1,5 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final Context context = this;
+        findViewById(R.id.main_create_party).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CreatePartyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         movieListView = (ListView) findViewById(R.id.movie_list);
         this.retrieveMovies(); // load from movies_sample.xml
