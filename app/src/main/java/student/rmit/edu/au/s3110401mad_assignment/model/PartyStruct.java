@@ -7,19 +7,30 @@ import java.util.Calendar;
  * Created by Michaelsun Baluyos on 24/08/2015.
  */
 public class PartyStruct implements Party {
-    private String id;
+    private int id;
+    private String idDB;
     private Calendar date;
     private String venue;
     private String location;
     private ArrayList<String> emailInvites;
 
-    public PartyStruct(String id) {
+    public PartyStruct(int id) {
         this.id = id;
     }
 
     @Override
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    @Override
+    public String getIdDB() {
+        return idDB;
+    }
+
+    @Override
+    public void setIdDB(String idDB) {
+        this.idDB = idDB;
     }
 
     @Override

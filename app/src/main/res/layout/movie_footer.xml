@@ -19,17 +19,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/see_invites"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="See Invites" />
+            android:text="@string/see_invites" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/main_create_party"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Party" />
+            android:text="@string/add_movie_party" />
     </LinearLayout>
 </LinearLayout>

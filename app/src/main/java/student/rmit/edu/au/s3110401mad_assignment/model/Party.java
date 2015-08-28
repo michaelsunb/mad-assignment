@@ -7,7 +7,11 @@ import java.util.Calendar;
  * Created by Michaelsun Baluyos on 27/08/2015.
  */
 public interface Party {
-    String getId();
+    int getId();
+
+    String getIdDB();
+
+    void setIdDB(String idDB);
 
     Calendar getDate();
 

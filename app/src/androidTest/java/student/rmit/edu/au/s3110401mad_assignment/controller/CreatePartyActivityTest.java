@@ -31,12 +31,6 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
     }
 
     @SmallTest
-    public void testInstrumentsNotNull() throws Exception {
-        assertNotNull("Instrument should be not null",instrumentation);
-        assertNotNull("Activity should be not null", activity);
-    }
-
-    @SmallTest
     public void testCheckDatePicker() throws Exception {
         final Button buttonDatePicker = (Button) activity.findViewById(R.id.create_party_date_picker);
         activity.runOnUiThread(new Runnable() {
@@ -46,9 +40,23 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         });
         getInstrumentation().waitForIdleSync();
         DialogFragment fragDate = activity.getDate();
-        assertFalse("Date Picker should be not hidden", fragDate.isHidden());
-        DatePickerDialog dialogDate = (DatePickerDialog)fragDate.onCreateDialog(null);
-        dialogDate.updateDate(2011, 11, 1);
+        assertTrue("Date Picker should be onResume (true)", fragDate.isResumed());
+        final DatePickerDialog dialogDate = (DatePickerDialog)fragDate.onCreateDialog(null);
+        dialogDate.getDatePicker().updateDate(2011, 11, 1);
+//        dialogDate.updateDate(2011, 11, 1);
+//        activity.runOnUiThread(new Runnable() {
+//            public void run() {
+//                dialogDate.getButton(DatePickerDialog.BUTTON_POSITIVE).performClick();
+//            }
+//        });
+        fragDate.dismiss();
+        getInstrumentation().waitForIdleSync();
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        assertFalse("Date Picker should be not onResume (false)", fragDate.isResumed());
     }
 
     @SmallTest
@@ -61,8 +69,42 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         });
         getInstrumentation().waitForIdleSync();
         DialogFragment fragTime = activity.getTime();
-        assertFalse("Time Picker should be not hidden", fragTime.isHidden());
-        TimePickerDialog dialogTime = (TimePickerDialog)fragTime.onCreateDialog(null);
+        assertTrue("Time Picker should be onResume (true)", fragTime.isResumed());
+        final TimePickerDialog dialogTime = (TimePickerDialog)fragTime.onCreateDialog(null);
         dialogTime.updateTime(12, 30);
+        fragTime.dismiss();
+        getInstrumentation().waitForIdleSync();
+        assertFalse("Time Picker should be not onResume (false)", fragTime.isResumed());
+    }
+
+    @SmallTest
+    public void testMovieSelect() throws Exception {
+        final Button button = (Button) activity.findViewById(R.id.create_party_movie_button);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                button.performClick();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+    }
+
+    // TODO
+    @SmallTest
+    public void testInviteesSelect() throws Exception {
+        Instrumentation.ActivityMonitor activityMonitor =
+                instrumentation.addMonitor(TempContactsActivity.class.getName(), null, false);
+        final Button button = (Button) activity.findViewById(R.id.create_party_invitees_button);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                button.performClick();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+        TempContactsActivity temp = (TempContactsActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        assertNotNull(temp);
+        temp.onOptionsItemSelected(null); // should go back
+        getInstrumentation().waitForIdleSync();
     }
 }

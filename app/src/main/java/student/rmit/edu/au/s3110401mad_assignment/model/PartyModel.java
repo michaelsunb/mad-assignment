@@ -17,10 +17,10 @@ public class PartyModel {
         return singleton;
     }
 
-    private Map<String,Party> partyMap;
+    private Map<Integer, Party> partyMap;
 
     private PartyModel() {
-        this.partyMap = new HashMap<String, Party>();
+        this.partyMap = new HashMap<>();
     }
 
     public void addParty(Party party) {

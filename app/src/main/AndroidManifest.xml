@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="student.rmit.edu.au.s3110401mad_assignment" >
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -33,7 +34,11 @@
         </activity>
         <activity
             android:name=".controller.CreatePartyActivity"
-            android:label="@string/title_activity_party" >
+            android:label="@string/title_activity_create_party" >
+        </activity>
+        <activity
+            android:name=".controller.TempContactsActivity"
+            android:label="@string/title_activity_temp_contacts" >
         </activity>
     </application>
 

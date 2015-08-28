@@ -73,7 +73,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreatePartyActivity.class);
         intent.putExtra(getString(R.string.movie_id), movieId);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public String getMovieId() {
