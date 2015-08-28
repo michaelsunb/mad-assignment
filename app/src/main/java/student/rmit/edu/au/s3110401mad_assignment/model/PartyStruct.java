@@ -1,18 +1,30 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Michaelsun Baluyos on 24/08/2015.
  */
 public class PartyStruct implements Party {
+    public static final int LONGITUDE_LATITUDE = 2;
+    public static final int LONGITUDE = 0;
+    public static final int LATITUDE = 1;
     private int id;
-    private String idDB;
+    private List<String> idDB;
     private Calendar date;
     private String venue;
-    private String location;
-    private ArrayList<String> emailInvites;
+    private double[] location = new double[LONGITUDE_LATITUDE];
+    private List<String> inviteeIDs;
+
+    public PartyStruct(int id, List<String> idDB, Calendar date, String venue, double[] location, List<String> inviteeIDs) {
+        this.id = id;
+        this.idDB = idDB;
+        this.date = date;
+        this.venue = venue;
+        this.location = location;
+        this.inviteeIDs = inviteeIDs;
+    }
 
     public PartyStruct(int id) {
         this.id = id;
@@ -24,13 +36,8 @@ public class PartyStruct implements Party {
     }
 
     @Override
-    public String getIdDB() {
+    public List<String> getIdDB() {
         return idDB;
-    }
-
-    @Override
-    public void setIdDB(String idDB) {
-        this.idDB = idDB;
     }
 
     @Override
@@ -39,37 +46,23 @@ public class PartyStruct implements Party {
     }
 
     @Override
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
-    @Override
     public String getVenue() {
         return venue;
     }
 
     @Override
-    public void setVenue(String venue) {
-        this.venue = venue;
-    }
-
-    @Override
-    public String getLocation() {
+    public double[] getLocation() {
         return location;
     }
 
-    @Override
-    public void setLocation(String location) {
-        this.location = location;
-    }
+//    @Override
+//    public void setLocation(double longitude, double latitude) {
+//        this.location[LONGITUDE] = longitude;
+//        this.location[LATITUDE] = latitude;
+//    }
 
     @Override
-    public ArrayList<String> getEmailInvites() {
-        return emailInvites;
-    }
-
-    @Override
-    public void setEmailInvites(ArrayList<String> emailInvites) {
-        this.emailInvites = emailInvites;
+    public List<String> getInviteeIDs() {
+        return inviteeIDs;
     }
 }

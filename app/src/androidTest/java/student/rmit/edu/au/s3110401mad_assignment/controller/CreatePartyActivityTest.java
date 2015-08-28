@@ -43,19 +43,8 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         assertTrue("Date Picker should be onResume (true)", fragDate.isResumed());
         final DatePickerDialog dialogDate = (DatePickerDialog)fragDate.onCreateDialog(null);
         dialogDate.getDatePicker().updateDate(2011, 11, 1);
-//        dialogDate.updateDate(2011, 11, 1);
-//        activity.runOnUiThread(new Runnable() {
-//            public void run() {
-//                dialogDate.getButton(DatePickerDialog.BUTTON_POSITIVE).performClick();
-//            }
-//        });
         fragDate.dismiss();
         getInstrumentation().waitForIdleSync();
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         assertFalse("Date Picker should be not onResume (false)", fragDate.isResumed());
     }
 
@@ -89,7 +78,6 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
     }
 
-    // TODO
     @SmallTest
     public void testInviteesSelect() throws Exception {
         final Button button = (Button) activity.findViewById(R.id.create_party_invitees_button);
@@ -100,5 +88,23 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         });
         getInstrumentation().waitForIdleSync();
         assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+    }
+
+    @SmallTest
+    public void testSumbitSelect() throws Exception {
+        Instrumentation.ActivityMonitor activityMonitor =
+                instrumentation.addMonitor(MainActivity.class.getName(), null, false);
+        final Button button = (Button) activity.findViewById(R.id.create_party_submit);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                button.performClick();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+        MainActivity temp = (MainActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        assertNotNull(temp);
+        temp.onOptionsItemSelected(null); // should go back
+        getInstrumentation().waitForIdleSync();
     }
 }

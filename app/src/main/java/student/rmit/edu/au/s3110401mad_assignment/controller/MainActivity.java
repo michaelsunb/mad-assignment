@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
@@ -38,6 +40,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context, CreatePartyActivity.class);
                 startActivity(intent);
+            }
+        });
+        findViewById(R.id.see_invites).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                String mPhoneNumber = tMgr.getLine1Number();
+                if(mPhoneNumber != "") {
+                    Toast.makeText(
+                            getApplicationContext(), mPhoneNumber, Toast.LENGTH_SHORT
+                    ).show();
+                }
             }
         });
 

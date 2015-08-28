@@ -3,6 +3,7 @@ package student.rmit.edu.au.s3110401mad_assignment.controller;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -67,5 +68,17 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         });
         getInstrumentation().waitForIdleSync();
         return (MovieDetailActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+    }
+
+    @SmallTest
+    public void testInviteesSelect() throws Exception {
+        final Button button = (Button) activity.findViewById(R.id.see_invites);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                button.performClick();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        assertFalse("CreatePartyActivity should be in focus", getActivity().hasWindowFocus());
     }
 }

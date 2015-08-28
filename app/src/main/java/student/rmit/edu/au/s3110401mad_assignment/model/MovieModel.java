@@ -23,6 +23,14 @@ public class MovieModel {
         this.movieMap = new HashMap<String, Movie>();
     }
 
+
+    public Movie getByName(String title) {
+        for (Map.Entry<String, Movie> entry : movieMap.entrySet()) {
+            if(entry.getValue().getTitle().equals(title))
+                return entry.getValue();
+        }
+        return null;
+    }
     public void addMovie(Movie movie) {
         movieMap.put(movie.getId(), movie);
     }

@@ -1,7 +1,7 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Michaelsun Baluyos on 27/08/2015.
@@ -9,23 +9,15 @@ import java.util.Calendar;
 public interface Party {
     int getId();
 
-    String getIdDB();
-
-    void setIdDB(String idDB);
+    List<String> getIdDB();
 
     Calendar getDate();
 
-    void setDate(Calendar date);
-
     String getVenue();
 
-    void setVenue(String venue);
+    double[] getLocation();
 
-    String getLocation();
+    List<String> getInviteeIDs();
 
-    void setLocation(String location);
-
-    ArrayList<String> getEmailInvites();
-
-    void setEmailInvites(ArrayList<String> emailInvites);
+//    void setLocation(double longitude, double latitude);
 }
