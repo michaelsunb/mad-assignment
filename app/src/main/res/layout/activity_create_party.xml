@@ -119,6 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_party_venue_edit_text"
+                android:ems="10"
+                android:inputType="text"
                 android:layout_gravity="right" />
         </LinearLayout>
 
@@ -138,12 +140,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_party_longitude_edit_text"
+                android:ems="10"
+                android:inputType="text"
                 android:layout_gravity="right" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_party_latitude_edit_text"
+                android:ems="10"
+                android:inputType="text"
                 android:layout_gravity="right" />
 
             <Button

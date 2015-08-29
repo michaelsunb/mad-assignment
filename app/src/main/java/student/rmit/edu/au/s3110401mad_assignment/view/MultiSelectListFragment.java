@@ -28,14 +28,6 @@ public class MultiSelectListFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
         builderSingle.setTitle("Select:-");
-        builderSingle.setNegativeButton("cancel",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
         CharSequence[] items = listTitle;
         boolean[] checkedItems = new boolean[listTitle.length];
         for(int i=0; i < listTitle.length; i++) {

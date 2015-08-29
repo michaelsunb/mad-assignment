@@ -3,6 +3,7 @@ package student.rmit.edu.au.s3110401mad_assignment.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
@@ -26,6 +27,12 @@ public class PartyListActivity extends AppCompatActivity {
             return;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
