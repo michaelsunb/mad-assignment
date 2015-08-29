@@ -120,12 +120,10 @@ public class CreatePartyActivity extends AppCompatActivity {
                     Double.parseDouble(((EditText) findViewById(R.id.create_party_latitude_edit_text)).getText().toString());
             venueTitle = ((EditText)findViewById(R.id.create_party_venue_edit_text)).getText().toString();
         } catch (Exception e) {
-            Toast.makeText(this,"Please enter a location numer",
+            Toast.makeText(this,"Please enter a location number",
                     Toast.LENGTH_LONG).show();
             return;
         }
-
-        System.out.println("agasdgsdgsdhshdfhsf: " + venueTitle);
 
         double[] location = {longitude,latitude};
         PartyStruct partyStruct = new PartyStruct(

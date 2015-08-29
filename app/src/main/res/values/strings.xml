@@ -37,7 +37,7 @@
     <string name="title_activity_event_list">Event List</string>
     <string name="attendeeCountText">Attendees: </string>
     <string name="row_eventTitleText">Event Title</string>
-    <string name="row_eventAttendeeCountText">Attendees: </string>
+    <string name="party_list_attendee_text">Attendees: </string>
     <string name="row_deleteButtonText">Delete</string>
     <string name="row_editButtonText">Edit</string>
     <string name="title_activity_calendar_view">Calendar View</string>
@@ -65,6 +65,4 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_temp_contacts">TempContactsActivity</string>
-    <string name="title_activity_events">EventsActivity</string>
 </resources>

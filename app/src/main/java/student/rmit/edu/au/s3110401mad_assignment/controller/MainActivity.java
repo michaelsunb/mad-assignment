@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Intent intent = new Intent(this, EventListActivity.class);
+        Intent intent = new Intent(this, PartyListActivity.class);
         startActivity(intent);
     }
 

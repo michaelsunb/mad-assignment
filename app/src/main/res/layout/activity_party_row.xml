@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/row_event_title_text"
+        android:id="@+id/party_list_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -13,36 +13,28 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/row_eventDateTextView"
+        android:id="@+id/party_list_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/row_event_title_text"
+        android:layout_below="@+id/party_list_title_text"
         android:text="@string/placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/row_eventAttendeeCount"
+        android:id="@+id/party_list_attendee_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/row_eventDateTextView"
-        android:text="@string/row_eventAttendeeCountText"
+        android:layout_below="@+id/party_list_date_text"
+        android:text="@string/party_list_attendee_text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
-        android:id="@+id/row_editButton"
+        android:id="@+id/party_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/row_deleteButton"
-        android:layout_toLeftOf="@+id/row_deleteButton"
-        android:text="@string/row_editButtonText" />
-
-    <Button
-        android:id="@+id/row_deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/row_eventAttendeeCount"
+        android:layout_alignBottom="@+id/party_list_attendee_count"
         android:layout_alignParentRight="true"
         android:text="@string/row_deleteButtonText" />
 

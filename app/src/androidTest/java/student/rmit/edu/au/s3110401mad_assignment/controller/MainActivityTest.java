@@ -79,6 +79,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             }
         });
         getInstrumentation().waitForIdleSync();
-        assertFalse("CreatePartyActivity should be in focus", getActivity().hasWindowFocus());
+        assertTrue("CreatePartyActivity should be in focus", getActivity().hasWindowFocus());
     }
 }

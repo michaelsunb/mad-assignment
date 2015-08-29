@@ -39,7 +39,7 @@
             android:label="@string/title_activity_create_party" >
         </activity>
         <activity
-            android:name=".controller.EventListActivity"
+            android:name=".controller.PartyListActivity"
             android:label="@string/title_activity_event_list" >
         </activity>
     </application>

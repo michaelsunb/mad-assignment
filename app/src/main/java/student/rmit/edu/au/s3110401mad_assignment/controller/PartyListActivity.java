@@ -1,27 +1,25 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
-import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
-public class EventListActivity extends AppCompatActivity {
+public class PartyListActivity extends AppCompatActivity {
 
-    private EventListAdapter listAdapter;
+    private PartyListAdapter listAdapter;
     private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
+        setContentView(R.layout.activity_party_list);
 
-        listView = (ListView) findViewById(R.id.eventListListView);
-        listAdapter = new EventListAdapter(this, 0, PartyModel.getSingleton().getAllParties());
+        listView = (ListView) findViewById(R.id.party_list);
+        listAdapter = new PartyListAdapter(this, 0, PartyModel.getSingleton().getAllParties());
         listView.setAdapter(listAdapter);
 
         if (getSupportActionBar() == null)
