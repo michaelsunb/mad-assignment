@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -46,6 +48,7 @@ public class CreatePartyActivity extends AppCompatActivity {
 
     private List<String> whichMovie = new ArrayList<>();
     private List<String> whichContacts = new ArrayList<>();
+    private Map<String, Contacts> contactsMap;
 
     public TimePickerFragment getTime() {
         return time;
@@ -142,6 +145,21 @@ public class CreatePartyActivity extends AppCompatActivity {
                 whichContacts
         );
 
+        if(whichContacts.size() > 0) {
+            ContactsModel contactsModel = ContactsModel.getSingleton();
+            contactsModel.setContactsMap(contactsMap);
+            for(String contactId : whichContacts) {
+                Contacts contact = contactsModel.getById(contactId);
+                for(String forContact : contact.getPhone()) {
+                    String sender = forContact;
+                    String message = "Invite";
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(sender, null, message, null, null);
+                }
+            }
+        }
+
         PartyModel.getSingleton().addParty(partyStruct);
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -186,7 +204,7 @@ public class CreatePartyActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         final String[] contactNames;
         try {
-            Map<String, Contacts> contactsMap = asyncContactsTask.get();
+            contactsMap = asyncContactsTask.get();
             ContactsModel.getSingleton().setContactsMap(contactsMap);
 
             contactNames = new String[contactsMap.size()];

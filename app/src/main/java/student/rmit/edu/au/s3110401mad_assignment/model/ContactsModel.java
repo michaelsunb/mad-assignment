@@ -32,6 +32,9 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
     public Map<String,Contacts> getContacts() {
         return contactsMap;
     }
+    public Contacts getById(String id) {
+        return contactsMap.get(id);
+    }
 
     public Contacts getByName(String name) {
         for (Map.Entry<String, Contacts> entry : contactsMap.entrySet()) {

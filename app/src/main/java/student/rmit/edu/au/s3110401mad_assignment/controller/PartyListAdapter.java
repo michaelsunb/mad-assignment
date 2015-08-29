@@ -1,11 +1,13 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
@@ -71,13 +73,20 @@ public class PartyListAdapter extends BaseAdapter {
 
         viewHolder.eventTitle = (TextView) convertView
                 .findViewById(R.id.party_list_title_text);
-        viewHolder.eventTitle.setText(event.getVenue());
 
         viewHolder.eventDate = (TextView) convertView
                 .findViewById(R.id.party_list_date_text);
 
         String title = (event.getVenue() != null) ? event.getVenue() : "Event " + position;
-        viewHolder.eventDate.setText(title);
+        viewHolder.eventTitle.setText(title);
+
+        Calendar datetime = Calendar.getInstance();
+        int year = datetime.get(Calendar.YEAR);
+        int monthOfYear = datetime.get(Calendar.MONTH);
+        int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
+        String stringDate = String.valueOf(year) + "-" + String.valueOf(monthOfYear)
+                + "-" + String.valueOf(dayOfMonth);
+        viewHolder.eventDate.setText(stringDate);
 
         viewHolder.eventAttendeeCount = (TextView) convertView
                 .findViewById(R.id.party_list_attendee_count);
