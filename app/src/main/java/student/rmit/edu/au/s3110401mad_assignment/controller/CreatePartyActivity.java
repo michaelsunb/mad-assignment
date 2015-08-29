@@ -152,10 +152,28 @@ public class CreatePartyActivity extends AppCompatActivity {
                 Contacts contact = contactsModel.getById(contactId);
                 for(String forContact : contact.getPhone()) {
                     String sender = forContact;
-                    String message = "Invite";
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+                    StringBuilder message = new StringBuilder();
+                    message.append("Venue:[");
+                    message.append(venueTitle);
+                    message.append("]");
+                    int year = datetime.get(Calendar.YEAR);
+                    int monthOfYear = datetime.get(Calendar.MONTH);
+                    int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
+                    message.append(" Datetime:[");
+                    message.append(year);
+                    message.append("-");
+                    message.append(monthOfYear);
+                    message.append("-");
+                    message.append(dayOfMonth);
+                    message.append("]");
+                    message.append(" Attendees: ");
+                    message.append(whichContacts.size());
+
+                    Toast.makeText(this, "Message sent to " + whichContacts.size() + " contacts."
+                            , Toast.LENGTH_SHORT).show();
                     SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(sender, null, message, null, null);
+                    sms.sendTextMessage(sender, null, message.toString(), null, null);
                 }
             }
         }

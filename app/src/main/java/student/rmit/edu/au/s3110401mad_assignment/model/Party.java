@@ -19,5 +19,7 @@ public interface Party {
 
     List<String> getInviteeIDs();
 
+    boolean myParty();
+
 //    void setLocation(double longitude, double latitude);
 }

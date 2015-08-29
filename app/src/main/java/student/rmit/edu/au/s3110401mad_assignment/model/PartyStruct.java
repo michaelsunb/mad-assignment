@@ -16,6 +16,7 @@ public class PartyStruct implements Party {
     private String venue;
     private double[] location = new double[LONGITUDE_LATITUDE];
     private List<String> inviteeIDs;
+    private boolean myParty;
 
     public PartyStruct(int id, List<String> idDB, Calendar date, String venue, double[] location, List<String> inviteeIDs) {
         this.id = id;
@@ -24,6 +25,17 @@ public class PartyStruct implements Party {
         this.venue = venue;
         this.location = location;
         this.inviteeIDs = inviteeIDs;
+        this.myParty = true;
+    }
+
+    public PartyStruct(int id, List<String> idDB, Calendar date, String venue, double[] location, List<String> inviteeIDs, boolean myParty) {
+        this.id = id;
+        this.idDB = idDB;
+        this.date = date;
+        this.venue = venue;
+        this.location = location;
+        this.inviteeIDs = inviteeIDs;
+        this.myParty = myParty;
     }
 
     @Override
@@ -51,14 +63,13 @@ public class PartyStruct implements Party {
         return location;
     }
 
-//    @Override
-//    public void setLocation(double longitude, double latitude) {
-//        this.location[LONGITUDE] = longitude;
-//        this.location[LATITUDE] = latitude;
-//    }
-
     @Override
     public List<String> getInviteeIDs() {
         return inviteeIDs;
+    }
+
+    @Override
+    public boolean myParty() {
+        return myParty;
     }
 }
