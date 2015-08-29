@@ -26,10 +26,6 @@ public class PartyStruct implements Party {
         this.inviteeIDs = inviteeIDs;
     }
 
-    public PartyStruct(int id) {
-        this.id = id;
-    }
-
     @Override
     public int getId() {
         return id;

@@ -32,4 +32,8 @@ public class PartyModel {
     public List<Party> getAllParties() {
         return new ArrayList<Party>(partyMap.values());
     }
+
+    public void deleteEvent(int id) {
+        partyMap.remove(id);
+    }
 }

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -109,14 +110,34 @@ public class CreatePartyActivity extends AppCompatActivity {
     }
 
     private void submitAndCreateParty() {
+        Double longitude;
+        Double latitude;
+        String venueTitle;
+        try {
+            longitude =
+                    Double.parseDouble(((EditText) findViewById(R.id.create_party_longitude_edit_text)).getText().toString());
+            latitude =
+                    Double.parseDouble(((EditText) findViewById(R.id.create_party_latitude_edit_text)).getText().toString());
+            venueTitle = ((EditText)findViewById(R.id.create_party_venue_edit_text)).getText().toString();
+        } catch (Exception e) {
+            Toast.makeText(this,"Please enter a location numer",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        System.out.println("agasdgsdgsdhshdfhsf: " + venueTitle);
+
+        double[] location = {longitude,latitude};
         PartyStruct partyStruct = new PartyStruct(
                 PartyModel.getSingleton().getAllParties().size(),
                 whichMovie,
                 datetime,
-                new String(),
-                new double[2],
+                venueTitle,
+                location,
                 whichContacts
         );
+
+        PartyModel.getSingleton().addParty(partyStruct);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -146,7 +167,10 @@ public class CreatePartyActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         String movieId =
                                 MovieModel.getSingleton().getByName(movieTitles[which]).getId();
-                        whichMovie.add(movieId);
+                        if(isChecked)
+                            whichMovie.add(movieId);
+                        else if(whichMovie.contains(movieId))
+                            whichMovie.remove(movieId);
                     }
                 });
         movieList.setArguments(args);
@@ -179,7 +203,10 @@ public class CreatePartyActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         String contactId =
                                 ContactsModel.getSingleton().getByName(contactNames[which]).getId();
-                        whichContacts.add(contactId);
+                        if(isChecked)
+                            whichContacts.add(contactId);
+                        else if(whichContacts.contains(contactId))
+                            whichContacts.remove(contactId);
                     }
                 });
         movieList.show(getSupportFragmentManager(), "Contact Select Picker");

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,6 +16,7 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class MainActivity extends AppCompatActivity {
     public static final String DRAWABLE = "drawable";
@@ -45,13 +45,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.see_invites).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-                String mPhoneNumber = tMgr.getLine1Number();
-                if(mPhoneNumber != "") {
-                    Toast.makeText(
-                            getApplicationContext(), mPhoneNumber, Toast.LENGTH_SHORT
-                    ).show();
-                }
+                goToEventListActivity();
             }
         });
 
@@ -65,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movieSelected = (Movie) movieListView.getItemAtPosition(position);
-                nextActivity(movieSelected);
+                goToMovieDetailActivity(movieSelected);
             }
         };
         movieListView.setOnItemClickListener(listener);
@@ -81,10 +75,22 @@ public class MainActivity extends AppCompatActivity {
         movieListView.setAdapter(new MovieArrayAdapter(this, theModel.getAllMovies()));
     }
 
-    private void nextActivity(Movie movieSelected) {
+    private void goToMovieDetailActivity(Movie movieSelected) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra(getString(R.string.movie_id), movieSelected.getId());
         startActivityForResult(intent, 1);
+    }
+
+    private void goToEventListActivity() {
+        if(PartyModel.getSingleton().getAllParties().size() <= 0) {
+            Toast.makeText(
+                    this,"No events happening!",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, EventListActivity.class);
+        startActivity(intent);
     }
 
     @Override
