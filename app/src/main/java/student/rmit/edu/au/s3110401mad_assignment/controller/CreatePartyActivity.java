@@ -21,21 +21,23 @@ public class CreatePartyActivity extends BasePartyActivity {
         setContentView(R.layout.activity_create_party);
 
         asyncContactsTask = new ContactsModel().execute(this);
+        datetime = Calendar.getInstance();
 
         try {
             Bundle extras = getIntent().getExtras();
             movieIds = new String[NUMBER_OF_MOVIE_ID];
             movieIds[MOVIE_ID] = extras.getString(getString(R.string.movie_id));
+            ((TextView) findViewById(R.id.create_party_movie_text)).setText(
+                    movieIds.length + " " + getText(R.string.event_movie_text)
+            );
         } catch (Exception e) {
-            System.out.println("Oh no! Something happened: " + e.getMessage());
+            ((TextView) findViewById(R.id.create_party_movie_text)).setText(
+                    "0 " + getText(R.string.event_movie_text)
+            );
         }
-        datetime = Calendar.getInstance();
 
         ((TextView) findViewById(R.id.create_party_invitees_text)).setText(
                 whichContacts.size() + " " + getText(R.string.event_invitees_text)
-        );
-        ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                movieIds.length + " " + getText(R.string.event_movie_text)
         );
 
         findViewById(R.id.create_party_date_picker).setOnClickListener(new View.OnClickListener() {
@@ -55,20 +57,14 @@ public class CreatePartyActivity extends BasePartyActivity {
         findViewById(R.id.create_party_movie_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMovieSelectList();
-                ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                        whichMovie.size() + " " + getText(R.string.event_movie_text)
-                );
+                showMovieSelectList(R.id.create_party_movie_text);
             }
         });
 
         findViewById(R.id.create_party_invitees_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showContactsSelectList();
-                ((TextView) findViewById(R.id.create_party_invitees_text)).setText(
-                        whichContacts.size() + " " + getText(R.string.event_invitees_text)
-                );
+                showContactsSelectList(R.id.create_party_invitees_text);
             }
         });
 

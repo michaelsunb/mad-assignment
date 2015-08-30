@@ -12,11 +12,13 @@ public class MultiSelectListFragment extends DialogFragment {
     private String[] listTitle;
     private String[] selectedTitle;
     private DialogInterface.OnMultiChoiceClickListener onListenerSet;
+    private DialogInterface.OnClickListener onClickListeber;
 
 
-
-    public void setCallBack(DialogInterface.OnMultiChoiceClickListener onListenerSet) {
+    public void setCallBack(DialogInterface.OnMultiChoiceClickListener onListenerSet,
+                            DialogInterface.OnClickListener onClickListener) {
         this.onListenerSet = onListenerSet;
+        this.onClickListeber = onClickListener;
     }
 
     @Override
@@ -31,8 +33,9 @@ public class MultiSelectListFragment extends DialogFragment {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
         builderSingle.setTitle("Select:-");
         CharSequence[] items = listTitle;
+
         boolean[] checkedItems = new boolean[listTitle.length];
-        if(listTitle != null && selectedTitle != null) {
+        if(selectedTitle != null) {
             for (int i = 0; i < listTitle.length; i++) {
                 checkedItems[i] = false;
                 for (int j = 0; j < selectedTitle.length; j++) {
@@ -45,15 +48,7 @@ public class MultiSelectListFragment extends DialogFragment {
         }
 
         builderSingle.setMultiChoiceItems(items, checkedItems,onListenerSet);
-        builderSingle.setPositiveButton("Set",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.notifyAll();
-                        dialog.dismiss();
-                    }
-                });
+        builderSingle.setPositiveButton("Set",onClickListeber);
 
         return builderSingle.create();
     }

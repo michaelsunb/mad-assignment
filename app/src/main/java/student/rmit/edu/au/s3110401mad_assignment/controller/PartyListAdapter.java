@@ -82,6 +82,9 @@ public class PartyListAdapter extends BaseAdapter {
         viewHolder.eventTitle.setText(title);
 
         Calendar datetime = Calendar.getInstance();
+        if(event.getDate() != null)
+            datetime.setTime(event.getDate());
+
         int year = datetime.get(Calendar.YEAR);
         int monthOfYear = datetime.get(Calendar.MONTH);
         int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
@@ -100,8 +103,9 @@ public class PartyListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EditPartyActivity.class);
-                intent.putExtra(context.getString(R.string.party_id), partyList.get(position).getId());
+                intent.putExtra("party_id", event.getId());
                 context.startActivity(intent);
+                return;
             }
         });
 

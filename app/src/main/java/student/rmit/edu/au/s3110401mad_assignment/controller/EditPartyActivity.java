@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
@@ -15,49 +16,38 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class EditPartyActivity extends BasePartyActivity {
 
-    private String date;
-    private String time;
-    private Calendar datetime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_party);
 
+        datetime = Calendar.getInstance();
         asyncContactsTask = new ContactsModel().execute(this);
 
+        TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
+        int partyId = -1;
         try {
             Bundle extras = getIntent().getExtras();
+            partyId = extras.getInt("party_id");
             Party party =
-                    PartyModel.getSingleton().getPartyById(extras.getInt(getString(R.string.party_id)));
-            String[] tempMovieIds = new String[party.getIdDB().size()];
-            int i = 0;
-            for(String tempMovieId : tempMovieIds) {
-                movieIds[0] = tempMovieId;
-            }
-//            movieIds = (String[])party.getIdDB().toArray();
-            datetime = party.getDate();
-            time = datetime.get(Calendar.HOUR_OF_DAY) + ":" + datetime.get(Calendar.MINUTE);
-        } catch (Exception e) {
-            System.out.println("Oh no! Something happened: " + e.getMessage());
-        }
+                    PartyModel.getSingleton().getPartyById(partyId);
+            movieIds = party.getIdDB().toArray(new String[party.getIdDB().size()]);
 
-        if(whichContacts != null) {
-            ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
-                    whichContacts.size() + " " + getText(R.string.event_invitees_text)
-            );
-        }
-
-        TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
-        if(movieIds != null) {
+            if(party.getDate() != null)
+                datetime.setTime(party.getDate());
             viewById.setText(
                     movieIds.length + " " + getText(R.string.event_movie_text)
             );
-        } else {
+        } catch (Exception e) {
+            System.out.println("Oh no! Something happened: " + e.getMessage());
             viewById.setText(
                     "0 " + getText(R.string.event_movie_text)
             );
         }
+
+        ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
+                whichContacts.size() + " " + getText(R.string.event_invitees_text)
+        );
 
         findViewById(R.id.edit_party_date_picker).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,14 +66,14 @@ public class EditPartyActivity extends BasePartyActivity {
         findViewById(R.id.edit_party_movie_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMovieSelectList();
+                showMovieSelectList(R.id.edit_party_movie_text);
             }
         });
 
         findViewById(R.id.edit_party_invitees_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showContactsSelectList();
+                showContactsSelectList(R.id.edit_party_invitees_text);
             }
         });
 

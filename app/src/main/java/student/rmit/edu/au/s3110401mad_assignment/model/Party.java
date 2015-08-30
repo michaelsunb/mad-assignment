@@ -1,6 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ public interface Party {
 
     List<String> getIdDB();
 
-    Calendar getDate();
+    Date getDate();
 
     String getVenue();
 

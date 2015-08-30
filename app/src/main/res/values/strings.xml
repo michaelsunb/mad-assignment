@@ -1,56 +1,26 @@
 <resources>
     <string name="app_name">S3110401 MAD-Assignment</string>
 
-    <!-- navigation drawer item labels  -->
-    <string-array name="movie_list">
-        <item>@string/title_activity_main</item>
-    </string-array>
-
-    <string name="title_activity_main">Home</string>
-
     <string name="placeholder">Placeholder</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_movie_detail">Movie Detail</string>
     <string name="title_activity_create_party">Create A Party</string>
 
-    <string name="party_id">party_id</string>
     <string name="movie_id">movie_id</string>
-    <string name="array_movie_ids">movie_ids</string>
-    <string name="rating">rating</string>
     <string name="image_description">movie poster</string>
     <string name="add_movie_party">Create Party</string>
     <string name="see_invites">See Invites</string>
 
     <integer name="max_ratings">5</integer>
 
-    <string name="hello_world">Hello world!</string>
-
-
-    <string name="add_event_button_name">New Event</string>
-    <string name="list_events_button_name">List Events</string>
-    <string name="view_calendar_button_name">View Calendar</string>
-    <string name="title_activity_new_event">New Event</string>
-    <string name="eventDateText">Date</string>
-    <string name="eventVenueText">Venue</string>
-    <string name="eventNoteText">Note</string>
-    <string name="createEventButtonText">Create New Event</string>
-    <string name="eventCreatedToastText">Event Created</string>
     <string name="title_activity_event_list">Event List</string>
-    <string name="attendeeCountText">Attendees: </string>
-    <string name="row_eventTitleText">Event Title</string>
+    <string name="party_list_row_title_text">Event Title</string>
     <string name="party_list_attendee_text">Attendees: </string>
-    <string name="row_deleteButtonText">Delete</string>
-    <string name="row_editButtonText">Edit</string>
-    <string name="title_activity_calendar_view">Calendar View</string>
-    <string name="previousWeekButtonText">&lt;</string>
-    <string name="nextWeekButtonText">&gt;</string>
-    <string name="weekNumberTextViewText">Week </string>
-    <string name="forYearTextViewText"> for </string>
+    <string name="party_list_delete_button">Delete</string>
+    <string name="party_list_edit_button">Edit</string>
     <string name="title_activity_edit_event">Edit Event</string>
     <string name="title_activity_invitee_manager">Select Invitees</string>
-    <string name="selectInviteesTextViewText">Invitees</string>
     <string name="confirmInviteesButtonText">Confirm Invitees</string>
-    <string name="selectInviteesHeaderTextViewText">Choose your invitees:</string>
 
     <string name="event_date_text">Event Date: </string>
     <string name="event_time_text">Event Time: </string>
@@ -65,7 +35,11 @@
     <string name="event_invitees_button">Invitee&#40;s&#41;</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_edit_party">EditPartyActivity</string>
+    <string name="edit_text_latitude">Latitude</string>
+    <string name="edit_text_logitude">Longitude</string>
+    <string name="submit_party">Submit</string>
+    <string name="edit_text_location">Location</string>
+    <string name="party_venue_text">Venue</string>
 
 </resources>

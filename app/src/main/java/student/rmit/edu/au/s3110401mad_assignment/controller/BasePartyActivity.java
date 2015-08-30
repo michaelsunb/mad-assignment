@@ -77,7 +77,7 @@ public class BasePartyActivity extends AppCompatActivity {
         PartyStruct partyStruct = new PartyStruct(
                 (PartyModel.getSingleton().getAllParties().size() + 1),
                 whichMovie,
-                datetime,
+                datetime.getTime(),
                 venueTitle,
                 location,
                 whichContacts
@@ -139,6 +139,7 @@ public class BasePartyActivity extends AppCompatActivity {
                                 , Toast.LENGTH_SHORT).show();
                         SmsManager sms = SmsManager.getDefault();
                         sms.sendTextMessage(sender, null, message.toString(), null, null);
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -152,7 +153,7 @@ public class BasePartyActivity extends AppCompatActivity {
         finish();
     }
 
-    public void showMovieSelectList() {
+    public void showMovieSelectList(final Integer party_movie_text) {
         MovieModel movieModel = MovieModel.getSingleton();
         final Bundle args = new Bundle();
         final String[] movieTitles = new String[movieModel.getAllMovies().size()];
@@ -179,7 +180,6 @@ public class BasePartyActivity extends AppCompatActivity {
         MultiSelectListFragment movieList = new MultiSelectListFragment();
         movieList.setCallBack(
                 new DialogInterface.OnMultiChoiceClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         String movieId =
@@ -188,15 +188,19 @@ public class BasePartyActivity extends AppCompatActivity {
                             whichMovie.add(movieId);
                         else if (whichMovie.contains(movieId))
                             whichMovie.remove(movieId);
-
-                        args.putStringArray("list_title", (String[]) whichMovie.toArray());
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((TextView)findViewById(party_movie_text)).setText(
+                                whichMovie.size() + " " + getText(R.string.event_movie_text));
                     }
                 });
         movieList.setArguments(args);
         movieList.show(getSupportFragmentManager(), "Movie Select");
     }
 
-    public void showContactsSelectList() {
+    public void showContactsSelectList(final int party_invitees_text) {
         Bundle args = new Bundle();
         final String[] contactNames;
         try {
@@ -226,6 +230,12 @@ public class BasePartyActivity extends AppCompatActivity {
                             whichContacts.add(contactId);
                         else if (whichContacts.contains(contactId))
                             whichContacts.remove(contactId);
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((TextView)findViewById(party_invitees_text)).setText(
+                                whichContacts.size() + " " + getText(R.string.event_invitees_text));
                     }
                 });
         movieList.show(getSupportFragmentManager(), "Contact Select Picker");

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/row_eventTitleText"
+        android:text="@string/party_list_row_title_text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/party_list_delete_button"
         android:layout_toLeftOf="@+id/party_list_delete_button"
-        android:text="@string/row_editButtonText" />
+        android:text="@string/party_list_edit_button" />
 
     <Button
         android:id="@+id/party_list_delete_button"
@@ -44,6 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/party_list_attendee_count"
         android:layout_alignParentRight="true"
-        android:text="@string/row_deleteButtonText" />
+        android:text="@string/party_list_delete_button" />
 
 </RelativeLayout>
