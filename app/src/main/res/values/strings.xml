@@ -13,6 +13,7 @@
     <string name="title_activity_movie_detail">Movie Detail</string>
     <string name="title_activity_create_party">Create A Party</string>
 
+    <string name="party_id">party_id</string>
     <string name="movie_id">movie_id</string>
     <string name="array_movie_ids">movie_ids</string>
     <string name="rating">rating</string>
@@ -51,18 +52,20 @@
     <string name="confirmInviteesButtonText">Confirm Invitees</string>
     <string name="selectInviteesHeaderTextViewText">Choose your invitees:</string>
 
-    <string name="event_date_text">Event Date</string>
+    <string name="event_date_text">Event Date: </string>
+    <string name="event_time_text">Event Time: </string>
     <string name="event_date_picker">Enter Date</string>
-    <string name="event_time_text">Event Time</string>
     <string name="enter_time_picker">Enter Time</string>
     <string name="event_location_text">Location</string>
     <string name="event_location_lat_hint">Latitude</string>
     <string name="event_location_long_hint">Longitude</string>
-    <string name="event_movie_text">0 movies selected</string>
+    <string name="event_movie_text">movies selected</string>
     <string name="event_movie_button">Add Movie</string>
-    <string name="event_invitees_text">0 invitee&#40;s&#41; selected</string>
+    <string name="event_invitees_text">invitee&#40;s&#41; selected</string>
     <string name="event_invitees_button">Invitee&#40;s&#41;</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_edit_party">EditPartyActivity</string>
+
 </resources>

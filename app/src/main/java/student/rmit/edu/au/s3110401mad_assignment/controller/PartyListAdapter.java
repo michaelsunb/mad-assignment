@@ -1,5 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class PartyListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
         final Party event = getItem(position);
@@ -93,6 +94,16 @@ public class PartyListAdapter extends BaseAdapter {
         viewHolder.eventAttendeeCount.setText(convertView.getResources()
                 .getString(R.string.party_list_attendee_text)
                 + (new StringBuilder().append(event.getInviteeIDs().size()).toString()));
+
+        convertView
+                .findViewById(R.id.party_list_edit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditPartyActivity.class);
+                intent.putExtra(context.getString(R.string.party_id), partyList.get(position).getId());
+                context.startActivity(intent);
+            }
+        });
 
         viewHolder.deleteButton = (Button) convertView
                 .findViewById(R.id.party_list_delete_button);

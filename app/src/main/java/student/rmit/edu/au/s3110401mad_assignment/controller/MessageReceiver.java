@@ -22,6 +22,17 @@ public class MessageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(SMS_RECEIVED)) {
+            Bundle pudsBundle = intent.getExtras();
+            Object[] pdus = (Object[]) pudsBundle.get("pdus");
+            SmsMessage messages = SmsMessage.createFromPdu((byte[]) pdus[0]);
+
+            if (messages.getMessageBody().contains("Hi")) {
+                abortBroadcast();
+                Toast.makeText(context, "Message sent from contacts."
+                        , Toast.LENGTH_SHORT).show();
+            }
+        }
+        /*if (intent.getAction().equals(SMS_RECEIVED)) {
             abortBroadcast();
 
             Bundle bundle = intent.getExtras();
@@ -33,9 +44,13 @@ public class MessageReceiver extends BroadcastReceiver {
                 }
                 SmsMessage messages = SmsMessage.createFromPdu((byte[]) pdus[0]);
                 if(messages.getMessageBody().contains("Hi")) {
-                    abortBroadcast();
+//                    abortBroadcast();
+
+                    Toast.makeText(context, "Message sent from contacts."
+                            , Toast.LENGTH_SHORT).show();
                 }
-                /* large message might be broken into many
+                /*//*
+                // large message might be broken into many
                 SmsMessage[] messages = new SmsMessage[pdus.length];
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < pdus.length; i++) {
@@ -48,8 +63,7 @@ public class MessageReceiver extends BroadcastReceiver {
 
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(sender, null, message, null, null);//phone number will be your number.
-                */
             }
-        }
+        }*/
     }
 }

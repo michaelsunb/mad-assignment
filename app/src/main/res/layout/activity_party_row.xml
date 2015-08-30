@@ -31,6 +31,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
+        android:id="@+id/party_list_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/party_list_delete_button"
+        android:layout_toLeftOf="@+id/party_list_delete_button"
+        android:text="@string/row_editButtonText" />
+
+    <Button
         android:id="@+id/party_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -26,7 +26,7 @@ public class PartyModel {
     public void addParty(Party party) {
         partyMap.put(party.getId(), party);
     }
-    public Party getPartyById(String imdbId) {
+    public Party getPartyById(Integer imdbId) {
         return partyMap.get(imdbId);
     }
     public List<Party> getAllParties() {

@@ -10,8 +10,10 @@ import android.support.v4.app.DialogFragment;
 public class MultiSelectListFragment extends DialogFragment {
 
     private String[] listTitle;
-    private String selectedTitle;
+    private String[] selectedTitle;
     private DialogInterface.OnMultiChoiceClickListener onListenerSet;
+
+
 
     public void setCallBack(DialogInterface.OnMultiChoiceClickListener onListenerSet) {
         this.onListenerSet = onListenerSet;
@@ -21,7 +23,7 @@ public class MultiSelectListFragment extends DialogFragment {
     public void setArguments(Bundle args) {
         super.setArguments(args);
         listTitle = args.getStringArray("list_title");
-        selectedTitle = args.getString("selected_title");
+        selectedTitle = args.getStringArray("selected_title");
     }
 
     @Override
@@ -30,9 +32,16 @@ public class MultiSelectListFragment extends DialogFragment {
         builderSingle.setTitle("Select:-");
         CharSequence[] items = listTitle;
         boolean[] checkedItems = new boolean[listTitle.length];
-        for(int i=0; i < listTitle.length; i++) {
-            checkedItems[i] = (listTitle[i].equals(selectedTitle)) ?
-                true : false;
+        if(listTitle != null && selectedTitle != null) {
+            for (int i = 0; i < listTitle.length; i++) {
+                checkedItems[i] = false;
+                for (int j = 0; j < selectedTitle.length; j++) {
+                    if (listTitle[i].equals(selectedTitle[j])) {
+                        checkedItems[i] = true;
+                        break;
+                    }
+                }
+            }
         }
 
         builderSingle.setMultiChoiceItems(items, checkedItems,onListenerSet);
@@ -41,6 +50,7 @@ public class MultiSelectListFragment extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.notifyAll();
                         dialog.dismiss();
                     }
                 });
