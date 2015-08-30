@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class CreatePartyActivity extends BasePartyActivity {
 
@@ -22,6 +23,7 @@ public class CreatePartyActivity extends BasePartyActivity {
 
         asyncContactsTask = new ContactsModel().execute(this);
         datetime = Calendar.getInstance();
+        partyId = (PartyModel.getSingleton().getAllParties().size() + 1);
 
         try {
             Bundle extras = getIntent().getExtras();
@@ -71,7 +73,7 @@ public class CreatePartyActivity extends BasePartyActivity {
         findViewById(R.id.create_party_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAndCreateParty();
+                submitAndCreateParty(R.id.create_party_latitude_edit_text, R.id.create_party_venue_edit_text, R.id.create_party_longitude_edit_text);
             }
         });
 

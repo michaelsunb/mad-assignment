@@ -40,8 +40,9 @@ import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerFragment;
 public class BasePartyActivity extends AppCompatActivity {
     public static final int ZERO_NUMBER_LESS_TEN = 10;
     public static final int MIDNIGHT = 0;
-    protected Calendar datetime;
+    protected int partyId;
     protected String[] movieIds;
+    protected Calendar datetime;
     protected AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
     protected List<String> whichMovie = new ArrayList<>();
     protected List<String> whichContacts = new ArrayList<>();
@@ -57,16 +58,16 @@ public class BasePartyActivity extends AppCompatActivity {
         return date;
     }
 
-    public void submitAndCreateParty() {
+    public void submitAndCreateParty(int party_latitude_edit_text, int party_venue_edit_text, int party_longitude_edit_text) {
         Double longitude;
         Double latitude;
         String venueTitle;
         try {
             longitude =
-                    Double.parseDouble(((EditText) findViewById(R.id.create_party_longitude_edit_text)).getText().toString());
+                    Double.parseDouble(((EditText) findViewById(party_longitude_edit_text)).getText().toString());
             latitude =
-                    Double.parseDouble(((EditText) findViewById(R.id.create_party_latitude_edit_text)).getText().toString());
-            venueTitle = ((EditText)findViewById(R.id.create_party_venue_edit_text)).getText().toString();
+                    Double.parseDouble(((EditText) findViewById(party_latitude_edit_text)).getText().toString());
+            venueTitle = ((EditText)findViewById(party_venue_edit_text)).getText().toString();
         } catch (Exception e) {
             Toast.makeText(this, "Please enter a location number",
                     Toast.LENGTH_LONG).show();
@@ -74,8 +75,10 @@ public class BasePartyActivity extends AppCompatActivity {
         }
 
         double[] location = {longitude,latitude};
+
+
         PartyStruct partyStruct = new PartyStruct(
-                (PartyModel.getSingleton().getAllParties().size() + 1),
+                partyId,
                 whichMovie,
                 datetime.getTime(),
                 venueTitle,

@@ -102,9 +102,6 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
         });
         getInstrumentation().waitForIdleSync();
         assertTrue("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
-//        MainActivity temp = (MainActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//        assertNotNull(temp);
-//        temp.onOptionsItemSelected(null); // should go back
         getInstrumentation().waitForIdleSync();
     }
 }

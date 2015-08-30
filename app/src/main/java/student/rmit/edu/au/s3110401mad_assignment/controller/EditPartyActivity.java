@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 
 public class EditPartyActivity extends BasePartyActivity {
 
@@ -23,9 +24,9 @@ public class EditPartyActivity extends BasePartyActivity {
 
         datetime = Calendar.getInstance();
         asyncContactsTask = new ContactsModel().execute(this);
+        partyId = (PartyModel.getSingleton().getAllParties().size() + 1);
 
         TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
-        int partyId = -1;
         try {
             Bundle extras = getIntent().getExtras();
             partyId = extras.getInt("party_id");
@@ -38,6 +39,12 @@ public class EditPartyActivity extends BasePartyActivity {
             viewById.setText(
                     movieIds.length + " " + getText(R.string.event_movie_text)
             );
+
+            ((EditText)findViewById(R.id.edit_party_venue_edit_text)).setText(party.getVenue());
+            ((EditText)findViewById(R.id.edit_party_longitude_edit_text)).setText(
+                    "" + party.getLocation()[PartyStruct.LONGITUDE]);
+            ((EditText)findViewById(R.id.edit_party_latitude_edit_text)).setText(
+                    "" + party.getLocation()[PartyStruct.LATITUDE]);
         } catch (Exception e) {
             System.out.println("Oh no! Something happened: " + e.getMessage());
             viewById.setText(
@@ -80,7 +87,14 @@ public class EditPartyActivity extends BasePartyActivity {
         findViewById(R.id.edit_party_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAndCreateParty();
+                submitAndCreateParty(R.id.create_party_latitude_edit_text, R.id.create_party_venue_edit_text, R.id.create_party_longitude_edit_text);
+            }
+        });
+
+        findViewById(R.id.edit_party_submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitAndCreateParty(R.id.edit_party_latitude_edit_text, R.id.edit_party_venue_edit_text, R.id.edit_party_longitude_edit_text);
             }
         });
 
