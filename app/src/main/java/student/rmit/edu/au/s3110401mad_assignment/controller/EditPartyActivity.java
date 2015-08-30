@@ -33,6 +33,7 @@ public class EditPartyActivity extends BasePartyActivity {
             Party party =
                     PartyModel.getSingleton().getPartyById(partyId);
             movieIds = party.getIdDB().toArray(new String[party.getIdDB().size()]);
+            contactIds = party.getInviteeIDs().toArray(new String[party.getInviteeIDs().size()]);
 
             if(party.getDate() != null)
                 datetime.setTime(party.getDate());

@@ -14,6 +14,11 @@ public class MultiSelectListFragment extends DialogFragment {
     private DialogInterface.OnMultiChoiceClickListener onListenerSet;
     private DialogInterface.OnClickListener onClickListeber;
 
+    private boolean[] checkedItems;
+
+    public void setCheckedItems(int which, boolean isChecked) {
+        checkedItems[which] = isChecked;
+    }
 
     public void setCallBack(DialogInterface.OnMultiChoiceClickListener onListenerSet,
                             DialogInterface.OnClickListener onClickListener) {
@@ -26,6 +31,8 @@ public class MultiSelectListFragment extends DialogFragment {
         super.setArguments(args);
         listTitle = args.getStringArray("list_title");
         selectedTitle = args.getStringArray("selected_title");
+
+        getSelectedBooleans();
     }
 
     @Override
@@ -34,7 +41,16 @@ public class MultiSelectListFragment extends DialogFragment {
         builderSingle.setTitle("Select:-");
         CharSequence[] items = listTitle;
 
-        boolean[] checkedItems = new boolean[listTitle.length];
+        builderSingle.setMultiChoiceItems(items, checkedItems,onListenerSet);
+        builderSingle.setPositiveButton("Set",onClickListeber);
+
+        return builderSingle.create();
+    }
+
+    private void getSelectedBooleans() {
+        if(checkedItems != null) return;
+
+        checkedItems = new boolean[listTitle.length];
         if(selectedTitle != null) {
             for (int i = 0; i < listTitle.length; i++) {
                 checkedItems[i] = false;
@@ -46,10 +62,5 @@ public class MultiSelectListFragment extends DialogFragment {
                 }
             }
         }
-
-        builderSingle.setMultiChoiceItems(items, checkedItems,onListenerSet);
-        builderSingle.setPositiveButton("Set",onClickListeber);
-
-        return builderSingle.create();
     }
 }

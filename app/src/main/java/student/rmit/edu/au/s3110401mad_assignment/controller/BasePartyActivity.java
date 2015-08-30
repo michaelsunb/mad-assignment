@@ -42,6 +42,7 @@ public class BasePartyActivity extends AppCompatActivity {
     public static final int MIDNIGHT = 0;
     protected int partyId;
     protected String[] movieIds;
+    protected String[] contactIds;
     protected Calendar datetime;
     protected AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
     protected List<String> whichMovie = new ArrayList<>();
@@ -180,22 +181,27 @@ public class BasePartyActivity extends AppCompatActivity {
             args.putStringArray("selected_title", movieTitle);
         }
 
-        MultiSelectListFragment movieList = new MultiSelectListFragment();
+        final MultiSelectListFragment movieList = new MultiSelectListFragment();
         movieList.setCallBack(
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         String movieId =
                                 MovieModel.getSingleton().getByName(movieTitles[which]).getId();
-                        if (isChecked)
-                            whichMovie.add(movieId);
-                        else if (whichMovie.contains(movieId))
-                            whichMovie.remove(movieId);
+                        if (isChecked) {
+                            if(!whichMovie.contains(movieId))
+                                whichMovie.add(movieId);
+                        } else {
+                            if(whichMovie.contains(movieId))
+                                whichMovie.remove(movieId);
+                        }
+
+                        movieList.setCheckedItems(which,isChecked);
                     }
                 },
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ((TextView)findViewById(party_movie_text)).setText(
+                        ((TextView) findViewById(party_movie_text)).setText(
                                 whichMovie.size() + " " + getText(R.string.event_movie_text));
                     }
                 });
@@ -220,6 +226,8 @@ public class BasePartyActivity extends AppCompatActivity {
             return;
         }
         args.putStringArray("list_title", contactNames);
+        if(contactIds != null)
+            args.putStringArray("selected_title", contactIds);
 
         MultiSelectListFragment movieList = new MultiSelectListFragment();
         movieList.setArguments(args);
