@@ -51,6 +51,9 @@ public class BasePartyActivity extends AppCompatActivity {
     private DatePickerFragment date;
     private Map<String, Contacts> contactsMap;
 
+    private MultiSelectListFragment movieList = new MultiSelectListFragment();
+    private MultiSelectListFragment contactList = new MultiSelectListFragment();
+
     public TimePickerFragment getTime() {
         return time;
     }
@@ -181,7 +184,6 @@ public class BasePartyActivity extends AppCompatActivity {
             args.putStringArray("selected_title", movieTitle);
         }
 
-        final MultiSelectListFragment movieList = new MultiSelectListFragment();
         movieList.setCallBack(
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -229,9 +231,8 @@ public class BasePartyActivity extends AppCompatActivity {
         if(contactIds != null)
             args.putStringArray("selected_title", contactIds);
 
-        MultiSelectListFragment movieList = new MultiSelectListFragment();
-        movieList.setArguments(args);
-        movieList.setCallBack(
+        contactList.setArguments(args);
+        contactList.setCallBack(
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -245,11 +246,11 @@ public class BasePartyActivity extends AppCompatActivity {
                 },
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ((TextView)findViewById(party_invitees_text)).setText(
+                        ((TextView) findViewById(party_invitees_text)).setText(
                                 whichContacts.size() + " " + getText(R.string.event_invitees_text));
                     }
                 });
-        movieList.show(getSupportFragmentManager(), "Contact Select Picker");
+        contactList.show(getSupportFragmentManager(), "Contact Select Picker");
     }
 
     public void showDatePicker(final int party_date_text) {
