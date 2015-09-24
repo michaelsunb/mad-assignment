@@ -1,4 +1,4 @@
-package student.rmit.edu.au.s3110401mad_assignment.controller;
+package student.rmit.edu.au.s3110401mad_assignment.controller.adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.controller.EditPartyActivity;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 

@@ -8,8 +8,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.Button;
 
-import java.util.Calendar;
-
 import student.rmit.edu.au.s3110401mad_assignment.R;
 
 /**
@@ -93,7 +91,7 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
     @SmallTest
     public void testSubmitSelect() throws Exception {
         Instrumentation.ActivityMonitor activityMonitor =
-                instrumentation.addMonitor(MainActivity.class.getName(), null, false);
+                instrumentation.addMonitor(MovieListActivity.class.getName(), null, false);
         final Button button = (Button) activity.findViewById(R.id.create_party_submit);
         activity.runOnUiThread(new Runnable() {
             public void run() {

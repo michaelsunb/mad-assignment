@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.PartyListAdapter;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class PartyListActivity extends AppCompatActivity {

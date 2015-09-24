@@ -15,13 +15,13 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
  * Created by Michaelsun Baluyos on 10/08/2015.
  * instructions: https://youtu.be/ar28jvdoTnY?t=761
  */
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class MovieListActivityTest extends ActivityInstrumentationTestCase2<MovieListActivity> {
     private Instrumentation instrumentation;
-    private MainActivity activity;
+    private MovieListActivity activity;
     private ListView list;
 
-    public MainActivityTest() {
-        super(MainActivity.class);
+    public MovieListActivityTest() {
+        super(MovieListActivity.class);
     }
 
     @Override

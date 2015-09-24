@@ -12,12 +12,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayAdapter;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MovieListActivity extends AppCompatActivity {
     public static final String DRAWABLE = "drawable";
     public static final int IMDB_ID = 0;
     public static final int IMDB_TITLE = 1;
