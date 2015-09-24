@@ -18,7 +18,7 @@ public interface Movie {
 
     int getPoster();
 
-    float getRating();
+    int getRating();
 
-    void setRating(float rating);
+    void setRating(int rating);
 }

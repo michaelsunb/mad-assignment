@@ -34,7 +34,7 @@ public class MovieModel {
     public void addMovie(Movie movie) {
         movieMap.put(movie.getId(), movie);
     }
-    public void editRating(String imdbId,float rating) {
+    public void editRating(String imdbId,int rating) {
         movieMap.get(imdbId).setRating(rating);
     }
     public Movie getMovieById(String imdbId) {

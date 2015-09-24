@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,8 +39,11 @@ import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerFragment;
  * Created by Michaelsun Baluyos on 30/08/2015.
  */
 public class BasePartyActivity extends AppCompatActivity {
+    final static private String LOG_ERROR = "ERROR @ ";
+
     public static final int ZERO_NUMBER_LESS_TEN = 10;
     public static final int MIDNIGHT = 0;
+
     protected int partyId;
     protected String[] movieIds;
     protected String[] contactIds;
@@ -47,9 +51,10 @@ public class BasePartyActivity extends AppCompatActivity {
     protected AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
     protected List<String> whichMovie = new ArrayList<>();
     protected List<String> whichContacts = new ArrayList<>();
-    private TimePickerFragment time;
-    private DatePickerFragment date;
     private Map<String, Contacts> contactsMap;
+
+    private DatePickerFragment date = new DatePickerFragment();
+    private TimePickerFragment time = new TimePickerFragment();
 
     private MultiSelectListFragment movieList = new MultiSelectListFragment();
     private MultiSelectListFragment contactList = new MultiSelectListFragment();
@@ -57,7 +62,6 @@ public class BasePartyActivity extends AppCompatActivity {
     public TimePickerFragment getTime() {
         return time;
     }
-
     public DatePickerFragment getDate() {
         return date;
     }
@@ -98,7 +102,6 @@ public class BasePartyActivity extends AppCompatActivity {
             for(String contactId : whichContacts) {
                 Contacts contact = contactsModel.getById(contactId);
                 for(String forContact : contact.getPhone()) {
-                    String sender = forContact;
 
                     JSONObject movieObj = new JSONObject();
                     JSONArray movieObjArray = new JSONArray();
@@ -107,7 +110,9 @@ public class BasePartyActivity extends AppCompatActivity {
                             movieObj.put(movieId2, MovieModel.getSingleton().getMovieById(movieId2).getTitle());
                         }
                         movieObjArray.put(movieObj);
-                    } catch(Exception ex) {}
+                    } catch(Exception ex) {
+                        Log.i(LOG_ERROR, ex.getMessage());
+                    }
 
                     JSONObject contactObj = new JSONObject();
                     JSONArray contactObjArray = new JSONArray();
@@ -145,7 +150,7 @@ public class BasePartyActivity extends AppCompatActivity {
                         Toast.makeText(this, "Message sent to " + whichContacts.size() + " contacts."
                                 , Toast.LENGTH_SHORT).show();
                         SmsManager sms = SmsManager.getDefault();
-                        sms.sendTextMessage(sender, null, message.toString(), null, null);
+                        sms.sendTextMessage(forContact, null, message.toString(), null, null);
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -259,7 +264,6 @@ public class BasePartyActivity extends AppCompatActivity {
         args.putInt("month", datetime.get(Calendar.MONTH));
         args.putInt("day", datetime.get(Calendar.DAY_OF_MONTH));
 
-        date = new DatePickerFragment();
         date.setArguments(args);
         date.setCallBack(new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -287,7 +291,6 @@ public class BasePartyActivity extends AppCompatActivity {
         args.putInt("hourOfDay", datetime.get(Calendar.HOUR_OF_DAY));
         args.putInt("minute", datetime.get(Calendar.MINUTE));
 
-        time = new TimePickerFragment();
         time.setArguments(args);
         time.setCallBack(new TimePickerDialog.OnTimeSetListener() {
             @Override

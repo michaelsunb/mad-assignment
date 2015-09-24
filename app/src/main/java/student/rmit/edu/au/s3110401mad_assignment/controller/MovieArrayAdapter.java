@@ -13,6 +13,7 @@ import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
@@ -48,7 +49,8 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         TextView yearView = (TextView) movieItemView.findViewById(R.id.year);
         TextView plotView = (TextView) movieItemView.findViewById(R.id.plot);
         ImageView imageView = (ImageView) movieItemView.findViewById(R.id.imageView);
-        RatingBar ratingBar = (RatingBar) movieItemView.findViewById(R.id.rating_bar);
+        TextView numPartyView = (TextView) movieItemView.findViewById(R.id.num_of_invitees);
+        TextView ratingBar = (TextView) movieItemView.findViewById(R.id.rating_bar);
 
         // Fill in the Views with content
 
@@ -56,7 +58,15 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         yearView.setText(movie.getYear());
         plotView.setText(movie.getShortPlot());
         imageView.setImageResource(movie.getPoster());
-        ratingBar.setRating(movie.getRating());
+
+        String rating = activity.getString(R.string.main_rating);
+        rating += movie.getRating() + " / 5";
+        ratingBar.setText(rating);
+
+        String parties = activity.getString(R.string.main_num_parties);
+        parties += PartyModel.getSingleton().getPartiesByMovieId(movie.getId()).size();
+
+        numPartyView.setText(parties);
 
         return movieItemView;
     }

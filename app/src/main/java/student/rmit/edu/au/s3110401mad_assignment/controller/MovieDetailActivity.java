@@ -52,7 +52,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-                onRatingTouched(rating);
+                onRatingTouched(Math.round(rating));
             }
         });
         findViewById(R.id.add_movie_party).setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         return theModel.getMovieById(movieId);
     }
 
-    private void onRatingTouched(float rating) {
+    private void onRatingTouched(int rating) {
         if(movie == null)
             return;
 

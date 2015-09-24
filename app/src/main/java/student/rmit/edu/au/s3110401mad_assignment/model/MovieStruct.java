@@ -17,7 +17,7 @@ public class MovieStruct implements Movie {
     private int imageResource;
     private String id;
 
-    private float rating;
+    private int rating;
 
     // Expect to be parsed properly from controller
     public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot, int imageResource) {
@@ -60,12 +60,12 @@ public class MovieStruct implements Movie {
     }
 
     @Override
-    public float getRating() {
+    public int getRating() {
         return rating;
     }
 
     @Override
-    public void setRating(float rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

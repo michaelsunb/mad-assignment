@@ -26,9 +26,17 @@ public class PartyModel {
     public void addParty(Party party) {
         partyMap.put(party.getId(), party);
     }
-    public Party getPartyById(Integer imdbId) {
-        return partyMap.get(imdbId);
+    public Party getPartyById(Integer partyId) {
+        return partyMap.get(partyId);
     }
+    public List<Party> getPartiesByMovieId(String imdbId) {
+        List<Party> partiesByMovie = new ArrayList<>();
+        for(Map.Entry<Integer,Party> entry : partyMap.entrySet())
+            if(entry.getValue().getIdDB().contains(imdbId))
+                partiesByMovie.add(entry.getValue());
+        return partiesByMovie;
+    }
+
     public List<Party> getAllParties() {
         return new ArrayList<Party>(partyMap.values());
     }

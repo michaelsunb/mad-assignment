@@ -33,6 +33,8 @@
     <string name="event_movie_button">Add Movie</string>
     <string name="event_invitees_text">invitee&#40;s&#41; selected</string>
     <string name="event_invitees_button">Invitee&#40;s&#41;</string>
+    <string name="main_rating">Rating: </string>
+    <string name="main_num_parties">No. of parties: </string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_edit_party">EditPartyActivity</string>
