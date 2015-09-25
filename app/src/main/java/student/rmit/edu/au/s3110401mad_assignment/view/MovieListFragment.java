@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
@@ -28,6 +32,8 @@ public class MovieListFragment extends Fragment {
 
     private static MovieModel theModel = MovieModel.getSingleton();
     private ListView movieListView;
+    private MovieArrayAdapter movieArrayAdapter;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,10 +41,13 @@ public class MovieListFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         movieListView = (ListView) layout.findViewById(R.id.movie_list_fragment);
-        this.retrieveMovies(); // load from movies_sample.xml
 
-        MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(getActivity(), theModel.getAllMovies());
-        movieListView.setAdapter(movieArrayAdapter);
+        progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleLarge);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        ((RelativeLayout)layout.findViewById(R.id.fragment_movie_list)).addView(progressBar, params);
 
         AdapterView.OnItemClickListener listener = new ListView.OnItemClickListener() {
             @Override
@@ -55,9 +64,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        movieListView.setAdapter(new MovieArrayAdapter(
-                getActivity(),
-                theModel.getAllMovies()));
+        movieListView.setAdapter(new MovieArrayAdapter(getActivity(), theModel.getAllMovies()));
     }
 
     private void goToMovieDetailActivity(Movie movieSelected) {
@@ -69,7 +76,10 @@ public class MovieListFragment extends Fragment {
     /**
      * Get hard coded values from /res/values/movies_sample.xml
      */
-    private void retrieveMovies() {
+    public void retrieveMovies(String editable) {
+        Log.i("asdgdgs: ", editable);
+        movieListView.setAdapter(new MovieArrayAdapter(getActivity(), theModel.getAllMovies()));
+        progressBar.setVisibility(View.INVISIBLE);
         if(theModel.getAllMovies().size() > 0)
             return;
         TypedArray movieArray  = getResources().obtainTypedArray(R.array.movie_array);

@@ -1,6 +1,7 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     private Activity activity;
 
     public MovieArrayAdapter(Activity activity, List<Movie> allMovies) {
-        super(activity, R.layout.activity_movie_list, allMovies);
+        super(activity, R.layout.fragment_movie_list, allMovies);
 
         this.activity = activity;
     }

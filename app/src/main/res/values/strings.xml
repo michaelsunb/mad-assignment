@@ -1,4 +1,9 @@
 <resources>
+    <!-- TODO: Remove or search where this is used -->
+    <string name="see_parties">See Parties</string>
+    <string name="see_movies">See Movies</string>
+    <!-- // Remove or search where this is used -->
+
     <string name="app_name">S3110401 MAD-Assignment</string>
 
     <string name="placeholder">Placeholder</string>
@@ -11,8 +16,7 @@
     <string name="movie_id">movie_id</string>
     <string name="image_description">movie poster</string>
     <string name="add_movie_party">Create Party</string>
-    <string name="see_parties">See Parties</string>
-    <string name="see_movies">See Movies</string>
+    <string name="search_movie">Search</string>
 
     <integer name="max_ratings">5</integer>
 
@@ -36,8 +40,6 @@
     <string name="main_num_parties">No. of parties: </string>
     <string name="submit_party">Submit</string>
     <string name="party_venue_text">Venue</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="clear_text">Clear</string>
 
 </resources>
