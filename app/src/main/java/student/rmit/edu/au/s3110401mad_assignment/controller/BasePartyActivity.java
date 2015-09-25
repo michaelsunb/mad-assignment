@@ -209,7 +209,7 @@ public class BasePartyActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ((TextView) findViewById(party_movie_text)).setText(
-                                whichMovie.size() + " " + getText(R.string.event_movie_text));
+                                whichMovie.size() + " " + getText(R.string.party_movie_text));
                     }
                 });
         movieList.setArguments(args);
@@ -252,7 +252,7 @@ public class BasePartyActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ((TextView) findViewById(party_invitees_text)).setText(
-                                whichContacts.size() + " " + getText(R.string.event_invitees_text));
+                                whichContacts.size() + " " + getText(R.string.party_invitees_text));
                     }
                 });
         contactList.show(getSupportFragmentManager(), "Contact Select Picker");
@@ -275,7 +275,7 @@ public class BasePartyActivity extends AppCompatActivity {
                 String stringDate = String.valueOf(year) + "-" + String.valueOf(monthOfYear)
                         + "-" + String.valueOf(dayOfMonth);
                 ((TextView) findViewById(party_date_text)).setText(
-                        getString(R.string.event_date_text) + stringDate);
+                        getString(R.string.party_date_text) + stringDate);
                 Toast.makeText(
                         BasePartyActivity.this,
                         String.valueOf(year) + "-" + String.valueOf(monthOfYear)
@@ -304,7 +304,7 @@ public class BasePartyActivity extends AppCompatActivity {
                         "" + datetime.get(Calendar.MINUTE);
                 String stringTime = strHrsToShow + ":" + strMinToShow + " " + am_pm;
                 ((TextView) findViewById(party_time_text)).setText(
-                        getString(R.string.event_time_text) + stringTime);
+                        getString(R.string.party_time_text) + stringTime);
                 Toast.makeText(
                         BasePartyActivity.this, stringTime, Toast.LENGTH_SHORT
                 ).show();

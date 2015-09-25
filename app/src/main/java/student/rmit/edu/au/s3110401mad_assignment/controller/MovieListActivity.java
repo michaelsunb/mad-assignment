@@ -32,7 +32,7 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_movie_list);
 
         final Context context = this;
         findViewById(R.id.main_create_party).setOnClickListener(new View.OnClickListener() {
@@ -42,7 +42,7 @@ public class MovieListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        findViewById(R.id.see_invites).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.see_parties).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goToEventListActivity();
@@ -96,7 +96,7 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_movie_list, menu);
         return true;
     }
 

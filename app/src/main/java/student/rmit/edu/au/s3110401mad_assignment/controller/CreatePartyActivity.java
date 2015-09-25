@@ -30,16 +30,16 @@ public class CreatePartyActivity extends BasePartyActivity {
             movieIds = new String[NUMBER_OF_MOVIE_ID];
             movieIds[MOVIE_ID] = extras.getString(getString(R.string.movie_id));
             ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                    movieIds.length + " " + getText(R.string.event_movie_text)
+                    movieIds.length + " " + getText(R.string.party_movie_text)
             );
         } catch (Exception e) {
             ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                    "0 " + getText(R.string.event_movie_text)
+                    "0 " + getText(R.string.party_movie_text)
             );
         }
 
         ((TextView) findViewById(R.id.create_party_invitees_text)).setText(
-                whichContacts.size() + " " + getText(R.string.event_invitees_text)
+                whichContacts.size() + " " + getText(R.string.party_invitees_text)
         );
 
         findViewById(R.id.create_party_date_picker).setOnClickListener(new View.OnClickListener() {

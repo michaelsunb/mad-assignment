@@ -25,7 +25,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     private Activity activity;
 
     public MovieArrayAdapter(Activity activity, List<Movie> allMovies) {
-        super(activity, R.layout.activity_main, allMovies);
+        super(activity, R.layout.activity_movie_list, allMovies);
 
         this.activity = activity;
     }

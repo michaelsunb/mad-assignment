@@ -38,7 +38,7 @@ public class EditPartyActivity extends BasePartyActivity {
             if(party.getDate() != null)
                 datetime.setTime(party.getDate());
             viewById.setText(
-                    movieIds.length + " " + getText(R.string.event_movie_text)
+                    movieIds.length + " " + getText(R.string.party_movie_text)
             );
 
             ((EditText)findViewById(R.id.edit_party_venue_edit_text)).setText(party.getVenue());
@@ -49,12 +49,12 @@ public class EditPartyActivity extends BasePartyActivity {
         } catch (Exception e) {
             System.out.println("Oh no! Something happened: " + e.getMessage());
             viewById.setText(
-                    "0 " + getText(R.string.event_movie_text)
+                    "0 " + getText(R.string.party_movie_text)
             );
         }
 
         ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
-                whichContacts.size() + " " + getText(R.string.event_invitees_text)
+                whichContacts.size() + " " + getText(R.string.party_invitees_text)
         );
 
         findViewById(R.id.edit_party_date_picker).setOnClickListener(new View.OnClickListener() {

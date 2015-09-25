@@ -4,8 +4,6 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     >
@@ -19,11 +17,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/see_invites"
+            android:id="@+id/see_parties"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/see_invites" />
+            android:text="@string/see_parties" />
+
+        <Button
+            android:id="@+id/see_movies"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/see_movies" />
 
         <Button
             android:id="@+id/main_create_party"

@@ -15,7 +15,7 @@
                 android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_movie_text"
+                android:text="@string/party_movie_text"
                 android:id="@+id/create_party_movie_text"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
@@ -26,7 +26,7 @@
                 android:id="@+id/create_party_movie_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_movie_button"
+                android:text="@string/party_movie_button"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true">
@@ -42,7 +42,7 @@
                 android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_invitees_text"
+                android:text="@string/party_invitees_text"
                 android:id="@+id/create_party_invitees_text"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
@@ -51,7 +51,7 @@
                 android:id="@+id/create_party_invitees_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_invitees_button"
+                android:text="@string/party_invitees_button"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
@@ -71,7 +71,7 @@
                     android:gravity="start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_date_text"
+                    android:text="@string/party_date_text"
                     android:id="@+id/create_party_date_text"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -80,7 +80,7 @@
                     android:id="@+id/create_party_date_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_date_picker"
+                    android:text="@string/party_date_picker"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -94,7 +94,7 @@
                     android:gravity="start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_time_text"
+                    android:text="@string/party_time_text"
                     android:id="@+id/create_party_time_text"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -104,7 +104,7 @@
                     android:id="@+id/create_party_time_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/enter_time_picker"
+                    android:text="@string/party_time_picker"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -133,11 +133,11 @@
                 android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_text_location"
+                android:text="@string/party_text_location"
                 android:id="@+id/create_party_location_text" />
 
             <EditText
-                android:hint="@string/edit_text_logitude"
+                android:hint="@string/party_text_logitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_party_longitude_edit_text"
@@ -146,7 +146,7 @@
                 android:layout_gravity="end" />
 
             <EditText
-                android:hint="@string/edit_text_latitude"
+                android:hint="@string/party_text_latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/create_party_latitude_edit_text"

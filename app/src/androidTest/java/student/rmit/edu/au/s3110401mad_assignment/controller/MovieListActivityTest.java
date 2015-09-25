@@ -72,7 +72,7 @@ public class MovieListActivityTest extends ActivityInstrumentationTestCase2<Movi
 
     @SmallTest
     public void testInviteesSelect() throws Exception {
-        final Button button = (Button) activity.findViewById(R.id.see_invites);
+        final Button button = (Button) activity.findViewById(R.id.see_parties);
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 button.performClick();
