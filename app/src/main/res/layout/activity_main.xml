@@ -17,9 +17,8 @@
         android:id="@+id/footer"
         android:layout_alignParentBottom="true"/>
 
-    <fragment
-        android:id="@+id/map_content_frame"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <FrameLayout
+        android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/footer"

@@ -1,14 +1,4 @@
 <resources>
-    <!-- TODO: Remove or search where this is used -->
-    <string name="event_location_text">Location</string>
-    <string name="event_location_lat_hint">Latitude</string>
-    <string name="event_location_long_hint">Longitude</string>
-    <string name="confirmInviteesButtonText">Confirm Invitees</string>
-    <string name="title_activity_invitee_manager">Select Invitees</string>
-    <string name="title_activity_edit_event">Edit Party</string>
-    <!-- // Remove or search where this is used -->
-
-
     <string name="app_name">S3110401 MAD-Assignment</string>
 
     <string name="placeholder">Placeholder</string>
