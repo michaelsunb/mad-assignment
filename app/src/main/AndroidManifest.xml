@@ -33,7 +33,7 @@
         <!-- TODO: Remove Google API key so it will not be stored in GitHub  -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA4iJBKt1FVab5EV_CzPVv9CCli_g4PNPg" />
+            android:value="" />
 
         <activity
             android:name=".controller.MainActivity"
@@ -45,20 +45,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.MovieListActivity"
-            android:label="@string/title_activity_movie_list" >
-        </activity>
-        <activity
             android:name=".controller.MovieDetailActivity"
             android:label="@string/title_activity_movie_detail" >
         </activity>
         <activity
             android:name=".controller.CreatePartyActivity"
             android:label="@string/title_activity_create_party" >
-        </activity>
-        <activity
-            android:name=".controller.PartyListActivity"
-            android:label="@string/title_activity_event_list" >
         </activity>
 
         <receiver

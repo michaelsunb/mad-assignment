@@ -1,24 +1,24 @@
-package student.rmit.edu.au.s3110401mad_assignment.controller;
+package student.rmit.edu.au.s3110401mad_assignment.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayAdapter;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
-import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
-public class MovieListActivity extends AppCompatActivity {
+public class MovieListFragment extends Fragment {
     public static final String DRAWABLE = "drawable";
     public static final int IMDB_ID = 0;
     public static final int IMDB_TITLE = 1;
@@ -30,29 +30,14 @@ public class MovieListActivity extends AppCompatActivity {
     private ListView movieListView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        final Context context = this;
-        findViewById(R.id.main_create_party).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CreatePartyActivity.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.see_parties).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToEventListActivity();
-            }
-        });
-
-        movieListView = (ListView) findViewById(R.id.movie_list);
+        movieListView = (ListView) layout.findViewById(R.id.movie_list_fragment);
         this.retrieveMovies(); // load from movies_sample.xml
 
-        MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(this, theModel.getAllMovies());
+        MovieArrayAdapter movieArrayAdapter = new MovieArrayAdapter(getActivity(), theModel.getAllMovies());
         movieListView.setAdapter(movieArrayAdapter);
 
         AdapterView.OnItemClickListener listener = new ListView.OnItemClickListener() {
@@ -63,41 +48,22 @@ public class MovieListActivity extends AppCompatActivity {
             }
         };
         movieListView.setOnItemClickListener(listener);
-    }
 
-    public MovieModel getTheModel() {
-        return theModel;
+        return layout;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        movieListView.setAdapter(new MovieArrayAdapter(this, theModel.getAllMovies()));
+        movieListView.setAdapter(new MovieArrayAdapter(
+                getActivity(),
+                theModel.getAllMovies()));
     }
 
     private void goToMovieDetailActivity(Movie movieSelected) {
-        Intent intent = new Intent(this, MovieDetailActivity.class);
+        Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
         intent.putExtra(getString(R.string.movie_id), movieSelected.getId());
         startActivityForResult(intent, 1);
-    }
-
-    private void goToEventListActivity() {
-        if(PartyModel.getSingleton().getAllParties().size() <= 0) {
-            Toast.makeText(
-                    this,"No events happening!",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Intent intent = new Intent(this, PartyListActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_movie_list, menu);
-        return true;
     }
 
     /**
@@ -115,7 +81,7 @@ public class MovieListActivity extends AppCompatActivity {
                 int imageResourceId = getResources().getIdentifier(
                         newArray[IMDB_ID],
                         DRAWABLE,
-                        getPackageName());
+                        getActivity().getPackageName());
 
                 theModel.addMovie(new MovieStruct(
                         newArray[IMDB_ID],

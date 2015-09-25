@@ -91,7 +91,7 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
     @SmallTest
     public void testSubmitSelect() throws Exception {
         Instrumentation.ActivityMonitor activityMonitor =
-                instrumentation.addMonitor(MovieListActivity.class.getName(), null, false);
+                instrumentation.addMonitor(MainActivity.class.getName(), null, false);
         final Button button = (Button) activity.findViewById(R.id.create_party_submit);
         activity.runOnUiThread(new Runnable() {
             public void run() {

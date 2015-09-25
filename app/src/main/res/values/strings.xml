@@ -4,10 +4,8 @@
     <string name="placeholder">Placeholder</string>
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_movie_list">Movie List</string>
     <string name="title_activity_movie_detail">Movie Detail</string>
     <string name="title_activity_create_party">Create A Party</string>
-    <string name="title_activity_event_list">Party List</string>
     <string name="title_activity_edit_party">Edit Party</string>
 
     <string name="movie_id">movie_id</string>
@@ -38,5 +36,8 @@
     <string name="main_num_parties">No. of parties: </string>
     <string name="submit_party">Submit</string>
     <string name="party_venue_text">Venue</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
