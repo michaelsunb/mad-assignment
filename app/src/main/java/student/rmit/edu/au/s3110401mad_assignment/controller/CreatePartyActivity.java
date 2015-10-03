@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class CreatePartyActivity extends BasePartyActivity {
@@ -27,10 +28,10 @@ public class CreatePartyActivity extends BasePartyActivity {
 
         try {
             Bundle extras = getIntent().getExtras();
-            movieIds = new String[NUMBER_OF_MOVIE_ID];
-            movieIds[MOVIE_ID] = extras.getString(getString(R.string.movie_id));
+            movieIds = extras.getString(getString(R.string.movie_id));
             ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                    movieIds.length + " " + getText(R.string.party_movie_text)
+                    MovieModel.getSingleton().getMovieById(movieIds).getTitle()
+                            + " " + getText(R.string.party_movie_text)
             );
         } catch (Exception e) {
             ((TextView) findViewById(R.id.create_party_movie_text)).setText(

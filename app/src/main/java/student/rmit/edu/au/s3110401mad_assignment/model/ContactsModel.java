@@ -20,6 +20,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
 
     private static ContactsModel singleton;
     private Map<String, Contacts> contactsMap;
+    private Integer partyId;
 
     public static ContactsModel getSingleton() {
         if(singleton == null)
@@ -35,6 +36,16 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
     public Contacts getById(String id) {
         return contactsMap.get(id);
     }
+    public List<Contacts> getByPartyId(int partyId) {
+        List<Contacts> contacts = new ArrayList<>();
+        for(Map.Entry contactEntry : contactsMap.entrySet()) {
+            Contacts contact = (Contacts) contactEntry.getValue();
+            if(contact.getPartyId() == partyId) {
+                contacts.add(contact);
+            }
+        }
+        return contacts;
+    }
 
     public Contacts getByName(String name) {
         for (Map.Entry<String, Contacts> entry : contactsMap.entrySet()) {
@@ -48,6 +59,25 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         this.contactsMap = contactsMap;
     }
 
+    public void setOrAddParty(List<String> contactId, Integer partyId) {
+        for(Map.Entry<String,Contacts> entry : contactsMap.entrySet()) {
+            Contacts contacts = entry.getValue();
+            if (contacts.getPartyId() == partyId) {
+                ((ContactsStruct)contacts).setPartyId(0);
+                contactsMap.put(contacts.getId(),contacts);
+            }
+        }
+    }
+
+    public void addContact(Context context, Integer partyId) {
+        this.partyId = partyId;
+        this.execute(context);
+    }
+
+    public void addContact(Contacts contact) {
+        this.contactsMap.put(contact.getId(),contact);
+    }
+
     @Override
     protected Map<String,Contacts> doInBackground(Context... params) {
         cr = params[0].getContentResolver();
@@ -58,14 +88,16 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
             while (cur.moveToNext()) {
 
                 String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                List<String> phone = queryPhoneNumbers(id);
+                String phone = queryPhoneNumber(id);
+                String email = queryEmail(id);
 
                 Contacts contactStruct = new ContactsStruct(
                         id,
+                        partyId,
                         cur.getString(cur
                                 .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
-                        phone
-                );
+                        phone,
+                        email);
                 contactsMap.put(cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID)),
                         contactStruct);
             }
@@ -73,23 +105,40 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         return contactsMap;
     }
 
-    private List<String> queryPhoneNumbers(String id) {
-        List<String> phone = new ArrayList<>();
+    private String queryPhoneNumber(String id) {
+        String phone = null;
         if (Integer
                 .parseInt(cur.getString(cur
                         .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
             Cursor pCur = cr.query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-                            + " = ?", new String[] { id }, null);
-            while (pCur.moveToNext()) {
-                phone.add(pCur
-                        .getString(pCur
-                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-            }
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    new String[]{id},
+                    null);
+            // Just get the first in the list
+            pCur.moveToNext();
+            phone = pCur
+                    .getString(pCur
+                            .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             pCur.close();
         }
         return phone;
+    }
+
+    private String queryEmail(String id) {
+        Cursor pCur = cr.query(
+                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                null,
+                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                new String[]{id},
+                null);
+        // Just get the first in the list
+        pCur.moveToNext();
+        String email = pCur
+                .getString(pCur
+                        .getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+        pCur.close();
+        return email;
     }
 }

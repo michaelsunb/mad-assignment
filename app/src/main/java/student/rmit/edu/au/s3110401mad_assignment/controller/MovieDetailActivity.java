@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
+import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieId = extras.getString(getString(R.string.movie_id));
 
             movie = getMovie(movieId);
-            imageView.setImageResource(movie.getPoster());
+            imageView.setImageBitmap(movie.getPoster());
             plotView.setText(movie.getShortPlot());
             titleView.setText(movie.getTitle());
 

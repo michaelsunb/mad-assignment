@@ -8,9 +8,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
@@ -32,13 +35,19 @@ public class EditPartyActivity extends BasePartyActivity {
             partyId = extras.getInt("party_id");
             Party party =
                     PartyModel.getSingleton().getPartyById(partyId);
-            movieIds = party.getIdDB().toArray(new String[party.getIdDB().size()]);
-            contactIds = party.getInviteeIDs().toArray(new String[party.getInviteeIDs().size()]);
+            movieIds = party.getImDB();
+
+            List<Contacts> contacts = ContactsModel.getSingleton().getByPartyId(partyId);
+            contactIds = new String[contacts.size()];
+            for(int i=0; i < contacts.size(); i++) {
+                contactIds[i] = contacts.get(i).getId();
+            }
 
             if(party.getDate() != null)
-                datetime.setTime(party.getDate());
+                datetime.setTime(party.getDate().getTime());
             viewById.setText(
-                    movieIds.length + " " + getText(R.string.party_movie_text)
+                    MovieModel.getSingleton().getMovieById(movieIds).getTitle()
+                            + " " + getText(R.string.party_movie_text)
             );
 
             ((EditText)findViewById(R.id.edit_party_venue_edit_text)).setText(party.getVenue());

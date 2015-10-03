@@ -32,7 +32,7 @@
     <string name="party_text_location">Location</string>
     <string name="party_text_latitude">Latitude</string>
     <string name="party_text_logitude">Longitude</string>
-    <string name="party_movie_text">movies selected</string>
+    <string name="party_movie_text">movie selected</string>
     <string name="party_movie_button">Add Movie</string>
     <string name="party_invitees_text">invitee&#40;s&#41; selected</string>
     <string name="party_invitees_button">Invitee&#40;s&#41;</string>

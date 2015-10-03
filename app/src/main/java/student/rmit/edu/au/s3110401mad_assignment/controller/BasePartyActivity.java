@@ -45,11 +45,11 @@ public class BasePartyActivity extends AppCompatActivity {
     public static final int MIDNIGHT = 0;
 
     protected int partyId;
-    protected String[] movieIds;
+    protected String whichMovie;
+    protected String movieIds;
     protected String[] contactIds;
     protected Calendar datetime;
     protected AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
-    protected List<String> whichMovie = new ArrayList<>();
     protected List<String> whichContacts = new ArrayList<>();
     private Map<String, Contacts> contactsMap;
 
@@ -88,10 +88,10 @@ public class BasePartyActivity extends AppCompatActivity {
         PartyStruct partyStruct = new PartyStruct(
                 partyId,
                 whichMovie,
-                datetime.getTime(),
+                datetime,
                 venueTitle,
-                location,
-                whichContacts
+                location
+//                ,whichContacts
         );
 
         PartyModel.getSingleton().addParty(partyStruct);
@@ -101,60 +101,57 @@ public class BasePartyActivity extends AppCompatActivity {
             contactsModel.setContactsMap(contactsMap);
             for(String contactId : whichContacts) {
                 Contacts contact = contactsModel.getById(contactId);
-                for(String forContact : contact.getPhone()) {
+                String forContact = contact.getPhone();
 
-                    JSONObject movieObj = new JSONObject();
-                    JSONArray movieObjArray = new JSONArray();
-                    try {
-                        for (String movieId2 : whichMovie) {
-                            movieObj.put(movieId2, MovieModel.getSingleton().getMovieById(movieId2).getTitle());
-                        }
-                        movieObjArray.put(movieObj);
-                    } catch(Exception ex) {
-                        Log.i(LOG_ERROR, ex.getMessage());
+                JSONObject movieObj = new JSONObject();
+                JSONArray movieObjArray = new JSONArray();
+                try {
+                    movieObj.put(whichMovie, MovieModel.getSingleton().getMovieById(whichMovie).getTitle());
+                    movieObjArray.put(movieObj);
+                } catch(Exception ex) {
+                    Log.i(LOG_ERROR, ex.getMessage());
+                }
+
+                JSONObject contactObj = new JSONObject();
+                JSONArray contactObjArray = new JSONArray();
+                try {
+                    for (String contactId2 : whichContacts) {
+                        contactObj.put(contactId2,contactsModel.getById(contactId2).getName());
                     }
+                    contactObjArray.put(contactObj);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
 
-                    JSONObject contactObj = new JSONObject();
-                    JSONArray contactObjArray = new JSONArray();
-                    try {
-                        for (String contactId2 : whichContacts) {
-                            contactObj.put(contactId2,contactsModel.getById(contactId2).getName());
-                        }
-                        contactObjArray.put(contactObj);
-                    } catch(Exception ex) {
-                        ex.printStackTrace();
-                    }
+                JSONObject locationObj = new JSONObject();
+                JSONArray locationObjArray = new JSONArray();
+                try {
+                    locationObj.put("longitude",location[PartyStruct.LONGITUDE]);
+                    locationObj.put("latitude",location[PartyStruct.LATITUDE]);
+                    locationObjArray.put(locationObj);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
 
-                    JSONObject locationObj = new JSONObject();
-                    JSONArray locationObjArray = new JSONArray();
-                    try {
-                        locationObj.put("longitude",location[PartyStruct.LONGITUDE]);
-                        locationObj.put("latitude",location[PartyStruct.LATITUDE]);
-                        locationObjArray.put(locationObj);
-                    } catch(Exception ex) {
-                        ex.printStackTrace();
-                    }
+                JSONObject message = new JSONObject();
+                try {
+                    int year = datetime.get(Calendar.YEAR);
+                    int monthOfYear = datetime.get(Calendar.MONTH);
+                    int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
 
-                    JSONObject message = new JSONObject();
-                    try {
-                        int year = datetime.get(Calendar.YEAR);
-                        int monthOfYear = datetime.get(Calendar.MONTH);
-                        int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
+                    message.put("attendees", contactObjArray);
+                    message.put("datetime", year + "-" + monthOfYear + "-" + dayOfMonth);
+                    message.put("venue", venueTitle);
+                    message.put("location", locationObjArray);
+                    message.put("movies", movieObjArray);
 
-                        message.put("attendees", contactObjArray);
-                        message.put("datetime", year + "-" + monthOfYear + "-" + dayOfMonth);
-                        message.put("venue", venueTitle);
-                        message.put("location", locationObjArray);
-                        message.put("movies", movieObjArray);
+                    Toast.makeText(this, "Message sent to " + whichContacts.size() + " contacts."
+                            , Toast.LENGTH_SHORT).show();
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(forContact, null, message.toString(), null, null);
 
-                        Toast.makeText(this, "Message sent to " + whichContacts.size() + " contacts."
-                                , Toast.LENGTH_SHORT).show();
-                        SmsManager sms = SmsManager.getDefault();
-                        sms.sendTextMessage(forContact, null, message.toString(), null, null);
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -175,18 +172,9 @@ public class BasePartyActivity extends AppCompatActivity {
             index++;
         }
         args.putStringArray("list_title", movieTitles);
-        if (movieIds != null &&
-                movieIds.length > 0) {
-            String[] movieTitle = new String[movieIds.length];
-            int i = 0;
-            for(String movieId : movieIds) {
-                if(movieModel.getMovieById(movieId) == null)
-                    break;
-
-                movieTitle[i] = movieModel.getMovieById(movieId).getTitle();
-                i++;
-            }
-            args.putStringArray("selected_title", movieTitle);
+        if (movieIds != null) {
+            args.putString("selected_title",
+                    movieModel.getMovieById(movieIds).getTitle());
         }
 
         movieList.setCallBack(
@@ -197,10 +185,10 @@ public class BasePartyActivity extends AppCompatActivity {
                                 MovieModel.getSingleton().getByName(movieTitles[which]).getId();
                         if (isChecked) {
                             if(!whichMovie.contains(movieId))
-                                whichMovie.add(movieId);
+                                whichMovie = movieId;
                         } else {
                             if(whichMovie.contains(movieId))
-                                whichMovie.remove(movieId);
+                                whichMovie = null;
                         }
 
                         movieList.setCheckedItems(which,isChecked);
@@ -209,7 +197,8 @@ public class BasePartyActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ((TextView) findViewById(party_movie_text)).setText(
-                                whichMovie.size() + " " + getText(R.string.party_movie_text));
+                                MovieModel.getSingleton().getByName(whichMovie)
+                                        + " " + getText(R.string.party_movie_text));
                     }
                 });
         movieList.setArguments(args);
@@ -241,8 +230,9 @@ public class BasePartyActivity extends AppCompatActivity {
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        ContactsModel contactsModel = ContactsModel.getSingleton();
                         String contactId =
-                                ContactsModel.getSingleton().getByName(contactNames[which]).getId();
+                                contactsModel.getByName(contactNames[which]).getId();
                         if (isChecked)
                             whichContacts.add(contactId);
                         else if (whichContacts.contains(contactId))

@@ -1,7 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller.adapter;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,7 @@ public class PartyListAdapter extends BaseAdapter {
 
         Calendar datetime = Calendar.getInstance();
         if(event.getDate() != null)
-            datetime.setTime(event.getDate());
+            datetime.setTime(event.getDate().getTime());
 
         int year = datetime.get(Calendar.YEAR);
         int monthOfYear = datetime.get(Calendar.MONTH);
@@ -95,9 +94,12 @@ public class PartyListAdapter extends BaseAdapter {
 
         viewHolder.eventAttendeeCount = (TextView) convertView
                 .findViewById(R.id.party_list_attendee_count);
+//        viewHolder.eventAttendeeCount.setText(convertView.getResources()
+//                .getString(R.string.party_list_attendee_text)
+//                + (new StringBuilder().append(event.getInviteeIDs().size()).toString()));
         viewHolder.eventAttendeeCount.setText(convertView.getResources()
                 .getString(R.string.party_list_attendee_text)
-                + (new StringBuilder().append(event.getInviteeIDs().size()).toString()));
+                + "0");
 
         convertView
                 .findViewById(R.id.party_list_edit_button).setOnClickListener(new View.OnClickListener() {

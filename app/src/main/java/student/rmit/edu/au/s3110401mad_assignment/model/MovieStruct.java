@@ -1,32 +1,35 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import android.widget.ImageView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Michaelsun Baluyos on 24/08/2015.
  */
 public class MovieStruct implements Movie {
+    private String id;
     private String title;
     private String year;
     private String shortPlot;
     private String fullPlot;
-    private int imageResource;
-    private String id;
+    private Bitmap imageResource;
 
     private int rating;
 
     // Expect to be parsed properly from controller
-    public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot, int imageResource) {
+    public MovieStruct(String imdbID, String title, String year, String shortPlot, String fullPlot,
+                       Bitmap imageResource, int rating) {
         this.id = imdbID;
         this.title = title;
         this.year = year;
         this.shortPlot = shortPlot;
         this.fullPlot = fullPlot;
         this.imageResource = imageResource;
+        this.rating = rating;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class MovieStruct implements Movie {
     }
 
     @Override
-    public int getPoster() {
+    public Bitmap getPoster() {
         return imageResource;
     }
 
@@ -81,7 +84,7 @@ public class MovieStruct implements Movie {
         this.fullPlot = fullPlot;
     }
 
-    public void setPoster(int poster) {
+    public void setPoster(Bitmap poster) {
         this.imageResource = imageResource;
     }
 }

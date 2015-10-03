@@ -1,6 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -9,17 +9,13 @@ import java.util.List;
 public interface Party {
     int getId();
 
-    List<String> getIdDB();
+    String getImDB();
 
-    Date getDate();
+    Calendar getDate();
 
     String getVenue();
 
     double[] getLocation();
-
-    List<String> getInviteeIDs();
-
-    boolean myParty();
 
 //    void setLocation(double longitude, double latitude);
 }

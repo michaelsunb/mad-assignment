@@ -1,5 +1,8 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,31 +14,35 @@ public class PartyStruct implements Party {
     public static final int LONGITUDE = 0;
     public static final int LATITUDE = 1;
     private int id;
-    private List<String> idDB;
-    private Date date;
+    private String idDB;
+    private Calendar date;
     private String venue;
     private double[] location = new double[LONGITUDE_LATITUDE];
-    private List<String> inviteeIDs;
     private boolean myParty;
 
-    public PartyStruct(int id, List<String> idDB, Date date, String venue, double[] location, List<String> inviteeIDs) {
+    public PartyStruct(int id, String idDB, String date, String venue, String location) {
         this.id = id;
         this.idDB = idDB;
-        this.date = date;
         this.venue = venue;
-        this.location = location;
-        this.inviteeIDs = inviteeIDs;
-        this.myParty = true;
+
+        try {
+            this.date = PartyModel.stringToCalendar(date);
+
+            String[] separated = location.split(",");
+            for(int i=0 ; i < LONGITUDE_LATITUDE ; i++) {
+                this.location[i] = Double.parseDouble(separated[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public PartyStruct(int id, List<String> idDB, Date date, String venue, double[] location, List<String> inviteeIDs, boolean myParty) {
+    public PartyStruct(int id, String idDB, Calendar date, String venue, double[] location) {
         this.id = id;
         this.idDB = idDB;
         this.date = date;
         this.venue = venue;
         this.location = location;
-        this.inviteeIDs = inviteeIDs;
-        this.myParty = myParty;
     }
 
     @Override
@@ -44,12 +51,12 @@ public class PartyStruct implements Party {
     }
 
     @Override
-    public List<String> getIdDB() {
+    public String getImDB() {
         return idDB;
     }
 
     @Override
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
@@ -61,15 +68,5 @@ public class PartyStruct implements Party {
     @Override
     public double[] getLocation() {
         return location;
-    }
-
-    @Override
-    public List<String> getInviteeIDs() {
-        return inviteeIDs;
-    }
-
-    @Override
-    public boolean myParty() {
-        return myParty;
     }
 }

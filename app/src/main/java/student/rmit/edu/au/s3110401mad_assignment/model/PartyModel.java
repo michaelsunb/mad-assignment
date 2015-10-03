@@ -1,6 +1,9 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +35,7 @@ public class PartyModel {
     public List<Party> getPartiesByMovieId(String imdbId) {
         List<Party> partiesByMovie = new ArrayList<>();
         for(Map.Entry<Integer,Party> entry : partyMap.entrySet())
-            if(entry.getValue().getIdDB().contains(imdbId))
+            if(entry.getValue().getImDB().contains(imdbId))
                 partiesByMovie.add(entry.getValue());
         return partiesByMovie;
     }
@@ -43,5 +46,19 @@ public class PartyModel {
 
     public void deleteEvent(int id) {
         partyMap.remove(id);
+    }
+
+    public static Calendar stringToCalendar(String calenar) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Timestamp.valueOf(calenar).getTime());
+        return calendar;
+    }
+
+    public static String calendarToString(Calendar calendar) {
+        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(calendar);
+    }
+
+    public void deleteParty(String id) {
+        // TODO: add functionality
     }
 }

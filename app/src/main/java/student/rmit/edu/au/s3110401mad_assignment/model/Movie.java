@@ -1,6 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import android.widget.ImageView;
+import android.graphics.Bitmap;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
@@ -16,7 +16,7 @@ public interface Movie {
 
     String getFullPlot();
 
-    int getPoster();
+    Bitmap getPoster();
 
     int getRating();
 
