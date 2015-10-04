@@ -16,8 +16,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import student.rmit.edu.au.s3110401mad_assignment.db.MovieDatabaseManager;
@@ -69,25 +67,37 @@ public class MovieOmDB extends MovieMemoryManagementHandler  {
                         imdbID,
                         movieJsonObject.getString("Title"),
                         movieJsonObject.getString("Year"),
-                        objShort.getString("Plot"),
+                        (objShort.getString("Plot").length() >
+                                MovieDatabaseManager.SHORT_PLOT_MAX_LENGTH) ?
+                                objShort.getString("Plot")
+                                        .substring(0, MovieDatabaseManager.SHORT_PLOT_MAX_LENGTH)
+                                        + "..." :
+                                objShort.getString("Plot"),
                         objFull.getString("Plot"),
                         getBitmapFromURL(objFull.getString("Poster")),
                         0
                 );
-                movieModel.addMovie(movie);
-                if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()) {
+                if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()
+                        && i < 10) {
                     db.addMovie(movie);
-                    filteredMovies.add(movie);
+                    movieModel.addMovie(movie,query);
+                    addFilteredMovie(movie);
+                } else if(i >= 10) {
+                    break;
                 }
             }
+            db.close();
+            db = null;
             return true;
         } catch (Throwable t) {
-//            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
             t.printStackTrace();
+            return false;
         } finally {
-            if(db!=null) db.close();
+            if(db!=null) {
+                db.close();
+            }
         }
-        return false;
     }
 
     public Bitmap getBitmapFromURL(String src) {
@@ -98,9 +108,10 @@ public class MovieOmDB extends MovieMemoryManagementHandler  {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
+            Bitmap b = BitmapFactory.decodeStream(input);
+            Bitmap.createScaledBitmap(b, 100, 100, false);
+            return b;
         } catch (IOException e) {
-//            e.printStackTrace();
             Log.e("No Bitmap. Url is",src);
             return null;
         }

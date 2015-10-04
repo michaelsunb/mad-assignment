@@ -5,13 +5,12 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SimpleCursorAdapter;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,48 +32,49 @@ import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayA
 import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
-import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ListToMatrixCursor;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
 
 public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String DRAWABLE = "drawable";
-    public static final int IMDB_ID = 0;
-    public static final int IMDB_TITLE = 1;
-    public static final int IMDB_YEAR = 2;
-    public static final int IMDB_SHORT_PLOT = 3;
-    public static final int IMDB_FULL_PLOT = 4;
 
-    private static MovieModel theModel = MovieModel.getSingleton();
     private ListView movieListView;
     private ProgressBar progressBar;
 
     private CursorAdapter mAdapter;
     private String mCurFilter;
     private Context context;
+    private AsyncTask<String, Void, List<Movie>> asyncTask;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        movieListView.setAdapter(new MovieArrayAdapter(getActivity(), getMovieCursor()));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        movieListView = (ListView) layout.findViewById(R.id.movie_list_fragment);
-        movieListView.setAdapter(mAdapter);
+        layout.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
 
-        progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleLarge);
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.VISIBLE);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        ((RelativeLayout)layout.findViewById(R.id.fragment_movie_list)).addView(progressBar, params);
+        movieListView = (ListView) layout.findViewById(R.id.movie_list_fragment);
+        mAdapter = new MovieArrayAdapter(getActivity(), getMovieCursor());
+        movieListView.setAdapter(mAdapter);
 
         AdapterView.OnItemClickListener listener = new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie movieSelected = (Movie) movieListView.getItemAtPosition(position);
+                MatrixCursor cursor = (MatrixCursor) movieListView.getItemAtPosition(position);
+                Movie movieSelected = MovieModel.getSingleton().getMovieById(
+                        "tt" + cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.MOVIE_ID)));
                 goToMovieDetailActivity(movieSelected);
             }
         };
         movieListView.setOnItemClickListener(listener);
+
+        if(movieListView.getCount() > 0)
+            layout.findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
 
         return layout;
     }
@@ -86,29 +85,21 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
         startActivityForResult(intent, 1);
     }
 
-    private MatrixCursor listToMatrixCursor(List<Movie> allMovies) {
-        MatrixCursor matrixCursor = new MatrixCursor(DatabaseHelper.MOVIE_SUMMARY_PROJECTION);
-
-        long i = 0;
-        for(Movie movie : allMovies) {
-            if(i++ > 10) break;
-            Matcher movieIdNo = Pattern.compile("\\d+$").matcher(movie.getId());
-            matrixCursor.addRow(new String[]{
-                    ((movieIdNo.find()) ? movieIdNo.group(0) : i + ""),
-                    movie.getId(),
-                    movie.getTitle(),
-                    movie.getYear(),
-                    movie.getShortPlot(),
-                    movie.getFullPlot(),
-                    MovieModel.bitMapToString(movie.getPoster()),
-                    movie.getRating() + ""
-            });
+    @Nullable
+    private Cursor getMovieCursor() {
+        asyncTask = new MovieMemoryManagementClient(context);
+        asyncTask.execute(mCurFilter);
+        try {
+            List<Movie> asyncTaskGet = asyncTask.get();
+            if(progressBar != null) progressBar.setVisibility(View.INVISIBLE);
+            return new ListToMatrixCursor(asyncTaskGet).execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
         }
-        return matrixCursor;
     }
 
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
-    {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if(context == null)
             context = getActivity();
         String sortOrder = DatabaseHelper.MOVIE_TITLE + " COLLATE LOCALIZED ASC";
@@ -120,45 +111,41 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
             public Cursor loadInBackground() {
                 if(mCurFilter == null) return null;
                 if(mCurFilter.equals("")) return null;
-
-                AsyncTask<String, Void, List<Movie>> asyncTask = new MovieMemoryManagementClient(context);
-                asyncTask.execute(mCurFilter);
-                try {
-                    List<Movie> asyncTaskGet = asyncTask.get();
-                    return listToMatrixCursor(asyncTaskGet);
-//                    Cursor rawQuery = new DatabaseHelper(context)
-//                            .getReadableDatabase().rawQuery(
-//                                    "SELECT * FROM " + DatabaseHelper.MOVIE_TABLE_NAME +
-//                                            " WHERE " + DatabaseHelper.MOVIE_ID +
-//                                            " LIKE '%" + mCurFilter + "%'", null);
-//                    Log.e("Ayy lmao rawQuery", rawQuery.getCount() + "");
-//                    return rawQuery;
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    return null;
-                }
+                return getMovieCursor();
             }
         };
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(progressBar != null) progressBar.setVisibility(View.INVISIBLE);
-        mAdapter.swapCursor(data);
+        mAdapter.changeCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        if(progressBar != null) progressBar.setVisibility(View.INVISIBLE);
-        mAdapter.swapCursor(null);
+        mAdapter.changeCursor(null);
     }
 
     public void setCurFilter(Context context,String curFilter) {
+        resetCursor();
         this.context = context;
         this.mCurFilter = curFilter;
     }
 
-    public void setmAdapter(CursorAdapter mAdapter) {
-        this.mAdapter = mAdapter;
+    public void resetCursor() {
+
+        // Destroys variables and references, and catches Exceptions
+        try {
+            if (mAdapter != null) {
+                mAdapter.changeCursor(null);
+                mAdapter = null;
+            }
+            if (asyncTask != null &&
+                    asyncTask.getStatus() != AsyncTask.Status.FINISHED) {
+                asyncTask.cancel(true);
+            }
+        } catch (Throwable localThrowable) {
+            localThrowable.printStackTrace();
+        }
     }
 }

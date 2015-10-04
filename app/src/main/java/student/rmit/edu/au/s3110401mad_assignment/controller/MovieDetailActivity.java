@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.EditMovieRatingDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
-import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -88,13 +88,16 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(movie == null)
             return;
 
-        MovieModel theModel = MovieModel.getSingleton();
-        theModel.editRating(movieId,rating);
+        MovieModel movieModel = MovieModel.getSingleton();
+        movieModel.editRating(movieId, rating);
+        Movie movie = movieModel.getMovieById(movieId);
         Toast.makeText(
                 getApplicationContext(),
-                "Rated : " + theModel.getMovieById(movieId).getRating() + " stars",
+                "Rated : " + movie.getRating() + " stars",
                 Toast.LENGTH_SHORT
         ).show();
+
+        new EditMovieRatingDBTask(this, movie, rating).execute();
     }
 
     @Override

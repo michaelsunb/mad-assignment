@@ -4,11 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.MovieDatabaseManager;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
@@ -28,9 +25,13 @@ public class MovieMemory extends MovieMemoryManagementHandler
         if(movieModel.getAllMovies().size()==0) return false;
 
         filteredMovies = new ArrayList<>();
+        int i = 0;
         for(Movie movie : movieModel.getAllMovies()) {
-            if(Pattern.compile(query).matcher(movie.getTitle()).find()) {
-                filteredMovies.add(movie);
+            if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()
+                    && i++ < 10) {
+                addFilteredMovie(movie);
+            } else if(i >= 10) {
+                break;
             }
         }
 

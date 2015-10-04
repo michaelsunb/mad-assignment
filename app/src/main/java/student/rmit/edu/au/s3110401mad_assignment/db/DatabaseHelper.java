@@ -38,12 +38,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MOVIE_TITLE,
             MOVIE_YEAR,
             MOVIE_SHORT_PLOT,
-            MOVIE_FULL_PLOT,
+//            MOVIE_FULL_PLOT,
             MOVIE_IMAGE_BITMAP,
             MOVIE_RATING};
 
     /** Party table **/
-    protected static final String PARTY_TABLE_NAME = "party";
+    public static final String PARTY_TABLE_NAME = "party";
     public static final String PARTY_ID = "_id";
     public static final String PARTY_MOVIE_ID = "movieId";
     public static final String PARTY_DATETIME = "datetime";
@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     PARTY_LOCATION + "VARCHAR);";
 
     /** Party invitees table **/
-    protected static final String PARTY_INVITEE_TABLE_NAME = "party_invitees";
+    public static final String PARTY_INVITEE_TABLE_NAME = "party_invitees";
     public static final String PARTY_INVITEE_ID = "_id";
     public static final String PARTY_INVITEE_PARTY_ID = "partyId";
     public static final String PARTY_INVITEE_NAME = "name";
@@ -90,28 +90,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PARTY_INVITEE_TABLE_NAME);
         onCreate(db);
     }
-
-    // TODO: Possibly delete
-    protected static final String MOVIE_TABLE_COLUMNS[] = {
-            MOVIE_ID,
-//            MOVIE_IMDB_ID,
-            MOVIE_TITLE,
-            MOVIE_YEAR,
-            MOVIE_SHORT_PLOT,
-            MOVIE_FULL_PLOT,
-            MOVIE_IMAGE_BITMAP,
-            MOVIE_RATING};
-    public static final String PARTY_COLUMNS[] = {
-            PARTY_ID,
-            PARTY_MOVIE_ID,
-            PARTY_DATETIME,
-            PARTY_VENUE,
-            PARTY_LOCATION,
-    };
-    public static final String PARTY_INVITEE_COLUMNS[] = {
-            PARTY_INVITEE_ID,
-            PARTY_INVITEE_NAME,
-            PARTY_INVITEE_PHONE,
-            PARTY_INVITEE_EMAIL
-    };
 }

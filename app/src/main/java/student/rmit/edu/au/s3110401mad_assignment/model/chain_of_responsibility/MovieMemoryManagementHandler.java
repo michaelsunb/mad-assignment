@@ -1,10 +1,8 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import java.util.List;
-import java.util.Map;
 
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
@@ -25,6 +23,18 @@ public abstract class MovieMemoryManagementHandler {
 
     public void setNext(MovieMemoryManagementHandler handler) {
         this.next = handler;
+    }
+
+    public void addFilteredMovie(Movie movie) {
+        if(filteredMovies.size() > 10) {
+            filteredMovies.remove(0);
+        }
+        for (Movie movie1 : filteredMovies) {
+            if(movie1.getId().equals(movie)) {
+                filteredMovies.remove(movie);
+            }
+        }
+        filteredMovies.add(movie);
     }
 
     public void handleRequest(String query) {

@@ -5,20 +5,12 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.database.MatrixCursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayAdapter;
@@ -30,15 +22,10 @@ import student.rmit.edu.au.s3110401mad_assignment.view.PartyMapFragment;
 public class MainActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
 
-    private CursorAdapter mAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mAdapter = new MovieArrayAdapter(this,
-                new MatrixCursor(DatabaseHelper.MOVIE_SUMMARY_PROJECTION));
 
         initialFragment();
     }
@@ -49,9 +36,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void selectFragment(Fragment fragment) {
+        selectFragment(fragment,false);
+    }
+
+    private void selectFragment(Fragment fragment, boolean forceReset) {
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager.findFragmentByTag(fragment.getClass().getSimpleName()) != null &&
-                fragmentManager.findFragmentByTag(fragment.getClass().getSimpleName()).isVisible())
+                fragmentManager.findFragmentByTag(fragment.getClass().getSimpleName()).isVisible()
+                && !forceReset)
             return;
 
         fragmentManager.beginTransaction()
@@ -82,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements
         if(!newText.isEmpty() &&
                 newText.length() > 2) {
             Fragment fragment = useMovieListFragment(newText);
-            selectFragment(fragment);
-            getLoaderManager().restartLoader(0, null,
-                    ((LoaderManager.LoaderCallbacks)fragment));
+            selectFragment(fragment,true);
+//            getLoaderManager().restartLoader(0, null,
+//                    ((LoaderManager.LoaderCallbacks)fragment));
             return true;
         }
 
@@ -94,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Fragment useMovieListFragment(String newText) {
         MovieListFragment fragment = new MovieListFragment();
-        fragment.setmAdapter(mAdapter);
+//        fragment.setmAdapter(mAdapter);
         fragment.setCurFilter(this,
                 !TextUtils.isEmpty(newText) ? newText : null);
 

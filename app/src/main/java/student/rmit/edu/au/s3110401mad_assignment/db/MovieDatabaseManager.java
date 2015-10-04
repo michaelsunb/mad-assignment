@@ -1,10 +1,6 @@
-/* *
- * COSC2347 Mobile Application Development
- * Assignment 2
- *
- * */
 package student.rmit.edu.au.s3110401mad_assignment.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
@@ -19,6 +15,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class MovieDatabaseManager {
+    // 89 characters seems to be the max length before 10x of these short plots bugs out
+    // 70 should not be more than 2 lines
+    public static final int SHORT_PLOT_MAX_LENGTH = 70;
+
     private static SQLiteDatabase database;
     private static DatabaseHelper edbHelper;
 
@@ -40,13 +40,18 @@ public class MovieDatabaseManager {
                 + " WHERE " + DatabaseHelper.MOVIE_ID + " = \""
                 + newMovie.getId() + "\"",null).getCount() != 0) return;
 
-        Log.i("Ayy lmao", "I am adding a Movie");
+        Log.i("Ayy lmao", "I am adding " + newMovie.getTitle());
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.MOVIE_ID, newMovie.getId());
         values.put(DatabaseHelper.MOVIE_TITLE, newMovie.getTitle());
         values.put(DatabaseHelper.MOVIE_YEAR, newMovie.getYear());
-        values.put(DatabaseHelper.MOVIE_SHORT_PLOT, newMovie.getShortPlot());
+
+        values.put(DatabaseHelper.MOVIE_SHORT_PLOT,
+                (newMovie.getShortPlot().length()> SHORT_PLOT_MAX_LENGTH) ?
+                        newMovie.getShortPlot().substring(0, SHORT_PLOT_MAX_LENGTH) + "..." :
+                        newMovie.getShortPlot());
+
         values.put(DatabaseHelper.MOVIE_FULL_PLOT, newMovie.getFullPlot());
         values.put(DatabaseHelper.MOVIE_IMAGE_BITMAP,
                 MovieModel.bitMapToString(newMovie.getPoster()));
@@ -56,18 +61,17 @@ public class MovieDatabaseManager {
     }
 
     public List<Movie> getAllMovies(){
-        MovieModel movieModel = MovieModel.getSingleton();
-
         Cursor cursor = database.query(DatabaseHelper.MOVIE_TABLE_NAME,
                 null, null, null, null, null, null);
 
         cursor.moveToFirst();
+        List<Movie> movies = new ArrayList<>();
         while(!cursor.isAfterLast()){
-            movieModel.addMovie(cursorToMovie(cursor));
+            movies.add(cursorToMovie(cursor));
             cursor.moveToNext();
         }
 
-        return movieModel.getAllMovies();
+        return movies;
     }
 
     private Movie cursorToMovie(Cursor movieCursor){
@@ -97,18 +101,18 @@ public class MovieDatabaseManager {
         MovieModel.getSingleton().deleteMovie(id);
     }
 
-    public void editMovie(Movie event){
-        String whereClause = DatabaseHelper.MOVIE_ID + " = \"" + event.getId() + "\"" ;
+    public void editMovie(Movie movie){
+        String whereClause = DatabaseHelper.MOVIE_ID + " = \"" + movie.getId() + "\"" ;
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.MOVIE_ID, event.getId());
-        contentValues.put(DatabaseHelper.MOVIE_TITLE, event.getTitle());
-        contentValues.put(DatabaseHelper.MOVIE_YEAR, event.getYear());
-        contentValues.put(DatabaseHelper.MOVIE_SHORT_PLOT, event.getShortPlot());
-        contentValues.put(DatabaseHelper.MOVIE_FULL_PLOT, event.getFullPlot());
+        contentValues.put(DatabaseHelper.MOVIE_ID, movie.getId());
+        contentValues.put(DatabaseHelper.MOVIE_TITLE, movie.getTitle());
+        contentValues.put(DatabaseHelper.MOVIE_YEAR, movie.getYear());
+        contentValues.put(DatabaseHelper.MOVIE_SHORT_PLOT, movie.getShortPlot());
+        contentValues.put(DatabaseHelper.MOVIE_FULL_PLOT, movie.getFullPlot());
         contentValues.put(DatabaseHelper.MOVIE_IMAGE_BITMAP,
-                MovieModel.bitMapToString(event.getPoster()));
-        contentValues.put(DatabaseHelper.MOVIE_RATING, event.getRating());
+                MovieModel.bitMapToString(movie.getPoster()));
+        contentValues.put(DatabaseHelper.MOVIE_RATING, movie.getRating());
 
         database.update(DatabaseHelper.MOVIE_TABLE_NAME, contentValues, whereClause, null);
     }

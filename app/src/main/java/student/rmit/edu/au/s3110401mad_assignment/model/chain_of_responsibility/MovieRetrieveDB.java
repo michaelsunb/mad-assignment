@@ -1,8 +1,3 @@
-/* *
- * COSC2347 Mobile Application Development
- * Assignment 2
- * 
- * */
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
 import student.rmit.edu.au.s3110401mad_assignment.db.MovieDatabaseManager;
@@ -13,8 +8,6 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MovieRetrieveDB extends MovieMemoryManagementHandler {
@@ -37,10 +30,14 @@ public class MovieRetrieveDB extends MovieMemoryManagementHandler {
         }
 
         filteredMovies = new ArrayList<>();
+        int i = 0;
         for(Movie movie : edm.getAllMovies()) {
-            movieModel.addMovie(movie);
-            if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()) {
-                filteredMovies.add(movie);
+            if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()
+                    && i++ < 10) {
+                movieModel.addMovie(movie,query);
+                addFilteredMovie(movie);
+            } else if(i >= 10) {
+                break;
             }
         }
 
