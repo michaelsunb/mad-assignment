@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 
 /**
  * Created by Michaelsun Baluyos on 5/10/2015.
+ *
+ *
  */
 public class CursorToStringTask extends AsyncTask<Void,Void,String> {
 

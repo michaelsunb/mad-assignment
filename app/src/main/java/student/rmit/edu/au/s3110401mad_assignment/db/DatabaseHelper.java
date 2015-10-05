@@ -1,8 +1,3 @@
-/* *
- * COSC2347 Mobile Application Development
- * Assignment 2
- *
- * */
 package student.rmit.edu.au.s3110401mad_assignment.db;
 
 import android.content.Context;

@@ -1,6 +1,5 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.async_task;
 
-import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 
@@ -14,6 +13,8 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 /**
  * Created by Michaelsun Baluyos on 5/10/2015.
+ *
+ *
  */
 public class ListToMatrixCursorTask extends AsyncTask<Void,Void,MatrixCursor> {
 

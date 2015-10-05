@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,12 +29,11 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.PartyListActivity;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
-import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 
 public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
-//    private MapFragment mapFragment;
 
     private List<MarkerOptions> markers = new ArrayList<>();
     private List<Party> parties;
@@ -56,16 +56,21 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
                 googleMap = ((MapFragment) getFragmentManager().
                         findFragmentById(R.id.map)).getMap();
             }
+
+            if(parties != null && parties.size() > 0) {
+                this.markers = new ArrayList<>();
+                for (Party party : parties) {
+                    this.markers.add(setPartyToMarker(party));
+                }
+            }
+
             onMapReady(googleMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //setMarkers(new RestJobsModel().queryAllJobs());
 
         return rootView;
     }
-
-
 
     private void goPartyListActivity() {
         if(parties != null && parties.size() <= 0
@@ -79,15 +84,10 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         startActivity(intent);
     }
 
-//    public void setMarkers(List<MarkerOptions> locations) {
-//        this.markers = new ArrayList<>();
-//        this.markers = locations;
-//
-//        onMapReady(googleMap);
-//    }
-
     public void onMapReady(final GoogleMap map) {
         if(markers.size() <= 0) return;
+        if(map == null) return;
+
         map.clear();
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -153,5 +153,15 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private MarkerOptions setPartyToMarker(Party party) {
+        return new MarkerOptions()
+                .position(new LatLng(
+                        party.getLocation()[PartyStruct.LONGITUDE],
+                        party.getLocation()[PartyStruct.LATITUDE]
+                ))
+                .title(party.getImDB())
+                .snippet(party.getVenue());
     }
 }

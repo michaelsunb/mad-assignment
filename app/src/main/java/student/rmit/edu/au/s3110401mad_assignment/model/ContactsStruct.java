@@ -9,7 +9,7 @@ public class ContactsStruct implements Contacts {
     private String id;
     private int partyId;
     private String name;
-    private String phone;;
+    private String phone;
     private String email;
 
     public ContactsStruct(String id, int partyId, String name, String phone, String email) {

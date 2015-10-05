@@ -34,10 +34,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
 
     public ContactsModel() {}
 
-    public Map<String,Contacts> getContacts() {
-        return contactsMap;
-    }
-
     public Contacts getById(String id) {
         return contactsMap.get(id);
     }
@@ -73,16 +69,11 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
             for(Map.Entry<String,Contacts> entry : contactsMap.entrySet()) {
                 Contacts contacts = entry.getValue();
                 if (contacts.getId().equals(contactId)) {
-                    ((ContactsStruct)contacts).setPartyId(partyId);
+                    contacts.setPartyId(partyId);
                     contactsMap.put(contacts.getId(),contacts);
                 }
             }
         }
-    }
-
-    public void addContact(Context context, Integer partyId) {
-        this.partyId = partyId;
-        this.execute(context);
     }
 
     public void addContact(Contacts contact) {
@@ -153,5 +144,15 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
                         .getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
         pCur.close();
         return email;
+    }
+
+    // TODO : Possibly delete
+    public void addContact(Context context, Integer partyId) {
+        this.partyId = partyId;
+        this.execute(context);
+    }
+
+    public Map<String,Contacts> getContacts() {
+        return contactsMap;
     }
 }

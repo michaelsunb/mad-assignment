@@ -16,21 +16,20 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.CursorToStringTask;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
+ *
+ *
  */
 public class MovieArrayAdapter extends CursorAdapter {
     public static final String MAIN_ROW_SPACE = " ";
     public static final String MAIN_ROW_RATING_OUT_OF_FIVE = "/5";
 
-    // Reference Controller
-    private Context context;
-
     public MovieArrayAdapter(Context context, Cursor cursor) {
         super(context, cursor, false);
-        this.context = context;
     }
 
     @Override
@@ -63,18 +62,13 @@ public class MovieArrayAdapter extends CursorAdapter {
                 imageView.setImageBitmap(moviePoster);
             }
 
-            StringBuilder sbRating = new StringBuilder();
-            sbRating.append(context.getString(R.string.main_rating));
-            sbRating.append(MAIN_ROW_SPACE);
-            sbRating.append(movie.getRating());
-            sbRating.append(MAIN_ROW_RATING_OUT_OF_FIVE);
-            ratingBar.setText(sbRating.toString());
+            ratingBar.setText(context.getString(R.string.main_rating) +
+                    MAIN_ROW_SPACE + movie.getRating() + MAIN_ROW_RATING_OUT_OF_FIVE);
 
-            StringBuilder sbParties = new StringBuilder();
-            sbParties.append(context.getString(R.string.main_num_parties));
-            sbParties.append(MAIN_ROW_SPACE);
-            sbParties.append(movie.getId());
-            numPartyView.setText(sbParties.toString());
+            numPartyView.setText(context.getString(R.string.main_num_parties) +
+                            MAIN_ROW_SPACE +
+                            PartyModel.getSingleton().getPartiesByMovieId(movie.getId()).size()
+            );
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

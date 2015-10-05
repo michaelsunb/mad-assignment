@@ -24,11 +24,11 @@ import android.widget.Button;
 
 public class PartyListAdapter extends BaseAdapter {
 
-    private List<Party> partyList = new ArrayList<Party>();
+    private List<Party> partyList = new ArrayList<>();
     private LayoutInflater inflater;
     private Context context;
 
-    public PartyListAdapter(Context context, int resource,
+    public PartyListAdapter(Context context,
                             List<Party> eventList) {
         this.partyList = eventList;
         this.context = context;
@@ -57,7 +57,6 @@ public class PartyListAdapter extends BaseAdapter {
         private Button deleteButton;
         private TextView eventDate;
         private TextView eventAttendeeCount;
-        private Button editButton;
     }
 
     @Override

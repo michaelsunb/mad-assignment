@@ -38,8 +38,6 @@ import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerDialogFragment;
  *
  */
 public class BasePartyActivity extends AppCompatActivity {
-    final static private String LOG_ERROR = "ERROR @ ";
-
     public static final int ZERO_NUMBER_LESS_TEN = 10;
     public static final int MIDNIGHT = 0;
 

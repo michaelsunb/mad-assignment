@@ -27,7 +27,7 @@ public class MovieModel {
     private Map<String,Movie> movieListMap;
 
     private MovieModel() {
-        this.movieListMap = new HashMap<String, Movie>();
+        this.movieListMap = new HashMap<>();
     }
 
     public Movie getByName(String title) {
@@ -45,7 +45,8 @@ public class MovieModel {
             this.query = query;
         }
         if(movieListMap.size() > 10) {
-            movieListMap.remove((String) movieListMap.keySet().toArray()[0]);
+            String key = (String)movieListMap.keySet().toArray()[0];
+            movieListMap.remove(key);
         }
         movieListMap.put(movie.getId(), movie);
     }
@@ -55,11 +56,8 @@ public class MovieModel {
     public Movie getMovieById(String imdbId) {
         return movieListMap.get(imdbId);
     }
-    public Map<String,Movie> getMovieListMap() {
-        return movieListMap;
-    }
     public List<Movie> getAllMovies() {
-        return new ArrayList<Movie>(movieListMap.values());
+        return new ArrayList<>(movieListMap.values());
     }
 
     public static String bitMapToString(Bitmap bitmap){
@@ -78,7 +76,11 @@ public class MovieModel {
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
+    // TODO: possibly delete
     public void deleteMovie(String id) {
         // TODO: add functionality
+    }
+    public Map<String,Movie> getMovieListMap() {
+        return movieListMap;
     }
 }

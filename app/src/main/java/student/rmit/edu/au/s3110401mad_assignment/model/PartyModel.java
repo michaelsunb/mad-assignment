@@ -34,16 +34,9 @@ public class PartyModel {
     public Party getPartyById(Integer partyId) {
         return partyMap.get(partyId);
     }
-    public List<Party> getPartiesByMovieId(String imdbId) {
-        List<Party> partiesByMovie = new ArrayList<>();
-        for(Map.Entry<Integer,Party> entry : partyMap.entrySet())
-            if(entry.getValue().getImDB().contains(imdbId))
-                partiesByMovie.add(entry.getValue());
-        return partiesByMovie;
-    }
 
     public List<Party> getAllParties() {
-        return new ArrayList<Party>(partyMap.values());
+        return new ArrayList<>(partyMap.values());
     }
 
     public void deleteEvent(int id) {
@@ -60,7 +53,15 @@ public class PartyModel {
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(calendar.getTime());
     }
 
+    // TODO : Possibly delete
     public void deleteParty(String id) {
         // TODO: add functionality
+    }
+    public List<Party> getPartiesByMovieId(String imdbId) {
+        List<Party> partiesByMovie = new ArrayList<>();
+        for(Map.Entry<Integer,Party> entry : partyMap.entrySet())
+            if(entry.getValue().getImDB().contains(imdbId))
+                partiesByMovie.add(entry.getValue());
+        return partiesByMovie;
     }
 }

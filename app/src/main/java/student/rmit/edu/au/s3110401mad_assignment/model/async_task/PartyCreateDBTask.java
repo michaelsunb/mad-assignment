@@ -2,7 +2,6 @@ package student.rmit.edu.au.s3110401mad_assignment.model.async_task;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.List;
 

@@ -117,11 +117,6 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
         }
     }
 
-    /**
-     * @param omdbUrl
-     * @param query
-     * @return String
-     */
     public String getJsonFromHttp(String omdbUrl, String query) {
         BufferedReader reader = null;
 

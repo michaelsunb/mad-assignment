@@ -95,12 +95,6 @@ public class MovieDatabaseManager {
         );
     }
 
-    public void deleteMovie(String id){
-        String selectionToBeDeleted = DatabaseHelper.MOVIE_ID + " = \"" + id + "\"";
-        database.delete(DatabaseHelper.MOVIE_TABLE_NAME, selectionToBeDeleted, null);
-        MovieModel.getSingleton().deleteMovie(id);
-    }
-
     public void editMovie(Movie movie){
         String whereClause = DatabaseHelper.MOVIE_ID + " = \"" + movie.getId() + "\"" ;
 
@@ -115,5 +109,11 @@ public class MovieDatabaseManager {
         contentValues.put(DatabaseHelper.MOVIE_RATING, movie.getRating());
 
         database.update(DatabaseHelper.MOVIE_TABLE_NAME, contentValues, whereClause, null);
+    }
+
+    // TODO: possibly delete
+    public void deleteMovie(String id){
+        String selectionToBeDeleted = DatabaseHelper.MOVIE_ID + " = \"" + id + "\"";
+        database.delete(DatabaseHelper.MOVIE_TABLE_NAME, selectionToBeDeleted, null);
     }
 }

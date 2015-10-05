@@ -1,9 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
@@ -74,6 +71,7 @@ public class MovieStruct implements Movie {
         this.rating = rating;
     }
 
+    // TODO: Possibly delete
     public void setYear(String year) {
         this.year = year;
     }

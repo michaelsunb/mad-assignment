@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.util.List;
 
-import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 

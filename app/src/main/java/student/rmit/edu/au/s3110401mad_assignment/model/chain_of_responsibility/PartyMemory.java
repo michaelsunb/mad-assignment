@@ -4,10 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
-import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
-import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
@@ -29,7 +26,7 @@ public class PartyMemory extends PartyMemoryManagementHandler
         if(partyModel.getAllParties().size()==0) return false;
 
         filteredParty = new ArrayList<>();
-        int i = 0;
+
         for(Party party : partyModel.getAllParties()) {
             filteredParty.add(party);
         }
