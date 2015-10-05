@@ -27,7 +27,7 @@ import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayA
 import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
-import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ListToMatrixCursor;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ListToMatrixCursorTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
 
 public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -85,7 +85,7 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
         asyncTask.execute(mCurFilter);
         try {
             List<Movie> asyncTaskGet = asyncTask.get();
-            return new ListToMatrixCursor(asyncTaskGet).execute().get();
+            return new ListToMatrixCursorTask(asyncTaskGet).execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;

@@ -13,12 +13,12 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
 /**
  * Created by Michaelsun Baluyos on 26/08/2015.
  */
-public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<CreatePartyActivity> {
+public class PartyCreateActivityTest extends ActivityInstrumentationTestCase2<PartyCreateActivity> {
     private Instrumentation instrumentation;
-    private CreatePartyActivity activity;
+    private PartyCreateActivity activity;
 
-    public CreatePartyActivityTest() {
-        super(CreatePartyActivity.class);
+    public PartyCreateActivityTest() {
+        super(PartyCreateActivity.class);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
             }
         });
         getInstrumentation().waitForIdleSync();
-        assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+        assertFalse("PartyCreateActivity should not be in focus", getActivity().hasWindowFocus());
     }
 
     @SmallTest
@@ -85,7 +85,7 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
             }
         });
         getInstrumentation().waitForIdleSync();
-        assertFalse("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+        assertFalse("PartyCreateActivity should not be in focus", getActivity().hasWindowFocus());
     }
 
     @SmallTest
@@ -99,7 +99,7 @@ public class CreatePartyActivityTest extends ActivityInstrumentationTestCase2<Cr
             }
         });
         getInstrumentation().waitForIdleSync();
-        assertTrue("CreatePartyActivity should not be in focus", getActivity().hasWindowFocus());
+        assertTrue("PartyCreateActivity should not be in focus", getActivity().hasWindowFocus());
         getInstrumentation().waitForIdleSync();
     }
 }

@@ -44,6 +44,9 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
 
     public List<Contacts> getByPartyId(int partyId) {
         List<Contacts> contacts = new ArrayList<>();
+
+        if(contactsMap == null) return contacts;
+
         for(Map.Entry<String,Contacts> contactEntry : contactsMap.entrySet()) {
             Contacts contact = contactEntry.getValue();
             if(contact.getPartyId() == partyId) {

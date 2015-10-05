@@ -47,15 +47,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PARTY_ID = "_id";
     public static final String PARTY_MOVIE_ID = "movieId";
     public static final String PARTY_DATETIME = "datetime";
-    public static final String PARTY_VENUE = "venue";
+    public static final String PARTY_VENUE = "place";
     public static final String PARTY_LOCATION = "location";
-    private static final String CREATE_PARTY_TABLE =
-            "CREATE TABLE " + PARTY_TABLE_NAME + " (" +
-                    PARTY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    PARTY_MOVIE_ID + " VARCHAR, " +
-                    PARTY_DATETIME + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                    PARTY_VENUE + "VARCHAR," +
-                    PARTY_LOCATION + "VARCHAR);";
+    private static final String CREATE_PARTY_TABLE = "CREATE TABLE " +
+            PARTY_TABLE_NAME +
+            " ("+ PARTY_ID + " INTEGER PRIMARY KEY, " +
+            PARTY_MOVIE_ID + " VARCHAR, " +
+            PARTY_DATETIME + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+            PARTY_VENUE + " VARCHAR, " +
+            PARTY_LOCATION + " VARCHAR);";
 
     /** Party invitees table **/
     public static final String PARTY_INVITEE_TABLE_NAME = "party_invitees";
@@ -69,8 +69,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     PARTY_INVITEE_ID + " VARCHAR PRIMARY KEY, " +
                     PARTY_INVITEE_PARTY_ID + " INTEGER, " +
                     PARTY_INVITEE_NAME + " VARCHAR, " +
-                    PARTY_INVITEE_PHONE + " VARCHAR," +
-                    PARTY_INVITEE_EMAIL + " VARCHAR);";
+                    PARTY_INVITEE_PHONE + " VARCHAR, " +
+                    PARTY_INVITEE_EMAIL + " VARCHAR); ";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

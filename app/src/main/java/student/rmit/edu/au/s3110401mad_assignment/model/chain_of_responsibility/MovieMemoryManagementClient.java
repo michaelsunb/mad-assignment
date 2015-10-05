@@ -1,9 +1,7 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class MovieMemoryManagementClient extends AsyncTask<String,Void,List<Movi
 
         movieMemory = new MovieMemory(context, movieModel);
         MovieMemoryManagementHandler movieRetrieveDB = new MovieRetrieveDB(context, movieModel);
-        MovieMemoryManagementHandler movieOmDB = new MovieOmDB(context, movieModel);
+        MovieMemoryManagementHandler movieOmDB = new MovieOmdbRest(context, movieModel);
         movieMemory.setNext(movieRetrieveDB);
         movieRetrieveDB.setNext(movieOmDB);
         movieOmDB.setNext(null);

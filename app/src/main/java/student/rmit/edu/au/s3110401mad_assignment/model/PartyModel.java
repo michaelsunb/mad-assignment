@@ -57,7 +57,7 @@ public class PartyModel {
     }
 
     public static String calendarToString(Calendar calendar) {
-        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(calendar);
+        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(calendar.getTime());
     }
 
     public void deleteParty(String id) {

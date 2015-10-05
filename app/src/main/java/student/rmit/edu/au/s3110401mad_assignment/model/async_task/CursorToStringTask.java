@@ -6,12 +6,12 @@ import android.os.AsyncTask;
 /**
  * Created by Michaelsun Baluyos on 5/10/2015.
  */
-public class CursorToString extends AsyncTask<Void,Void,String> {
+public class CursorToStringTask extends AsyncTask<Void,Void,String> {
 
     private String columnName;
     private Cursor cursor;
 
-    public CursorToString(Cursor cursor, String columnName) {
+    public CursorToStringTask(Cursor cursor, String columnName) {
         this.cursor = cursor;
         this.columnName = columnName;
     }

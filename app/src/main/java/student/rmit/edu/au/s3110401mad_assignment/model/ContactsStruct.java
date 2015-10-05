@@ -40,6 +40,7 @@ public class ContactsStruct implements Contacts {
         return email;
     }
 
+    @Override
     public void setPartyId(int partyId) {
         this.partyId = partyId;
     }
@@ -48,4 +49,5 @@ public class ContactsStruct implements Contacts {
     public int getPartyId() {
         return partyId;
     }
+
 }

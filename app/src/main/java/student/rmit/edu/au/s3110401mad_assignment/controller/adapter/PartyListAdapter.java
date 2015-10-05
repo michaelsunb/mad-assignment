@@ -11,10 +11,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
-import student.rmit.edu.au.s3110401mad_assignment.controller.EditPartyActivity;
+import student.rmit.edu.au.s3110401mad_assignment.controller.PartyEditActivity;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyDeleteDBTask;
 
 import android.content.Context;
 import android.view.View.OnClickListener;
@@ -36,7 +37,9 @@ public class PartyListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return partyList.size();
+        if(partyList != null)
+            return partyList.size();
+        return 0;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class PartyListAdapter extends BaseAdapter {
                 .findViewById(R.id.party_list_edit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EditPartyActivity.class);
+                Intent intent = new Intent(context, PartyEditActivity.class);
                 intent.putExtra("party_id", party.getId());
                 context.startActivity(intent);
             }
@@ -117,6 +120,7 @@ public class PartyListAdapter extends BaseAdapter {
             @Override
             public void onClick(View arg0) {
                 PartyModel.getSingleton().deleteEvent(party.getId());
+                new PartyDeleteDBTask(context,position).execute();
                 partyList.remove(position);
                 notifyDataSetChanged();
             }

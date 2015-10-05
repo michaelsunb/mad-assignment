@@ -27,15 +27,15 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
  * Created by Michaelsun Baluyos on 1/10/2015.
  * https://www.youtube.com/watch?v=mIOxaSKiq0c
  */
-public class MovieOmDB extends MovieMemoryManagementHandler  {
+public class MovieOmdbRest extends MovieMemoryManagementHandler  {
     public static final String OMDB_URL_SEARCH = "http://www.omdbapi.com/?r=json&s=";
     public static final String OMDB_URL_SHORT_BY_ID = "http://www.omdbapi.com/?r=json&i=";
     public static final String OMDB_URL_FULL_BY_ID = "http://www.omdbapi.com/?r=json&plot=full&i=";
 
-    public MovieOmDB(Context context, MovieModel movieModel) {
+    public MovieOmdbRest(Context context, MovieModel movieModel) {
         super(context, movieModel);
     }
-    public MovieOmDB() {
+    public MovieOmdbRest() {
         super(null, MovieModel.getSingleton());
     }
 

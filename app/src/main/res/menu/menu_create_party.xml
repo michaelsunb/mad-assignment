@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="student.rmit.edu.au.s3110401mad_assignment.controller.CreatePartyActivity">
+    tools:context="student.rmit.edu.au.s3110401mad_assignment.controller.PartyCreateActivity">
 </menu>

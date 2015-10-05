@@ -1,6 +1,5 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.concurrent.ExecutionException;
@@ -18,7 +16,7 @@ import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
-import student.rmit.edu.au.s3110401mad_assignment.model.async_task.CursorToString;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.CursorToStringTask;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
@@ -52,7 +50,7 @@ public class MovieArrayAdapter extends CursorAdapter {
 
         try {
             Movie movie = MovieModel.getSingleton().getMovieById(
-                    "tt" + (new CursorToString(cursor,DatabaseHelper.MOVIE_ID).execute().get())
+                    "tt" + (new CursorToStringTask(cursor,DatabaseHelper.MOVIE_ID).execute().get())
             );
             // Fill in the Views with content
             titleView.setText(movie.getTitle());

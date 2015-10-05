@@ -12,6 +12,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
@@ -37,26 +38,33 @@ public class PartyDatabaseManager {
         database.close();
     }
 
-    public void addParty(Party newParty){
-        PartyModel.getSingleton().addParty(newParty);
+    public void addParty(Party newParty, List<String> contactIds){
+        for(String contactId : contactIds) {
+            editInvitees(ContactsModel.getSingleton().getById(contactId));
+        }
 
-        Log.i("Ayy lmao", "I am in PartyDatabaseManager");
+        if(database.rawQuery("SELECT * FROM " + DatabaseHelper.PARTY_TABLE_NAME
+                + " WHERE " + DatabaseHelper.PARTY_ID + " = \""
+                + newParty.getId() + "\"",null).getCount() != 0) return;
+
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.PARTY_ID, newParty.getId());
         values.put(DatabaseHelper.PARTY_MOVIE_ID, newParty.getImDB());
         values.put(DatabaseHelper.PARTY_DATETIME,
-                PartyModel.calendarToString(newParty.getDate()));
+                PartyModel.calendarToString(newParty.getDate())
+        );
         values.put(DatabaseHelper.PARTY_VENUE, newParty.getVenue());
 
         double[] partyLocation = newParty.getLocation();
         values.put(DatabaseHelper.PARTY_LOCATION,
-                partyLocation[PartyStruct.LONGITUDE] + "," + partyLocation[PartyStruct.LATITUDE]);
+                partyLocation[PartyStruct.LONGITUDE] + "," + partyLocation[PartyStruct.LATITUDE]
+        );
 
         database.insert(DatabaseHelper.PARTY_TABLE_NAME, null, values);
     }
 
     public List<Party> getAllParties(){
-        PartyModel partyModel = PartyModel.getSingleton();
+        List<Party> parties = new ArrayList<>();
 
         Cursor partyCursor = database.query(DatabaseHelper.PARTY_TABLE_NAME,
                 null, null, null, null, null, null);
@@ -70,12 +78,12 @@ public class PartyDatabaseManager {
                     DatabaseHelper.PARTY_INVITEE_TABLE_NAME, null,
                     DatabaseHelper.PARTY_INVITEE_ID + " = " + partyId,
                     null, null, null, null);
-            partyModel.addParty(cursorToParty(partyCursor, inviteeCursor));
+            parties.add(cursorToParty(partyCursor, inviteeCursor));
 
             partyCursor.moveToNext();
         }
 
-        return partyModel.getAllParties();
+        return parties;
     }
 
     private Party cursorToParty(Cursor partyCursor, Cursor inviteeCursor){
@@ -122,15 +130,19 @@ public class PartyDatabaseManager {
         return new PartyStruct(partyId, partyMovieId, partyDatetime, partyVenue, partyLocation);
     }
 
-    public void deleteParty(String id){
+    public void deleteParty(int id){
         String selectionToBeDeleted = DatabaseHelper.PARTY_ID + " = \"" + id + "\"";
         database.delete(DatabaseHelper.PARTY_TABLE_NAME, selectionToBeDeleted, null);
-        PartyModel.getSingleton().deleteParty(id);
+
+        for(Contacts contact : ContactsModel.getSingleton().getByPartyId(id)) {
+            contact.setPartyId(ContactsModel.NO_PARTY);
+            editInvitees(contact);
+        }
     }
 
-    public void editParty(Party party, List<Contacts> contacts ){
-        for(Contacts contact : contacts) {
-            editInvitees(contact);
+    public void editParty(Party party, List<String> contacts ){
+        for(String contact : contacts) {
+            editInvitees(ContactsModel.getSingleton().getById(contact));
         }
         editParty(party);
     }

@@ -10,6 +10,8 @@ public interface Contacts {
 
     int getPartyId();
 
+    void setPartyId(int partyId);
+
     String getName();
 
     String getPhone();

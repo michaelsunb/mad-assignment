@@ -22,24 +22,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.PartyListActivity;
+import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 
 public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
 //    private MapFragment mapFragment;
 
     private List<MarkerOptions> markers = new ArrayList<>();
-	
-	@Override
+    private List<Party> parties;
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_party_map, container, false);
-
         rootView.findViewById(R.id.main_party_list_button).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -62,8 +65,11 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         return rootView;
     }
 
+
+
     private void goPartyListActivity() {
-        if(PartyModel.getSingleton().getAllParties().size() <= 0) {
+        if(parties != null && parties.size() <= 0
+                || parties == null) {
             Toast.makeText(
                     getActivity(),"No parties happening!",
                     Toast.LENGTH_LONG).show();
@@ -139,5 +145,13 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         super.onDestroyView();
+    }
+
+    public void setParties(PartyMemoryManagementClient partyTask) {
+        try {
+            parties = partyTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }

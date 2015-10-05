@@ -6,12 +6,9 @@ import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import student.rmit.edu.au.s3110401mad_assignment.controller.CreatePartyActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MainActivity;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 

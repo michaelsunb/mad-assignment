@@ -10,12 +10,15 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 import student.rmit.edu.au.s3110401mad_assignment.view.MovieListFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.PartyMapFragment;
 
 
 public class MainActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
+
+    private PartyMemoryManagementClient partyTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initialFragment() {
-        Fragment fragment = new PartyMapFragment();
+        partyTask = new PartyMemoryManagementClient(this);
+        partyTask.execute();
+
+        PartyMapFragment fragment = new PartyMapFragment();
+        fragment.setParties(partyTask);
         selectFragment(fragment);
     }
 
@@ -74,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
-        selectFragment(new PartyMapFragment());
+        PartyMapFragment fragment = new PartyMapFragment();
+        fragment.setParties(partyTask);
+        selectFragment(fragment);
         return false;
     }
 

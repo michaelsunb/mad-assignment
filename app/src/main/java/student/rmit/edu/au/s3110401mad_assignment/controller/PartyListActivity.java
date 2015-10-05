@@ -6,9 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.PartyListAdapter;
+import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 
 public class PartyListActivity extends AppCompatActivity {
 
@@ -19,9 +24,9 @@ public class PartyListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party_list);
 
-        ListView listView = (ListView) findViewById(R.id.party_list);
-        listAdapter = new PartyListAdapter(this, 0, PartyModel.getSingleton().getAllParties());
-        listView.setAdapter(listAdapter);
+        List<Party> parties = PartyModel.getSingleton().getAllParties();
+        listAdapter = new PartyListAdapter(this, 0, parties);
+        ((ListView)findViewById(R.id.party_list)).setAdapter(listAdapter);
 
         if (getSupportActionBar() == null)
             return;

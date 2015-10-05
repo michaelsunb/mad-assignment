@@ -1,6 +1,8 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -10,9 +12,11 @@ import java.util.Calendar;
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyCreateDBTask;
 
-public class CreatePartyActivity extends BasePartyActivity {
+public class PartyCreateActivity extends BasePartyActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +72,18 @@ public class CreatePartyActivity extends BasePartyActivity {
             }
         });
 
+        final Context context = this;
         findViewById(R.id.create_party_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAndCreateParty(R.id.create_party_latitude_edit_text, R.id.create_party_venue_edit_text, R.id.create_party_longitude_edit_text);
+                Party party = submitAndCreateParty(R.id.create_party_latitude_edit_text,
+                        R.id.create_party_venue_edit_text,
+                        R.id.create_party_longitude_edit_text);
+
+                if(party != null) {
+                    new PartyCreateDBTask(context,party,whichContacts).execute();
+                    finishActivity();
+                }
             }
         });
 

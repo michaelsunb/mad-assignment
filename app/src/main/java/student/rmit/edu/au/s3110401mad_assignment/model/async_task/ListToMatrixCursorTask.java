@@ -15,11 +15,11 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 /**
  * Created by Michaelsun Baluyos on 5/10/2015.
  */
-public class ListToMatrixCursor extends AsyncTask<Void,Void,MatrixCursor> {
+public class ListToMatrixCursorTask extends AsyncTask<Void,Void,MatrixCursor> {
 
     private List<Movie> allMovies;
 
-    public ListToMatrixCursor(List<Movie> allMovies) {
+    public ListToMatrixCursorTask(List<Movie> allMovies) {
         this.allMovies = allMovies;
     }
 

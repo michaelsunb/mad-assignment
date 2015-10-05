@@ -9,6 +9,8 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 /**
  * Created by Michaelsun Baluyos on 27/09/2015.
+ *
+ *
  */
 public abstract class MovieMemoryManagementHandler {
     private MovieMemoryManagementHandler next = null;
@@ -30,7 +32,7 @@ public abstract class MovieMemoryManagementHandler {
             filteredMovies.remove(0);
         }
         for (Movie movie1 : filteredMovies) {
-            if(movie1.getId().equals(movie)) {
+            if(movie1.getId().equals(movie.getId())) {
                 filteredMovies.remove(movie);
             }
         }

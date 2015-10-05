@@ -24,6 +24,7 @@ import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerDialogFragment;
@@ -64,20 +65,27 @@ public class BasePartyActivity extends AppCompatActivity {
         return date;
     }
 
-    public void submitAndCreateParty(int party_latitude_edit_text, int party_venue_edit_text, int party_longitude_edit_text) {
+    protected Party submitAndCreateParty(int party_latitude_edit_text,
+                                         int party_venue_edit_text,
+                                         int party_longitude_edit_text) {
         Double longitude;
         Double latitude;
         String venueTitle;
         try {
             longitude =
-                    Double.parseDouble(((EditText) findViewById(party_longitude_edit_text)).getText().toString());
+                    Double.parseDouble(
+                            ((EditText) findViewById(party_longitude_edit_text))
+                                    .getText().toString());
             latitude =
-                    Double.parseDouble(((EditText) findViewById(party_latitude_edit_text)).getText().toString());
+                    Double.parseDouble(
+                            ((EditText) findViewById(party_latitude_edit_text))
+                                    .getText().toString());
+
             venueTitle = ((EditText)findViewById(party_venue_edit_text)).getText().toString();
         } catch (Exception e) {
             Toast.makeText(this, "Please enter a location number",
                     Toast.LENGTH_LONG).show();
-            return;
+            return null;
         }
 
         double[] location = {longitude,latitude};
@@ -94,13 +102,17 @@ public class BasePartyActivity extends AppCompatActivity {
         PartyModel.getSingleton().addParty(partyStruct);
         ContactsModel.getSingleton().setContactsToParty(whichContacts, partyId);
 
+        return partyStruct;
+    }
+
+    protected void finishActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
 
-    public void showMovieSelectList(final Integer party_movie_text) {
+    protected void showMovieSelectList(final Integer party_movie_text) {
         MovieModel movieModel = MovieModel.getSingleton();
         final Bundle args = new Bundle();
         final String[] movieTitles = new String[movieModel.getAllMovies().size()];
@@ -126,7 +138,7 @@ public class BasePartyActivity extends AppCompatActivity {
         movieList.show(getSupportFragmentManager(), "Movie Select");
     }
 
-    public void showContactsSelectList(final int party_invitees_text) {
+    protected void showContactsSelectList(final int party_invitees_text) {
         Bundle args = new Bundle();
         final String[] contactNames;
         try {
@@ -184,7 +196,7 @@ public class BasePartyActivity extends AppCompatActivity {
         contactList.show(getSupportFragmentManager(), "Contact Select Picker");
     }
 
-    public void showDatePicker(final int party_date_text) {
+    protected void showDatePicker(final int party_date_text) {
         Bundle args = new Bundle();
         args.putInt("year", datetime.get(Calendar.YEAR));
         args.putInt("month", datetime.get(Calendar.MONTH));
@@ -212,7 +224,7 @@ public class BasePartyActivity extends AppCompatActivity {
         date.show(getSupportFragmentManager(), "Date Picker");
     }
 
-    public void showTimePicker(final int party_time_text) {
+    protected void showTimePicker(final int party_time_text) {
         Bundle args = new Bundle();
         args.putInt("hourOfDay", datetime.get(Calendar.HOUR_OF_DAY));
         args.putInt("minute", datetime.get(Calendar.MINUTE));
