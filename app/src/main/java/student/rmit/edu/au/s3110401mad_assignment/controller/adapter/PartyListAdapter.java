@@ -12,6 +12,7 @@ import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.EditPartyActivity;
+import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
@@ -60,8 +61,7 @@ public class PartyListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
-        final Party event = getItem(position);
-        final int posToDelete = position;
+        final Party party = getItem(position);
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.activity_party_row,
@@ -78,12 +78,12 @@ public class PartyListAdapter extends BaseAdapter {
         viewHolder.eventDate = (TextView) convertView
                 .findViewById(R.id.party_list_date_text);
 
-        String title = (event.getVenue() != null) ? event.getVenue() : "Event " + position;
+        String title = (party.getVenue() != null) ? party.getVenue() : "Event " + position;
         viewHolder.eventTitle.setText(title);
 
         Calendar datetime = Calendar.getInstance();
-        if(event.getDate() != null)
-            datetime.setTime(event.getDate().getTime());
+        if(party.getDate() != null)
+            datetime.setTime(party.getDate().getTime());
 
         int year = datetime.get(Calendar.YEAR);
         int monthOfYear = datetime.get(Calendar.MONTH);
@@ -96,30 +96,30 @@ public class PartyListAdapter extends BaseAdapter {
                 .findViewById(R.id.party_list_attendee_count);
 //        viewHolder.eventAttendeeCount.setText(convertView.getResources()
 //                .getString(R.string.party_list_attendee_text)
-//                + (new StringBuilder().append(event.getInviteeIDs().size()).toString()));
+//                + (new StringBuilder().append(party.getInviteeIDs().size()).toString()));
         viewHolder.eventAttendeeCount.setText(convertView.getResources()
                 .getString(R.string.party_list_attendee_text)
-                + "0");
+                + ContactsModel.getSingleton().getByPartyId(party.getId()).size() + "");
 
         convertView
                 .findViewById(R.id.party_list_edit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EditPartyActivity.class);
-                intent.putExtra("party_id", event.getId());
+                intent.putExtra("party_id", party.getId());
                 context.startActivity(intent);
-                return;
             }
         });
 
         viewHolder.deleteButton = (Button) convertView
                 .findViewById(R.id.party_list_delete_button);
+
         viewHolder.deleteButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                PartyModel.getSingleton().deleteEvent(event.getId());
-                partyList.remove(posToDelete);
+                PartyModel.getSingleton().deleteEvent(party.getId());
+                partyList.remove(position);
                 notifyDataSetChanged();
             }
         });

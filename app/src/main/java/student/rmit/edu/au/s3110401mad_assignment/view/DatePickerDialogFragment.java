@@ -6,10 +6,10 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerDialogFragment extends DialogFragment {
     OnDateSetListener ondateSet;
 
-    public DatePickerFragment() {
+    public DatePickerDialogFragment() {
     }
 
     public void setCallBack(OnDateSetListener ondate) {

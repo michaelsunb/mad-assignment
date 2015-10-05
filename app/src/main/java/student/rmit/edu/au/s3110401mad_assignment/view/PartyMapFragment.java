@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -25,6 +25,8 @@ import java.util.Map;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
+import student.rmit.edu.au.s3110401mad_assignment.controller.PartyListActivity;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
@@ -38,6 +40,14 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
 
         View rootView = inflater.inflate(R.layout.fragment_party_map, container, false);
 
+        rootView.findViewById(R.id.main_party_list_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        goPartyListActivity();
+                    }
+                });
+
         try {
             if (googleMap == null) {
                 googleMap = ((MapFragment) getFragmentManager().
@@ -50,6 +60,17 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         //setMarkers(new RestJobsModel().queryAllJobs());
 
         return rootView;
+    }
+
+    private void goPartyListActivity() {
+        if(PartyModel.getSingleton().getAllParties().size() <= 0) {
+            Toast.makeText(
+                    getActivity(),"No parties happening!",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(getActivity(), PartyListActivity.class);
+        startActivity(intent);
     }
 
     public void setMarkers(List<MarkerOptions> locations) {
@@ -105,18 +126,18 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroyView() {
 
-        MapFragment f = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-
-        if (f != null) {
-            try {
-                getFragmentManager().beginTransaction().remove(f).commit();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
+//        MapFragment f = (MapFragment) getFragmentManager()
+//                .findFragmentById(R.id.map);
+//
+//        if (f != null) {
+//            try {
+//                getFragmentManager().beginTransaction().remove(f).commit();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
         super.onDestroyView();
     }

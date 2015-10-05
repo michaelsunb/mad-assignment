@@ -33,7 +33,7 @@
     <string name="party_text_latitude">Latitude</string>
     <string name="party_text_logitude">Longitude</string>
     <string name="party_movie_text">movie selected</string>
-    <string name="party_movie_button">Add Movie</string>
+    <string name="party_movie_button">Change Movie</string>
     <string name="party_invitees_text">invitee&#40;s&#41; selected</string>
     <string name="party_invitees_button">Invitee&#40;s&#41;</string>
     <string name="main_rating">Rating: </string>
@@ -41,5 +41,6 @@
     <string name="submit_party">Submit</string>
     <string name="party_venue_text">Venue</string>
     <string name="clear_text">Clear</string>
+    <string name="main_party_list_button">Party List</string>
 
 </resources>

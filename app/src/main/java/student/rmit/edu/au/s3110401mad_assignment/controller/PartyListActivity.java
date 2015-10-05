@@ -13,14 +13,13 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 public class PartyListActivity extends AppCompatActivity {
 
     private PartyListAdapter listAdapter;
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party_list);
 
-        listView = (ListView) findViewById(R.id.party_list);
+        ListView listView = (ListView) findViewById(R.id.party_list);
         listAdapter = new PartyListAdapter(this, 0, PartyModel.getSingleton().getAllParties());
         listView.setAdapter(listAdapter);
 

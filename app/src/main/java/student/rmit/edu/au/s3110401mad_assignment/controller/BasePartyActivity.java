@@ -8,16 +8,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,9 +26,10 @@ import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
-import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerFragment;
-import student.rmit.edu.au.s3110401mad_assignment.view.MultiSelectListFragment;
-import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerFragment;
+import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerDialogFragment;
+import student.rmit.edu.au.s3110401mad_assignment.view.MultiSelectListDialogFragment;
+import student.rmit.edu.au.s3110401mad_assignment.view.SingleSelectListFragment;
+import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerDialogFragment;
 
 /**
  * Created by Michaelsun Baluyos on 30/08/2015.
@@ -46,23 +42,23 @@ public class BasePartyActivity extends AppCompatActivity {
 
     protected int partyId;
     protected String whichMovie;
-    protected String movieIds;
-    protected String[] contactIds;
+    protected String movieId;
+    protected String[] checkedContactNames;
     protected Calendar datetime;
     protected AsyncTask<Context, Void, Map<String, Contacts>> asyncContactsTask;
+
     protected List<String> whichContacts = new ArrayList<>();
-    private Map<String, Contacts> contactsMap;
 
-    private DatePickerFragment date = new DatePickerFragment();
-    private TimePickerFragment time = new TimePickerFragment();
+    private DatePickerDialogFragment date = new DatePickerDialogFragment();
+    private TimePickerDialogFragment time = new TimePickerDialogFragment();
 
-    private MultiSelectListFragment movieList = new MultiSelectListFragment();
-    private MultiSelectListFragment contactList = new MultiSelectListFragment();
+    private SingleSelectListFragment movieList = new SingleSelectListFragment();
+    private MultiSelectListDialogFragment contactList = new MultiSelectListDialogFragment();
 
-    public TimePickerFragment getTime() {
+    public TimePickerDialogFragment getTime() {
         return time;
     }
-    public DatePickerFragment getDate() {
+    public DatePickerDialogFragment getDate() {
         return date;
     }
 
@@ -95,66 +91,7 @@ public class BasePartyActivity extends AppCompatActivity {
         );
 
         PartyModel.getSingleton().addParty(partyStruct);
-
-        if(whichContacts.size() > 0) {
-            ContactsModel contactsModel = ContactsModel.getSingleton();
-            contactsModel.setContactsMap(contactsMap);
-            for(String contactId : whichContacts) {
-                Contacts contact = contactsModel.getById(contactId);
-                String forContact = contact.getPhone();
-
-                JSONObject movieObj = new JSONObject();
-                JSONArray movieObjArray = new JSONArray();
-                try {
-                    movieObj.put(whichMovie, MovieModel.getSingleton().getMovieById(whichMovie).getTitle());
-                    movieObjArray.put(movieObj);
-                } catch(Exception ex) {
-                    Log.i(LOG_ERROR, ex.getMessage());
-                }
-
-                JSONObject contactObj = new JSONObject();
-                JSONArray contactObjArray = new JSONArray();
-                try {
-                    for (String contactId2 : whichContacts) {
-                        contactObj.put(contactId2,contactsModel.getById(contactId2).getName());
-                    }
-                    contactObjArray.put(contactObj);
-                } catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                JSONObject locationObj = new JSONObject();
-                JSONArray locationObjArray = new JSONArray();
-                try {
-                    locationObj.put("longitude",location[PartyStruct.LONGITUDE]);
-                    locationObj.put("latitude",location[PartyStruct.LATITUDE]);
-                    locationObjArray.put(locationObj);
-                } catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                JSONObject message = new JSONObject();
-                try {
-                    int year = datetime.get(Calendar.YEAR);
-                    int monthOfYear = datetime.get(Calendar.MONTH);
-                    int dayOfMonth = datetime.get(Calendar.DAY_OF_MONTH);
-
-                    message.put("attendees", contactObjArray);
-                    message.put("datetime", year + "-" + monthOfYear + "-" + dayOfMonth);
-                    message.put("venue", venueTitle);
-                    message.put("location", locationObjArray);
-                    message.put("movies", movieObjArray);
-
-                    Toast.makeText(this, "Message sent to " + whichContacts.size() + " contacts."
-                            , Toast.LENGTH_SHORT).show();
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(forContact, null, message.toString(), null, null);
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
+        ContactsModel.getSingleton().setContactsToParty(whichContacts, partyId);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -172,33 +109,16 @@ public class BasePartyActivity extends AppCompatActivity {
             index++;
         }
         args.putStringArray("list_title", movieTitles);
-        if (movieIds != null) {
-            args.putString("selected_title",
-                    movieModel.getMovieById(movieIds).getTitle());
-        }
 
         movieList.setCallBack(
-                new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        String movieId =
-                                MovieModel.getSingleton().getByName(movieTitles[which]).getId();
-                        if (isChecked) {
-                            if(!whichMovie.contains(movieId))
-                                whichMovie = movieId;
-                        } else {
-                            if(whichMovie.contains(movieId))
-                                whichMovie = null;
-                        }
-
-                        movieList.setCheckedItems(which,isChecked);
-                    }
-                },
                 new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        whichMovie = MovieModel.getSingleton().getByName(movieTitles[id]).getId();
+
                         ((TextView) findViewById(party_movie_text)).setText(
-                                MovieModel.getSingleton().getByName(whichMovie)
-                                        + " " + getText(R.string.party_movie_text));
+                                movieTitles[id] + " " + getText(R.string.party_movie_text));
+                        dialog.dismiss();
                     }
                 });
         movieList.setArguments(args);
@@ -209,7 +129,7 @@ public class BasePartyActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         final String[] contactNames;
         try {
-            contactsMap = asyncContactsTask.get();
+            Map<String, Contacts> contactsMap = asyncContactsTask.get();
             ContactsModel.getSingleton().setContactsMap(contactsMap);
 
             contactNames = new String[contactsMap.size()];
@@ -222,8 +142,8 @@ public class BasePartyActivity extends AppCompatActivity {
             return;
         }
         args.putStringArray("list_title", contactNames);
-        if(contactIds != null)
-            args.putStringArray("selected_title", contactIds);
+        if(checkedContactNames != null)
+            args.putStringArray("selected_title", checkedContactNames);
 
         contactList.setArguments(args);
         contactList.setCallBack(
@@ -233,16 +153,31 @@ public class BasePartyActivity extends AppCompatActivity {
                         ContactsModel contactsModel = ContactsModel.getSingleton();
                         String contactId =
                                 contactsModel.getByName(contactNames[which]).getId();
-                        if (isChecked)
-                            whichContacts.add(contactId);
-                        else if (whichContacts.contains(contactId))
+
+                        if (isChecked) {
+                            if(!whichContacts.contains(contactId))
+                                whichContacts.add(contactId);
+                        } else if (whichContacts.contains(contactId)) {
                             whichContacts.remove(contactId);
+                        }
                     }
                 },
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ((TextView) findViewById(party_invitees_text)).setText(
                                 whichContacts.size() + " " + getText(R.string.party_invitees_text));
+
+                        if(whichContacts.size() == 0) {
+                            checkedContactNames = null;
+                            return;
+                        }
+
+                        checkedContactNames = new String[whichContacts.size()];
+                        int i = 0;
+                        for (String contactId : whichContacts) {
+                            checkedContactNames[i++] =
+                                    ContactsModel.getSingleton().getById(contactId).getName();
+                        }
                     }
                 });
         contactList.show(getSupportFragmentManager(), "Contact Select Picker");

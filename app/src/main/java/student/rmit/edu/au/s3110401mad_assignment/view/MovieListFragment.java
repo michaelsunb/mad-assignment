@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,9 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
@@ -104,9 +100,12 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
             context = getActivity();
         String sortOrder = DatabaseHelper.MOVIE_TITLE + " COLLATE LOCALIZED ASC";
 
+        /**
+         * https://stackoverflow.com/a/21325236
+         * Don't want a shared database so overrider CursorLoader
+         */
         return new CursorLoader(context, null, DatabaseHelper.MOVIE_SUMMARY_PROJECTION,
-                null, null, sortOrder)
-        {
+                null, null, sortOrder) {
             @Override
             public Cursor loadInBackground() {
                 if(mCurFilter == null) return null;

@@ -6,10 +6,10 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class TimePickerFragment extends DialogFragment {
+public class TimePickerDialogFragment extends DialogFragment {
     OnTimeSetListener onTimeSet;
 
-    public TimePickerFragment() {
+    public TimePickerDialogFragment() {
     }
 
     public void setCallBack(OnTimeSetListener ondate) {

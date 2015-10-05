@@ -35,21 +35,23 @@ public class EditPartyActivity extends BasePartyActivity {
             partyId = extras.getInt("party_id");
             Party party =
                     PartyModel.getSingleton().getPartyById(partyId);
-            movieIds = party.getImDB();
-
-            List<Contacts> contacts = ContactsModel.getSingleton().getByPartyId(partyId);
-            contactIds = new String[contacts.size()];
-            for(int i=0; i < contacts.size(); i++) {
-                contactIds[i] = contacts.get(i).getId();
-            }
+            whichMovie = movieId = party.getImDB();
 
             if(party.getDate() != null)
                 datetime.setTime(party.getDate().getTime());
             viewById.setText(
-                    MovieModel.getSingleton().getMovieById(movieIds).getTitle()
+                    MovieModel.getSingleton().getMovieById(movieId).getTitle()
                             + " " + getText(R.string.party_movie_text)
             );
 
+            List<Contacts> contacts = ContactsModel.getSingleton().getByPartyId(partyId);
+            checkedContactNames = new String[contacts.size()];
+            for(int i=0; i < contacts.size(); i++) {
+                checkedContactNames[i] = contacts.get(i).getName();
+            }
+
+            ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
+                    checkedContactNames.length + " " + getText(R.string.party_invitees_text));
             ((EditText)findViewById(R.id.edit_party_venue_edit_text)).setText(party.getVenue());
             ((EditText)findViewById(R.id.edit_party_longitude_edit_text)).setText(
                     "" + party.getLocation()[PartyStruct.LONGITUDE]);
@@ -61,10 +63,6 @@ public class EditPartyActivity extends BasePartyActivity {
                     "0 " + getText(R.string.party_movie_text)
             );
         }
-
-        ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
-                whichContacts.size() + " " + getText(R.string.party_invitees_text)
-        );
 
         findViewById(R.id.edit_party_date_picker).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,9 +28,9 @@ public class CreatePartyActivity extends BasePartyActivity {
 
         try {
             Bundle extras = getIntent().getExtras();
-            movieIds = extras.getString(getString(R.string.movie_id));
+            whichMovie = movieId = extras.getString(getString(R.string.movie_id));
             ((TextView) findViewById(R.id.create_party_movie_text)).setText(
-                    MovieModel.getSingleton().getMovieById(movieIds).getTitle()
+                    MovieModel.getSingleton().getMovieById(movieId).getTitle()
                             + " " + getText(R.string.party_movie_text)
             );
         } catch (Exception e) {

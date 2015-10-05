@@ -15,12 +15,14 @@ import java.util.Map;
  * Created by Michaelsun Baluyos on 29/08/2015.
  */
 public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>> {
+    public static final int NO_PARTY = -1;
+
     private Cursor cur;
     private ContentResolver cr;
 
     private static ContactsModel singleton;
     private Map<String, Contacts> contactsMap;
-    private Integer partyId;
+    private Integer partyId = NO_PARTY;
 
     public static ContactsModel getSingleton() {
         if(singleton == null)
@@ -36,10 +38,11 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
     public Contacts getById(String id) {
         return contactsMap.get(id);
     }
+
     public List<Contacts> getByPartyId(int partyId) {
         List<Contacts> contacts = new ArrayList<>();
-        for(Map.Entry contactEntry : contactsMap.entrySet()) {
-            Contacts contact = (Contacts) contactEntry.getValue();
+        for(Map.Entry<String,Contacts> contactEntry : contactsMap.entrySet()) {
+            Contacts contact = contactEntry.getValue();
             if(contact.getPartyId() == partyId) {
                 contacts.add(contact);
             }
@@ -59,12 +62,14 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         this.contactsMap = contactsMap;
     }
 
-    public void setOrAddParty(List<String> contactId, Integer partyId) {
-        for(Map.Entry<String,Contacts> entry : contactsMap.entrySet()) {
-            Contacts contacts = entry.getValue();
-            if (contacts.getPartyId() == partyId) {
-                ((ContactsStruct)contacts).setPartyId(0);
-                contactsMap.put(contacts.getId(),contacts);
+    public void setContactsToParty(List<String> contactIds, Integer partyId) {
+        for(String contactId : contactIds) {
+            for(Map.Entry<String,Contacts> entry : contactsMap.entrySet()) {
+                Contacts contacts = entry.getValue();
+                if (contacts.getId().equals(contactId)) {
+                    ((ContactsStruct)contacts).setPartyId(partyId);
+                    contactsMap.put(contacts.getId(),contacts);
+                }
             }
         }
     }
@@ -134,6 +139,8 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
                 new String[]{id},
                 null);
         // Just get the first in the list
+        if(pCur.getCount() == 0) return "";
+
         pCur.moveToNext();
         String email = pCur
                 .getString(pCur
