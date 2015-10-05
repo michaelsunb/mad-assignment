@@ -2,19 +2,14 @@ package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.LoaderManager;
-import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CursorAdapter;
 import android.widget.SearchView;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
-import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayAdapter;
-import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.view.MovieListFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.PartyMapFragment;
 
@@ -75,8 +70,7 @@ public class MainActivity extends AppCompatActivity implements
                 newText.length() > 2) {
             Fragment fragment = useMovieListFragment(newText);
             selectFragment(fragment,true);
-//            getLoaderManager().restartLoader(0, null,
-//                    ((LoaderManager.LoaderCallbacks)fragment));
+
             return true;
         }
 
@@ -86,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private Fragment useMovieListFragment(String newText) {
         MovieListFragment fragment = new MovieListFragment();
-//        fragment.setmAdapter(mAdapter);
         fragment.setCurFilter(this,
                 !TextUtils.isEmpty(newText) ? newText : null);
 

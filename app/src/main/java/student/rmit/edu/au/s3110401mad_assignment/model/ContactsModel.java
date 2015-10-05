@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Created by Michaelsun Baluyos on 29/08/2015.
+ *
+ *
  */
 public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>> {
     public static final int NO_PARTY = -1;
@@ -35,6 +37,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
     public Map<String,Contacts> getContacts() {
         return contactsMap;
     }
+
     public Contacts getById(String id) {
         return contactsMap.get(id);
     }

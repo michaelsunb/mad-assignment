@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Created by Michaelsun Baluyos on 27/08/2015.
+ *
+ *
  */
 public interface Party {
     int getId();
@@ -16,6 +18,4 @@ public interface Party {
     String getVenue();
 
     double[] getLocation();
-
-//    void setLocation(double longitude, double latitude);
 }

@@ -33,6 +33,8 @@ import student.rmit.edu.au.s3110401mad_assignment.view.TimePickerDialogFragment;
 
 /**
  * Created by Michaelsun Baluyos on 30/08/2015.
+ *
+ *
  */
 public class BasePartyActivity extends AppCompatActivity {
     final static private String LOG_ERROR = "ERROR @ ";
@@ -87,7 +89,6 @@ public class BasePartyActivity extends AppCompatActivity {
                 datetime,
                 venueTitle,
                 location
-//                ,whichContacts
         );
 
         PartyModel.getSingleton().addParty(partyStruct);

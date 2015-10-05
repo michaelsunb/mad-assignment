@@ -1,6 +1,7 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +59,7 @@ public class EditPartyActivity extends BasePartyActivity {
             ((EditText)findViewById(R.id.edit_party_latitude_edit_text)).setText(
                     "" + party.getLocation()[PartyStruct.LATITUDE]);
         } catch (Exception e) {
-            System.out.println("Oh no! Something happened: " + e.getMessage());
+            Log.e("ayy lmao wrong", e.getMessage());
             viewById.setText(
                     "0 " + getText(R.string.party_movie_text)
             );

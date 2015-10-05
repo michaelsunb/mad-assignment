@@ -75,10 +75,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         //finish();
     }
 
-    public String getMovieId() {
-        return movieId;
-    }
-
     public Movie getMovie(String movieId) {
         MovieModel theModel = MovieModel.getSingleton();
         return theModel.getMovieById(movieId);

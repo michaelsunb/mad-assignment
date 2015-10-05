@@ -2,12 +2,10 @@ package student.rmit.edu.au.s3110401mad_assignment.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 public class MultiSelectListDialogFragment extends DialogFragment {
 
@@ -29,8 +27,7 @@ public class MultiSelectListDialogFragment extends DialogFragment {
         super.setArguments(args);
         listTitle = args.getStringArray("list_title");
         selectedTitle = args.getStringArray("selected_title");
-        Log.e("ayy lmao size of select", (selectedTitle != null ? selectedTitle.length :
-                "It's a null!!!!") + "");
+
         getSelectedBooleans();
     }
 

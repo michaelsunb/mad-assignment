@@ -94,9 +94,7 @@ public class PartyListAdapter extends BaseAdapter {
 
         viewHolder.eventAttendeeCount = (TextView) convertView
                 .findViewById(R.id.party_list_attendee_count);
-//        viewHolder.eventAttendeeCount.setText(convertView.getResources()
-//                .getString(R.string.party_list_attendee_text)
-//                + (new StringBuilder().append(party.getInviteeIDs().size()).toString()));
+
         viewHolder.eventAttendeeCount.setText(convertView.getResources()
                 .getString(R.string.party_list_attendee_text)
                 + ContactsModel.getSingleton().getByPartyId(party.getId()).size() + "");

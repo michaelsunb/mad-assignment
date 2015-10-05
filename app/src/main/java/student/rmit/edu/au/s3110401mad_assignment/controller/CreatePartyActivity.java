@@ -14,9 +14,6 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class CreatePartyActivity extends BasePartyActivity {
 
-    public static final int MOVIE_ID = 0;
-    public static final int NUMBER_OF_MOVIE_ID = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

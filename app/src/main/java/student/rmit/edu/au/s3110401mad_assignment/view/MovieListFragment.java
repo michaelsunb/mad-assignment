@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +33,6 @@ import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.
 public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView movieListView;
-    private ProgressBar progressBar;
 
     private CursorAdapter mAdapter;
     private String mCurFilter;
@@ -87,7 +85,6 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
         asyncTask.execute(mCurFilter);
         try {
             List<Movie> asyncTaskGet = asyncTask.get();
-            if(progressBar != null) progressBar.setVisibility(View.INVISIBLE);
             return new ListToMatrixCursor(asyncTaskGet).execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -132,7 +129,6 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void resetCursor() {
-
         // Destroys variables and references, and catches Exceptions
         try {
             if (mAdapter != null) {

@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
+ *
+ *
  */
 public class MovieModel {
     private static MovieModel singleton;

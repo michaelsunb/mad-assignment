@@ -30,7 +30,7 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 
 public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
-    private MapFragment mapFragment;
+//    private MapFragment mapFragment;
 
     private List<MarkerOptions> markers = new ArrayList<>();
 	
@@ -73,12 +73,12 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         startActivity(intent);
     }
 
-    public void setMarkers(List<MarkerOptions> locations) {
-        this.markers = new ArrayList<>();
-        this.markers = locations;
-
-        onMapReady(googleMap);
-    }
+//    public void setMarkers(List<MarkerOptions> locations) {
+//        this.markers = new ArrayList<>();
+//        this.markers = locations;
+//
+//        onMapReady(googleMap);
+//    }
 
     public void onMapReady(final GoogleMap map) {
         if(markers.size() <= 0) return;
@@ -125,19 +125,18 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroyView() {
+        MapFragment f = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
 
-//        MapFragment f = (MapFragment) getFragmentManager()
-//                .findFragmentById(R.id.map);
-//
-//        if (f != null) {
-//            try {
-//                getFragmentManager().beginTransaction().remove(f).commit();
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+        if (f != null) {
+            try {
+                getFragmentManager().beginTransaction().remove(f).commit();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
         super.onDestroyView();
     }

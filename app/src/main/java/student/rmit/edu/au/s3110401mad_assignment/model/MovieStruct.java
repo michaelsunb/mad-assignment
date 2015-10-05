@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Michaelsun Baluyos on 24/08/2015.
+ *
+ *
  */
 public class MovieStruct implements Movie {
     private String id;

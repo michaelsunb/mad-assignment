@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 /**
  * Created by Michaelsun Baluyos on 25/08/2015.
+ *
+ *
  */
 public interface Movie {
     String getId();
