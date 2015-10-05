@@ -110,10 +110,4 @@ public class MovieDatabaseManager {
 
         database.update(DatabaseHelper.MOVIE_TABLE_NAME, contentValues, whereClause, null);
     }
-
-    // TODO: possibly delete
-    public void deleteMovie(String id){
-        String selectionToBeDeleted = DatabaseHelper.MOVIE_ID + " = \"" + id + "\"";
-        database.delete(DatabaseHelper.MOVIE_TABLE_NAME, selectionToBeDeleted, null);
-    }
 }

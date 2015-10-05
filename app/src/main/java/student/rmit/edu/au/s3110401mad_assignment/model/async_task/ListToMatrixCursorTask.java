@@ -40,7 +40,6 @@ public class ListToMatrixCursorTask extends AsyncTask<Void,Void,MatrixCursor> {
                     movie.getTitle(),
                     movie.getYear(),
                     movie.getShortPlot(),
-//                    movie.getFullPlot(),
                     MovieModel.bitMapToString(movie.getPoster()),
                     movie.getRating() + ""
             });

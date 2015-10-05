@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MovieDetailActivity"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <ImageView
+            android:scaleType="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/movie_detail_poster"
+            android:contentDescription="@string/image_description"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/placeholder" />
+
+        <TextView
+            android:gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:id="@+id/movie_detail_title"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/movie_detail_poster"
+            android:layout_marginLeft="@dimen/left_of_poster" />
+
+        <TextView
+            android:gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:id="@+id/movie_detail_year"
+            android:layout_below="@+id/movie_detail_title"
+            android:layout_toRightOf="@+id/movie_detail_poster"
+            android:layout_toEndOf="@+id/movie_detail_poster"
+            android:layout_marginLeft="@dimen/left_of_poster"/>
+    </RelativeLayout>
+    <TextView
+        android:gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder"
+        android:id="@+id/movie_detail_plot_view" />
+    <RatingBar
+        android:gravity="end"
+        android:fillViewport="true"
+        android:id="@+id/move_detail_rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="@integer/max_ratings"
+        android:stepSize="1.0"
+        android:rating="2.0" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_movie_party"
+        android:id="@+id/add_movie_party"
+        android:layout_gravity="end" />
+</LinearLayout>

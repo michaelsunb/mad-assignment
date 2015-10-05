@@ -15,11 +15,13 @@ import java.util.List;
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
-import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ContactQueryDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyEditDBTask;
+import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
 
 public class PartyEditActivity extends BasePartyActivity {
 
@@ -29,7 +31,7 @@ public class PartyEditActivity extends BasePartyActivity {
         setContentView(R.layout.activity_edit_party);
 
         datetime = Calendar.getInstance();
-        asyncContactsTask = new ContactsModel().execute(this);
+        asyncContactsTask = new ContactQueryDBTask().execute(this);
         partyId = (PartyModel.getSingleton().getAllParties().size() + 1);
 
         TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
@@ -42,15 +44,29 @@ public class PartyEditActivity extends BasePartyActivity {
 
             if(party.getDate() != null)
                 datetime.setTime(party.getDate().getTime());
-            viewById.setText(
-                    MovieModel.getSingleton().getMovieById(movieId).getTitle()
-                            + " " + getText(R.string.party_movie_text)
-            );
+
+            String movieTitle = "0";
+            List<Movie> movies;
+            if (party.getMovieTitle() != null) {
+                movies = new MovieMemoryManagementClient(this)
+                        .execute(party.getMovieTitle()).get();
+
+                movieTitle = party.getMovieTitle();
+                for (Movie movie : movies) {
+                    if(movie.getId().equals(movieId)) {
+                        movieTitle = movie.getTitle();
+                        break;
+                    }
+                }
+            }
+
+            viewById.setText(movieTitle + " " + getText(R.string.party_movie_text));
 
             List<Contacts> contacts = ContactsModel.getSingleton().getByPartyId(partyId);
             checkedContactNames = new String[contacts.size()];
             for(int i=0; i < contacts.size(); i++) {
                 checkedContactNames[i] = contacts.get(i).getName();
+                whichContacts.add(contacts.get(i).getId());
             }
 
             ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
@@ -99,9 +115,9 @@ public class PartyEditActivity extends BasePartyActivity {
         findViewById(R.id.edit_party_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Party party = submitAndCreateParty(R.id.create_party_latitude_edit_text,
-                        R.id.create_party_venue_edit_text,
-                        R.id.create_party_longitude_edit_text);
+                Party party = submitAndCreateParty(R.id.edit_party_latitude_edit_text,
+                        R.id.edit_party_venue_edit_text,
+                        R.id.edit_party_latitude_edit_text);
 
                 if(party != null) {
                     new PartyEditDBTask(context,party,whichContacts).execute();

@@ -32,7 +32,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         return singleton;
     }
 
-    public ContactsModel() {}
+    public ContactsModel() { this.contactsMap = new HashMap<>(); }
 
     public Contacts getById(String id) {
         return contactsMap.get(id);
@@ -152,7 +152,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         this.execute(context);
     }
 
-    public Map<String,Contacts> getContacts() {
+    public Map<String,Contacts> getAllContacts() {
         return contactsMap;
     }
 }

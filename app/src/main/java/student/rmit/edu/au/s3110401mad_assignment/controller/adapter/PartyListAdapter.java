@@ -119,7 +119,7 @@ public class PartyListAdapter extends BaseAdapter {
             @Override
             public void onClick(View arg0) {
                 PartyModel.getSingleton().deleteEvent(party.getId());
-                new PartyDeleteDBTask(context,position).execute();
+                new PartyDeleteDBTask(context,getItem(position).getId()).execute();
                 partyList.remove(position);
                 notifyDataSetChanged();
             }

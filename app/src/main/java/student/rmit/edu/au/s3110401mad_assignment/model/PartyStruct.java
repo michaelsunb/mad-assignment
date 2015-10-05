@@ -16,11 +16,13 @@ public class PartyStruct implements Party {
     private Calendar date;
     private String venue;
     private double[] location = new double[LONGITUDE_LATITUDE];
+    private String movieTitle;
 
-    public PartyStruct(int id, String idDB, String date, String venue, String location) {
+    public PartyStruct(int id, String idDB, String movieTitle, String date, String venue, String location) {
         this.id = id;
         this.idDB = idDB;
         this.venue = venue;
+        this.movieTitle = movieTitle;
 
         try {
             this.date = PartyModel.stringToCalendar(date);
@@ -34,12 +36,13 @@ public class PartyStruct implements Party {
         }
     }
 
-    public PartyStruct(int id, String idDB, Calendar date, String venue, double[] location) {
+    public PartyStruct(int id, String idDB, String movieTitle, Calendar date, String venue, double[] location) {
         this.id = id;
         this.idDB = idDB;
         this.date = date;
         this.venue = venue;
         this.location = location;
+        this.movieTitle = movieTitle;
     }
 
     @Override
@@ -65,5 +68,10 @@ public class PartyStruct implements Party {
     @Override
     public double[] getLocation() {
         return location;
+    }
+
+    @Override
+    public String getMovieTitle() {
+        return movieTitle;
     }
 }

@@ -12,6 +12,8 @@ public interface Party {
 
     String getImDB();
 
+    String getMovieTitle();
+
     Calendar getDate();
 
     String getVenue();

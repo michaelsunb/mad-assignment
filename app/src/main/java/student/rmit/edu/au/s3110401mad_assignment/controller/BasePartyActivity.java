@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ContactQueryDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerDialogFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.MultiSelectListDialogFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.SingleSelectListFragment;
@@ -89,13 +91,15 @@ public class BasePartyActivity extends AppCompatActivity {
         double[] location = {longitude,latitude};
 
 
+        String movieTitle = MovieModel.getSingleton().getMovieById(whichMovie).getTitle();
+        Log.e("ayy lmao " + whichMovie, movieTitle);
         PartyStruct partyStruct = new PartyStruct(
                 partyId,
                 whichMovie,
+                movieTitle,
                 datetime,
                 venueTitle,
-                location
-        );
+                location);
 
         PartyModel.getSingleton().addParty(partyStruct);
         ContactsModel.getSingleton().setContactsToParty(whichContacts, partyId);
@@ -156,6 +160,8 @@ public class BasePartyActivity extends AppCompatActivity {
         if(checkedContactNames != null)
             args.putStringArray("selected_title", checkedContactNames);
 
+        final List<String> tempWhichContacts = whichContacts;
+
         contactList.setArguments(args);
         contactList.setCallBack(
                 new DialogInterface.OnMultiChoiceClickListener() {
@@ -166,10 +172,10 @@ public class BasePartyActivity extends AppCompatActivity {
                                 contactsModel.getByName(contactNames[which]).getId();
 
                         if (isChecked) {
-                            if(!whichContacts.contains(contactId))
-                                whichContacts.add(contactId);
-                        } else if (whichContacts.contains(contactId)) {
-                            whichContacts.remove(contactId);
+                            if(!tempWhichContacts.contains(contactId))
+                                tempWhichContacts.add(contactId);
+                        } else if (tempWhichContacts.contains(contactId)) {
+                            tempWhichContacts.remove(contactId);
                         }
                     }
                 },
@@ -183,6 +189,7 @@ public class BasePartyActivity extends AppCompatActivity {
                             return;
                         }
 
+                        whichContacts = tempWhichContacts;
                         checkedContactNames = new String[whichContacts.size()];
                         int i = 0;
                         for (String contactId : whichContacts) {

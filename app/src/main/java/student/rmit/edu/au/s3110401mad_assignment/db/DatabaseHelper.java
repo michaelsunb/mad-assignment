@@ -33,7 +33,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MOVIE_TITLE,
             MOVIE_YEAR,
             MOVIE_SHORT_PLOT,
-//            MOVIE_FULL_PLOT,
             MOVIE_IMAGE_BITMAP,
             MOVIE_RATING};
 
@@ -41,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PARTY_TABLE_NAME = "party";
     public static final String PARTY_ID = "_id";
     public static final String PARTY_MOVIE_ID = "movieId";
+    public static final String PARTY_MOVIE_TITLE = "movieTitle";
     public static final String PARTY_DATETIME = "datetime";
     public static final String PARTY_VENUE = "place";
     public static final String PARTY_LOCATION = "location";
@@ -48,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             PARTY_TABLE_NAME +
             " ("+ PARTY_ID + " INTEGER PRIMARY KEY, " +
             PARTY_MOVIE_ID + " VARCHAR, " +
+            PARTY_MOVIE_TITLE + " VARCHAR, " +
             PARTY_DATETIME + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
             PARTY_VENUE + " VARCHAR, " +
             PARTY_LOCATION + " VARCHAR);";
