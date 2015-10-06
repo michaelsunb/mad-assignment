@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Map;
 
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
-import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
@@ -123,7 +121,6 @@ public class PartyDatabaseManager {
 
     /** Invitee stuff **/
     public void editInvitees(String contactId,int partyId){
-        Log.e("Ayy lmao edit inv", contactId + " " + partyId);
         String whereClause =
                 DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \"" + contactId + "\" AND " +
                 DatabaseHelper.PARTY_INVITEE_PARTY_ID + " = \"" + partyId + "\"";
@@ -137,7 +134,6 @@ public class PartyDatabaseManager {
     }
 
     public void addInvitees(String contactId,int partyId){
-        Log.e("Ayy lmao add inv", contactId + " " + partyId);
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.PARTY_INVITEE_CONTACTS_ID, contactId);
         contentValues.put(DatabaseHelper.PARTY_INVITEE_PARTY_ID, partyId);
@@ -151,7 +147,6 @@ public class PartyDatabaseManager {
                 + " WHERE " + DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \""
                 + contactId + "\" AND " + DatabaseHelper.PARTY_INVITEE_PARTY_ID
                 + " = \"" + partyId + "\"";
-        Log.e("Ayy lmao query", sql);
         addEditInvitees(contactId, partyId,
                 (database.rawQuery(sql, null).getCount() != 0));
     }
@@ -169,7 +164,6 @@ public class PartyDatabaseManager {
     }
 
     public void deleteInvite(String contactId, int partyId){
-        Log.e("Ayy lmao del inv", contactId + " " + partyId);
         String selectionToBeDeleted =
                 DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \"" + contactId + "\" AND " +
                 DatabaseHelper.PARTY_INVITEE_PARTY_ID + " = \"" + partyId + "\"";
@@ -190,8 +184,6 @@ public class PartyDatabaseManager {
             Integer partyId =
                     partyCursor.getInt(
                             partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_PARTY_ID));
-
-            Log.e("Ayy lmao getting query", contactId + " " + partyId);
 
             partyInviteeModel.addLink(contactId, partyId);
             partyCursor.moveToNext();

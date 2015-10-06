@@ -77,7 +77,6 @@ public class PartyEditActivity extends BasePartyActivity {
             ((EditText)findViewById(R.id.edit_party_latitude_edit_text)).setText(
                     "" + party.getLocation()[PartyStruct.LATITUDE]);
         } catch (Exception e) {
-            Log.e("ayy lmao wrong", e.getMessage());
             viewById.setText(
                     "0 " + getText(R.string.party_movie_text)
             );

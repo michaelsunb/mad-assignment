@@ -3,7 +3,6 @@ package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,8 +40,6 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
 
     @Override
     protected boolean hasEntry(String query) {
-        Log.e("Ayy lmao Class is", this.getClass().getSimpleName());
-
         String json = getJsonFromHttp(OMDB_URL_SEARCH,query);
 
         MovieDatabaseManager db = null;
@@ -90,7 +87,6 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
             db = null;
             return true;
         } catch (Throwable t) {
-            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
             t.printStackTrace();
             return false;
         } finally {
@@ -102,7 +98,6 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
 
     public Bitmap getBitmapFromURL(String src) {
         try {
-            Log.e("Bitmap Url is",src);
             URL url = new URL(src);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
@@ -112,7 +107,6 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
             Bitmap.createScaledBitmap(b, 100, 100, false);
             return b;
         } catch (IOException e) {
-            Log.e("No Bitmap. Url is",src);
             return null;
         }
     }

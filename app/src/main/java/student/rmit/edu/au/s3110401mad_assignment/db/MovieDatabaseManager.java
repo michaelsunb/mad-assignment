@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class MovieDatabaseManager {
     // 89 characters seems to be the max length before 10x of these short plots bugs out
@@ -39,8 +38,6 @@ public class MovieDatabaseManager {
         if(database.rawQuery("SELECT * FROM " + DatabaseHelper.MOVIE_TABLE_NAME
                 + " WHERE " + DatabaseHelper.MOVIE_ID + " = \""
                 + newMovie.getId() + "\"",null).getCount() != 0) return;
-
-        Log.e("Ayy lmao", "I am adding " + newMovie.getTitle());
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.MOVIE_ID, newMovie.getId());

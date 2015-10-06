@@ -1,7 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -21,8 +20,6 @@ public class PartyMemory extends PartyMemoryManagementHandler
 
     @Override
     protected boolean hasEntry() {
-        Log.e("Ayy lmao Class is", this.getClass().getSimpleName());
-
         if(partyModel.getAllParties().size()==0) return false;
 
         filteredParty = new ArrayList<>();

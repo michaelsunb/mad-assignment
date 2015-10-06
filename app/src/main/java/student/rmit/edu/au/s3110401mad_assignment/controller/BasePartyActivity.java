@@ -100,7 +100,7 @@ public class BasePartyActivity extends AppCompatActivity {
 
 
         String movieTitle = MovieModel.getSingleton().getMovieById(whichMovie).getTitle();
-        Log.e("ayy lmao " + whichMovie, movieTitle);
+
         PartyStruct partyStruct = new PartyStruct(
                 partyId,
                 whichMovie,

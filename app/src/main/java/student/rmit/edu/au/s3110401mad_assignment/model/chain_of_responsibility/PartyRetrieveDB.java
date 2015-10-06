@@ -1,7 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -17,8 +16,6 @@ public class PartyRetrieveDB extends PartyMemoryManagementHandler {
 
     @Override
     protected boolean hasEntry() {
-        Log.e("Ayy lmao Class is", this.getClass().getSimpleName());
-
         PartyDatabaseManager edm =
                 new PartyDatabaseManager(context.getApplicationContext());
         edm.open();

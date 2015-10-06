@@ -5,7 +5,6 @@ import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -18,8 +17,6 @@ public class MovieRetrieveDB extends MovieMemoryManagementHandler {
 
     @Override
     protected boolean hasEntry(String query) {
-        Log.e("Ayy lmao Class is", this.getClass().getSimpleName());
-
         MovieDatabaseManager edm =
                 new MovieDatabaseManager(context.getApplicationContext());
         edm.open();

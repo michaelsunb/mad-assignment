@@ -52,7 +52,8 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
     private String googleDistanceMatrixUrl(String currLocationLat, String currLocationLong) {
         final String apiKey = context.getString(R.string.google_map_api_key);
 
-        StringBuilder urlAddress = new StringBuilder();
+        StringBuilder urlAddress;
+        urlAddress = new StringBuilder();
 
         urlAddress.append(HTTPS_MAPS_GOOGLEAPIS_COM_MAPS_API_DISTANCE_MATRIX_JSON);
         urlAddress.append("key=");
@@ -97,8 +98,6 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
         InputStream inp = null;
 
         try {
-            Log.e("ayy lmao distance url",googleDistanceMatrixUrl(currLocationLat, currLocationLong));
-
             URL url = new URL(googleDistanceMatrixUrl(currLocationLat, currLocationLong));
             con = (HttpURLConnection) url.openConnection();
             con.connect();
