@@ -40,7 +40,7 @@ public class MovieDatabaseManager {
                 + " WHERE " + DatabaseHelper.MOVIE_ID + " = \""
                 + newMovie.getId() + "\"",null).getCount() != 0) return;
 
-        Log.i("Ayy lmao", "I am adding " + newMovie.getTitle());
+        Log.e("Ayy lmao", "I am adding " + newMovie.getTitle());
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.MOVIE_ID, newMovie.getId());

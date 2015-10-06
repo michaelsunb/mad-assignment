@@ -119,14 +119,18 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
 
     public String getJsonFromHttp(String omdbUrl, String query) {
         BufferedReader reader = null;
+        HttpURLConnection con = null;
+        InputStream inp = null;
 
         try {
             URL url = new URL(omdbUrl + query.replace(" ", "%20"));
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con = (HttpURLConnection) url.openConnection();
+            con.connect();
+            inp = con.getInputStream();
+
+            reader = new BufferedReader(new InputStreamReader(inp));
 
             StringBuilder sb = new StringBuilder();
-            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
@@ -136,12 +140,18 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
         }catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if (reader != null) {
                     reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+                if (inp != null) {
+                    inp.close();
+                }
+                if (con != null) {
+                    con.disconnect();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

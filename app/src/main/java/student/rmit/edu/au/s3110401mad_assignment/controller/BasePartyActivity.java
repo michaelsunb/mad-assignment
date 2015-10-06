@@ -82,6 +82,13 @@ public class BasePartyActivity extends AppCompatActivity {
                                     .getText().toString());
 
             venueTitle = ((EditText)findViewById(party_venue_edit_text)).getText().toString();
+
+            if(whichContacts.size() == 0) {
+                Toast.makeText(this, "Please choose a contact",
+                        Toast.LENGTH_LONG).show();
+                return null;
+            }
+
         } catch (Exception e) {
             Toast.makeText(this, "Please enter a location number",
                     Toast.LENGTH_LONG).show();

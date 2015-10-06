@@ -42,5 +42,6 @@
     <string name="party_venue_text">Venue</string>
     <string name="clear_text">Clear</string>
     <string name="main_party_list_button">Party List</string>
+    <string name="notifcation_party">Party @ </string>
 
 </resources>

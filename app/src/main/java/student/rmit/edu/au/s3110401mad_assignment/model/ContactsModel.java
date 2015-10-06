@@ -104,6 +104,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
                         contactStruct);
             }
         }
+        cur.close();
         return contactsMap;
     }
 
@@ -123,7 +124,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
             phone = pCur
                     .getString(pCur
                             .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            pCur.close();
         }
         return phone;
     }
@@ -142,7 +142,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         String email = pCur
                 .getString(pCur
                         .getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-        pCur.close();
         return email;
     }
 

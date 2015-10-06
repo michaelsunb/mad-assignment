@@ -33,6 +33,10 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 
 public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
+    public static final Double DEFAULT_LAT = -37.807085;
+    public static final Double DEFAULT_LONG = 144.964282;
+    public static final int MAP_ZOOM_PADDING = 25;
+
     private GoogleMap googleMap;
 
     private List<MarkerOptions> markers = new ArrayList<>();
@@ -41,17 +45,17 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_party_map, container, false);
-        rootView.findViewById(R.id.main_party_list_button).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        goPartyListActivity();
-                    }
-                });
-
         try {
+
+            View rootView = inflater.inflate(R.layout.fragment_party_map, container, false);
+            rootView.findViewById(R.id.main_party_list_button).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            goPartyListActivity();
+                        }
+                    });
+
             if (googleMap == null) {
                 googleMap = ((MapFragment) getFragmentManager().
                         findFragmentById(R.id.map)).getMap();
@@ -63,13 +67,13 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
                     this.markers.add(setPartyToMarker(party));
                 }
             }
-
             onMapReady(googleMap);
+
+            return rootView;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return rootView;
     }
 
     private void goPartyListActivity() {
@@ -84,9 +88,17 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         startActivity(intent);
     }
 
+    public void initialMap(GoogleMap map) {
+        LatLng RMITUniversity = new LatLng(DEFAULT_LAT, DEFAULT_LONG);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(RMITUniversity, MAP_ZOOM_PADDING));
+    }
+
     public void onMapReady(final GoogleMap map) {
-        if(markers.size() <= 0) return;
         if(map == null) return;
+        if(markers.size() <= 0) {
+            initialMap(map);
+            return;
+        }
 
         map.clear();
 
@@ -98,11 +110,10 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         for (MarkerOptions location : markers) builder.include(location.getPosition());
         final LatLngBounds bounds = builder.build();
 
-        //map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MAP_ZOOM_PADDING));
                 map.setOnCameraChangeListener(null);
             }
         });
@@ -127,24 +138,6 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        MapFragment f = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-
-        if (f != null) {
-            try {
-                getFragmentManager().beginTransaction().remove(f).commit();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        super.onDestroyView();
     }
 
     public void setParties(PartyMemoryManagementClient partyTask) {
