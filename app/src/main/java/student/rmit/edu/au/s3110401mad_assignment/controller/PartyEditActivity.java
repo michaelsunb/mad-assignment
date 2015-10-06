@@ -13,13 +13,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
-import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ContactQueryDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyEditDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
 
@@ -31,7 +31,7 @@ public class PartyEditActivity extends BasePartyActivity {
         setContentView(R.layout.activity_edit_party);
 
         datetime = Calendar.getInstance();
-        asyncContactsTask = new ContactQueryDBTask().execute(this);
+        asyncContactsTask = new ContactsModel().execute(this);
         partyId = (PartyModel.getSingleton().getAllParties().size() + 1);
 
         TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
@@ -62,7 +62,7 @@ public class PartyEditActivity extends BasePartyActivity {
 
             viewById.setText(movieTitle + " " + getText(R.string.party_movie_text));
 
-            List<Contacts> contacts = ContactsModel.getSingleton().getByPartyId(partyId);
+            List<Contacts> contacts = PartyInviteeModel.getSingleton().getByPartyId(partyId);
             checkedContactNames = new String[contacts.size()];
             for(int i=0; i < contacts.size(); i++) {
                 checkedContactNames[i] = contacts.get(i).getName();

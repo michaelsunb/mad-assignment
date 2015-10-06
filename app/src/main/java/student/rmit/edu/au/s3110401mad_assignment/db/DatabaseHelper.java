@@ -57,16 +57,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PARTY_INVITEE_TABLE_NAME = "party_invitees";
     public static final String PARTY_INVITEE_ID = "_id";
     public static final String PARTY_INVITEE_PARTY_ID = "partyId";
-    public static final String PARTY_INVITEE_NAME = "name";
-    public static final String PARTY_INVITEE_PHONE = "datetime";
-    public static final String PARTY_INVITEE_EMAIL = "email";
+    public static final String PARTY_INVITEE_CONTACTS_ID = "contactId";
     private static final String CREATE_PARTY_INVITEE_TABLE =
             "CREATE TABLE " + PARTY_INVITEE_TABLE_NAME + " (" +
-                    PARTY_INVITEE_ID + " VARCHAR PRIMARY KEY, " +
+                    PARTY_INVITEE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     PARTY_INVITEE_PARTY_ID + " INTEGER, " +
-                    PARTY_INVITEE_NAME + " VARCHAR, " +
-                    PARTY_INVITEE_PHONE + " VARCHAR, " +
-                    PARTY_INVITEE_EMAIL + " VARCHAR); ";
+                    PARTY_INVITEE_CONTACTS_ID + " VARCHAR); ";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

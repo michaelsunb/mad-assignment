@@ -9,10 +9,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
-import student.rmit.edu.au.s3110401mad_assignment.model.ContactsStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
@@ -34,13 +35,6 @@ public class PartyDatabaseManager {
     }
 
     public void addParty(Party newParty, List<String> contactIds){
-        for(String contactId : contactIds) {
-            addEditInvitees(newParty, contactId,
-                    (database.rawQuery("SELECT * FROM " + DatabaseHelper.PARTY_INVITEE_TABLE_NAME
-                            + " WHERE " + DatabaseHelper.PARTY_INVITEE_ID + " = \""
-                            + contactId + "\"", null).getCount() != 0)
-            );
-        }
 
         if(database.rawQuery("SELECT * FROM " + DatabaseHelper.PARTY_TABLE_NAME
                 + " WHERE " + DatabaseHelper.PARTY_ID + " = \""
@@ -69,16 +63,23 @@ public class PartyDatabaseManager {
         Cursor partyCursor = database.query(DatabaseHelper.PARTY_TABLE_NAME,
                 null, null, null, null, null, null);
 
-        Cursor inviteeCursor;
-
         partyCursor.moveToFirst();
         while(!partyCursor.isAfterLast()){
-            String partyId = partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_ID));
-            inviteeCursor = database.query(
-                    DatabaseHelper.PARTY_INVITEE_TABLE_NAME, null,
-                    DatabaseHelper.PARTY_INVITEE_ID + " = " + partyId,
-                    null, null, null, null);
-            parties.add(cursorToParty(partyCursor, inviteeCursor));
+            Integer partyId =
+                    partyCursor.getInt(partyCursor.getColumnIndex(DatabaseHelper.PARTY_ID));
+            String partyMovieId =
+                    partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_MOVIE_ID));
+            String partyDatetime =
+                    partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_DATETIME));
+            String partyVenue =
+                    partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_VENUE));
+            String partyLocation =
+                    partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_LOCATION));
+            String movieTitle =
+                    partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_MOVIE_TITLE));
+
+            parties.add(new PartyStruct(partyId, partyMovieId, movieTitle, partyDatetime, partyVenue,
+                    partyLocation));
 
             partyCursor.moveToNext();
         }
@@ -86,65 +87,18 @@ public class PartyDatabaseManager {
         return parties;
     }
 
-    private Party cursorToParty(Cursor partyCursor, Cursor inviteeCursor){
-        Integer partyId =
-                partyCursor.getInt(partyCursor.getColumnIndex(DatabaseHelper.PARTY_ID));
-
-        inviteeCursor.moveToFirst();
-        while(!inviteeCursor.isAfterLast()){
-            String partyInviteeId =
-                    inviteeCursor.getString(
-                            inviteeCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_ID));
-            String partyInviteeName =
-                    inviteeCursor.getString(
-                            inviteeCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_NAME));
-            String partyInviteePhone =
-                    inviteeCursor.getString(
-                            inviteeCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_PHONE));
-            String partyInviteeEmail =
-                    inviteeCursor.getString(
-                            inviteeCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_EMAIL));
-
-            ContactsStruct contact = new ContactsStruct(
-                    partyInviteeId,
-                    partyId,
-                    partyInviteeName,
-                    partyInviteePhone,
-                    partyInviteeEmail
-            );
-            ContactsModel.getSingleton().addContact(contact);
-
-            inviteeCursor.moveToNext();
-        }
-
-        String partyMovieId =
-                partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_MOVIE_ID));
-        String partyDatetime =
-                partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_DATETIME));
-        String partyVenue =
-                partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_VENUE));
-        String partyLocation =
-                partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_LOCATION));
-        String movieTitle =
-                partyCursor.getString(partyCursor.getColumnIndex(DatabaseHelper.PARTY_MOVIE_TITLE));
-
-        return new PartyStruct(partyId, partyMovieId, movieTitle, partyDatetime, partyVenue,
-                partyLocation);
-    }
-
     public void deleteParty(int id){
         String selectionToBeDeleted = DatabaseHelper.PARTY_ID + " = \"" + id + "\"";
         database.delete(DatabaseHelper.PARTY_TABLE_NAME, selectionToBeDeleted, null);
 
-        for(Contacts contact : ContactsModel.getSingleton().getByPartyId(id)) {
-            contact.setPartyId(ContactsModel.NO_PARTY);
-            editInvitees(contact);
+        for(Contacts contact : PartyInviteeModel.getSingleton().getByPartyId(id)) {
+            addEditInvitees(contact.getId(),PartyInviteeModel.NO_PARTY);
         }
     }
 
     public void editParty(Party party, List<String> contacts ){
-        for(String contact : contacts) {
-            editInvitees(ContactsModel.getSingleton().getById(contact));
+        for(String contactId : contacts) {
+            addEditInvitees(contactId, party.getId());
         }
         editParty(party);
     }
@@ -166,77 +120,83 @@ public class PartyDatabaseManager {
         database.update(DatabaseHelper.PARTY_TABLE_NAME, contentValues, whereClause, null);
     }
 
+
     /** Invitee stuff **/
-    public void editInvitees(Contacts contact ){
-        String whereClause = DatabaseHelper.PARTY_INVITEE_ID + " = \"" + contact.getId() + "\"" ;
+    public void editInvitees(String contactId,int partyId){
+        Log.e("Ayy lmao edit inv", contactId + " " + partyId);
+        String whereClause =
+                DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \"" + contactId + "\" AND " +
+                DatabaseHelper.PARTY_INVITEE_PARTY_ID + " = \"" + partyId + "\"";
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_ID, contact.getId());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_PARTY_ID, contact.getPartyId());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_NAME, contact.getName());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_PHONE, contact.getPhone());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_EMAIL, contact.getEmail());
+        contentValues.put(DatabaseHelper.PARTY_INVITEE_CONTACTS_ID, contactId);
+        contentValues.put(DatabaseHelper.PARTY_INVITEE_PARTY_ID, partyId);
 
         database.update(DatabaseHelper.PARTY_INVITEE_TABLE_NAME, contentValues, whereClause, null);
-        ContactsModel.getSingleton().addContact(contact);
+        PartyInviteeModel.getSingleton().addLink(contactId, partyId);
     }
 
-    public void addInvitees(Contacts contact ){
+    public void addInvitees(String contactId,int partyId){
+        Log.e("Ayy lmao add inv", contactId + " " + partyId);
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_ID, contact.getId());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_PARTY_ID, contact.getPartyId());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_NAME, contact.getName());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_PHONE, contact.getPhone());
-        contentValues.put(DatabaseHelper.PARTY_INVITEE_EMAIL, contact.getEmail());
+        contentValues.put(DatabaseHelper.PARTY_INVITEE_CONTACTS_ID, contactId);
+        contentValues.put(DatabaseHelper.PARTY_INVITEE_PARTY_ID, partyId);
 
         database.insert(DatabaseHelper.PARTY_INVITEE_TABLE_NAME, null, contentValues);
-        ContactsModel.getSingleton().addContact(contact);
+        PartyInviteeModel.getSingleton().addLink(contactId, partyId);
     }
 
-    public void addEditInvitees(Party newParty, String contactId, boolean edit) {
-        Contacts contacts = ContactsModel.getSingleton().getById(contactId);
-        contacts.setPartyId(newParty.getId());
+    public void addEditInvitees(String contactId, int partyId) {
+        String sql = "SELECT * FROM " + DatabaseHelper.PARTY_INVITEE_TABLE_NAME
+                + " WHERE " + DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \""
+                + contactId + "\" AND " + DatabaseHelper.PARTY_INVITEE_PARTY_ID
+                + " = \"" + partyId + "\"";
+        Log.e("Ayy lmao query", sql);
+        addEditInvitees(contactId, partyId,
+                (database.rawQuery(sql, null).getCount() != 0));
+    }
+
+    public void addEditInvitees(String contactId, int partyId, boolean edit) {
+        if(partyId == PartyInviteeModel.NO_PARTY && edit) {
+            deleteInvite(contactId,partyId);
+            return;
+        }
+
         if(edit)
-            editInvitees(contacts);
+            editInvitees(contactId,partyId);
         else
-            addInvitees(contacts);
+            addInvitees(contactId, partyId);
     }
 
-    public List<Contacts> getAllContact(){
-        List<Contacts> invitee = new ArrayList<>();
+    public void deleteInvite(String contactId, int partyId){
+        Log.e("Ayy lmao del inv", contactId + " " + partyId);
+        String selectionToBeDeleted =
+                DatabaseHelper.PARTY_INVITEE_CONTACTS_ID + " = \"" + contactId + "\" AND " +
+                DatabaseHelper.PARTY_INVITEE_PARTY_ID + " = \"" + partyId + "\"";
+        database.delete(DatabaseHelper.PARTY_INVITEE_TABLE_NAME, selectionToBeDeleted, null);
+    }
+
+    public List<Map<String,Integer>> getContactPartyLink(){
+        PartyInviteeModel partyInviteeModel = PartyInviteeModel.getSingleton();
 
         Cursor partyCursor = database.query(DatabaseHelper.PARTY_INVITEE_TABLE_NAME,
                 null, null, null, null, null, null);
 
         partyCursor.moveToFirst();
         while(!partyCursor.isAfterLast()){
-            String partyInviteeId =
+            String contactId =
                     partyCursor.getString(
-                            partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_ID));
+                            partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_CONTACTS_ID));
             Integer partyId =
                     partyCursor.getInt(
                             partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_PARTY_ID));
-            String partyInviteeName =
-                    partyCursor.getString(
-                            partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_NAME));
-            String partyInviteePhone =
-                    partyCursor.getString(
-                            partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_PHONE));
-            String partyInviteeEmail =
-                    partyCursor.getString(
-                            partyCursor.getColumnIndex(DatabaseHelper.PARTY_INVITEE_EMAIL));
 
-            ContactsStruct contact = new ContactsStruct(
-                    partyInviteeId,
-                    partyId,
-                    partyInviteeName,
-                    partyInviteePhone,
-                    partyInviteeEmail
-            );
-            invitee.add(contact);
+            Log.e("Ayy lmao getting query", contactId + " " + partyId);
+
+            partyInviteeModel.addLink(contactId, partyId);
             partyCursor.moveToNext();
         }
 
-        return invitee;
+        return partyInviteeModel.getLink();
     }
 }

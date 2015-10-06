@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,14 +15,12 @@ import java.util.Map;
  *
  */
 public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>> {
-    public static final int NO_PARTY = -1;
 
     private Cursor cur;
     private ContentResolver cr;
 
     private static ContactsModel singleton;
     private Map<String, Contacts> contactsMap;
-    private Integer partyId = NO_PARTY;
 
     public static ContactsModel getSingleton() {
         if(singleton == null)
@@ -36,20 +32,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
 
     public Contacts getById(String id) {
         return contactsMap.get(id);
-    }
-
-    public List<Contacts> getByPartyId(int partyId) {
-        List<Contacts> contacts = new ArrayList<>();
-
-        if(contactsMap == null) return contacts;
-
-        for(Map.Entry<String,Contacts> contactEntry : contactsMap.entrySet()) {
-            Contacts contact = contactEntry.getValue();
-            if(contact.getPartyId() == partyId) {
-                contacts.add(contact);
-            }
-        }
-        return contacts;
     }
 
     public Contacts getByName(String name) {
@@ -64,25 +46,19 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         this.contactsMap = contactsMap;
     }
 
-    public void setContactsToParty(List<String> contactIds, Integer partyId) {
-        for(String contactId : contactIds) {
-            for(Map.Entry<String,Contacts> entry : contactsMap.entrySet()) {
-                Contacts contacts = entry.getValue();
-                if (contacts.getId().equals(contactId)) {
-                    contacts.setPartyId(partyId);
-                    contactsMap.put(contacts.getId(),contacts);
-                }
-            }
-        }
-    }
-
     public void addContact(Contacts contact) {
         this.contactsMap.put(contact.getId(),contact);
     }
 
     @Override
     protected Map<String,Contacts> doInBackground(Context... params) {
-        cr = params[0].getContentResolver();
+        Context context = params[0];
+        setFromContactsDb(context);
+        return contactsMap;
+    }
+
+    public void setFromContactsDb(Context context) {
+        cr = context.getContentResolver();
         cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
                 null, null, null);
         contactsMap = new HashMap<>();
@@ -95,7 +71,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
 
                 Contacts contactStruct = new ContactsStruct(
                         id,
-                        partyId,
                         cur.getString(cur
                                 .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                         phone,
@@ -105,7 +80,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
             }
         }
         cur.close();
-        return contactsMap;
     }
 
     private String queryPhoneNumber(String id) {
@@ -143,12 +117,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
                 .getString(pCur
                         .getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
         return email;
-    }
-
-    // TODO : Possibly delete
-    public void addContact(Context context, Integer partyId) {
-        this.partyId = partyId;
-        this.execute(context);
     }
 
     public Map<String,Contacts> getAllContacts() {

@@ -9,13 +9,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.PartyEditActivity;
-import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
+import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyDeleteDBTask;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyInviteeQueryDBTask;
 
 import android.content.Context;
 import android.view.View.OnClickListener;
@@ -97,9 +99,15 @@ public class PartyListAdapter extends BaseAdapter {
         viewHolder.eventAttendeeCount = (TextView) convertView
                 .findViewById(R.id.party_list_attendee_count);
 
-        viewHolder.eventAttendeeCount.setText(convertView.getResources()
-                .getString(R.string.party_list_attendee_text)
-                + ContactsModel.getSingleton().getByPartyId(party.getId()).size() + "");
+        try {
+            List<Contacts> contactList =
+                    new PartyInviteeQueryDBTask(context,party.getId()).execute().get();
+
+            viewHolder.eventAttendeeCount.setText(convertView.getResources()
+                    .getString(R.string.party_list_attendee_text) + contactList.size() + "");
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
         convertView
                 .findViewById(R.id.party_list_edit_button).setOnClickListener(new View.OnClickListener() {

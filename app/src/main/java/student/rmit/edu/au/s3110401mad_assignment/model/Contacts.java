@@ -8,10 +8,6 @@ package student.rmit.edu.au.s3110401mad_assignment.model;
 public interface Contacts {
     String getId();
 
-    int getPartyId();
-
-    void setPartyId(int partyId);
-
     String getName();
 
     String getPhone();

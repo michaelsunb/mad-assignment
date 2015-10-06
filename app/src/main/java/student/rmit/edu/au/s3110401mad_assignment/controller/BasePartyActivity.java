@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
@@ -28,7 +29,7 @@ import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
-import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ContactQueryDBTask;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyInviteeSaveDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.view.DatePickerDialogFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.MultiSelectListDialogFragment;
 import student.rmit.edu.au.s3110401mad_assignment.view.SingleSelectListFragment;
@@ -109,7 +110,7 @@ public class BasePartyActivity extends AppCompatActivity {
                 location);
 
         PartyModel.getSingleton().addParty(partyStruct);
-        ContactsModel.getSingleton().setContactsToParty(whichContacts, partyId);
+        new PartyInviteeSaveDBTask(getApplicationContext(), whichContacts, partyId).execute();
 
         return partyStruct;
     }
