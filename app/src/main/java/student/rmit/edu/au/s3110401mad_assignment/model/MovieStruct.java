@@ -70,21 +70,4 @@ public class MovieStruct implements Movie {
     public void setRating(int rating) {
         this.rating = rating;
     }
-
-    // TODO: Possibly delete
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public void setShortPlot(String shortPlot) {
-        this.shortPlot = shortPlot;
-    }
-
-    public void setFullPlot(String fullPlot) {
-        this.fullPlot = fullPlot;
-    }
-
-    public void setPoster(Bitmap poster) {
-        this.imageResource = imageResource;
-    }
 }

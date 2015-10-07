@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.MovieArrayAdapter;
-import student.rmit.edu.au.s3110401mad_assignment.model.db.DatabaseHelper;
+import student.rmit.edu.au.s3110401mad_assignment.model.database.DatabaseHelper;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.ListToMatrixCursorTask;

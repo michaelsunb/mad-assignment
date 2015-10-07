@@ -18,6 +18,7 @@ import student.rmit.edu.au.s3110401mad_assignment.view.PartyMapFragment;
 public class MainActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
 
+    public static final int LENGTH_ONCHANGE_FRAGMENT = 2;
     private PartyMemoryManagementClient partyTask;
 
     @Override
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onQueryTextChange(String newText) {
         if(!newText.isEmpty() &&
-                newText.length() > 2) {
+                newText.length() > LENGTH_ONCHANGE_FRAGMENT) {
             Fragment fragment = useMovieListFragment(newText);
             selectFragment(fragment,true);
 

@@ -1,7 +1,5 @@
 package student.rmit.edu.au.s3110401mad_assignment.model;
 
-import android.content.Context;
-
 /**
  * Created by Michaelsun Baluyos on 29/08/2015.
  *

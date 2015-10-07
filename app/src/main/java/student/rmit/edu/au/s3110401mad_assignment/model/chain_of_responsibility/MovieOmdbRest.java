@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import student.rmit.edu.au.s3110401mad_assignment.model.db.MovieDatabaseManager;
+import student.rmit.edu.au.s3110401mad_assignment.model.database.MovieDatabaseManager;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;
@@ -30,6 +30,8 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
     public static final String OMDB_URL_SEARCH = "http://www.omdbapi.com/?r=json&s=";
     public static final String OMDB_URL_SHORT_BY_ID = "http://www.omdbapi.com/?r=json&i=";
     public static final String OMDB_URL_FULL_BY_ID = "http://www.omdbapi.com/?r=json&plot=full&i=";
+    public static final int RESIZE_DST_WIDTH = 100;
+    public static final int RESIZE_DST_HEIGHT = 100;
 
     public MovieOmdbRest(Context context, MovieModel movieModel) {
         super(context, movieModel);
@@ -104,7 +106,7 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap b = BitmapFactory.decodeStream(input);
-            Bitmap.createScaledBitmap(b, 100, 100, false);
+            Bitmap.createScaledBitmap(b, RESIZE_DST_WIDTH, RESIZE_DST_HEIGHT, false);
             return b;
         } catch (IOException e) {
             return null;

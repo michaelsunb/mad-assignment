@@ -1,4 +1,4 @@
-package student.rmit.edu.au.s3110401mad_assignment.model.db;
+package student.rmit.edu.au.s3110401mad_assignment.model.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

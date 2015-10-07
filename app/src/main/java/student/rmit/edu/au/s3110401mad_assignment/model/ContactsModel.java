@@ -46,10 +46,6 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
         this.contactsMap = contactsMap;
     }
 
-    public void addContact(Contacts contact) {
-        this.contactsMap.put(contact.getId(),contact);
-    }
-
     @Override
     protected Map<String,Contacts> doInBackground(Context... params) {
         Context context = params[0];

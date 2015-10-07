@@ -28,7 +28,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
@@ -49,25 +48,25 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    private String googleDistanceMatrixUrl(String currLocationLat, String currLocationLong) {
+    private String googleDistanceMatrixUrl(String longitude, String latitude) {
         final String apiKey = context.getString(R.string.google_map_api_key);
 
-        StringBuilder urlAddress;
-        urlAddress = new StringBuilder();
+        StringBuilder src;
+        src = new StringBuilder();
 
-        urlAddress.append(HTTPS_MAPS_GOOGLEAPIS_COM_MAPS_API_DISTANCE_MATRIX_JSON);
-        urlAddress.append("key=");
-        urlAddress.append(apiKey);
-        urlAddress.append("&");
-        urlAddress.append("origins=");
-        urlAddress.append(currLocationLat);
-        urlAddress.append(",");
-        urlAddress.append(currLocationLong);
-        urlAddress.append("&destinations=");
-        urlAddress.append(event.getLocation()[PartyStruct.LONGITUDE]);
-        urlAddress.append(",");
-        urlAddress.append(event.getLocation()[PartyStruct.LATITUDE]);
-        return urlAddress.toString();
+        src.append(HTTPS_MAPS_GOOGLEAPIS_COM_MAPS_API_DISTANCE_MATRIX_JSON);
+        src.append("key=");
+        src.append(apiKey);
+        src.append("&");
+        src.append("origins=");
+        src.append(latitude);
+        src.append(",");
+        src.append(longitude);
+        src.append("&destinations=");
+        src.append(event.getLocation()[PartyStruct.LONGITUDE]);
+        src.append(",");
+        src.append(event.getLocation()[PartyStruct.LATITUDE]);
+        return src.toString();
     }
 
     @Override
@@ -79,46 +78,26 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
         String provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
 
-        String currLocationLat;
-        String currLocationLong;
+        String currentLongitude;
+        String currentLatitude;
         if(location == null){
-            currLocationLat = PartyMapFragment.DEFAULT_LAT + "";
-            currLocationLong = PartyMapFragment.DEFAULT_LONG + "";
+            currentLongitude = PartyMapFragment.DEFAULT_LONG + "";
+            currentLatitude = PartyMapFragment.DEFAULT_LAT + "";
         }else{
-            currLocationLat =
-            (String.valueOf(location.getLatitude()));
-            currLocationLong =
+            currentLongitude =
             (String.valueOf(location.getLongitude()));
+            currentLatitude =
+                    (String.valueOf(location.getLatitude()));
         }
 
-        Boolean result = false;
-
-        BufferedReader reader = null;
-        HttpURLConnection con = null;
-        InputStream inp = null;
-
         try {
-            URL url = new URL(googleDistanceMatrixUrl(currLocationLat, currLocationLong));
-            con = (HttpURLConnection) url.openConnection();
-            con.connect();
-
-            inp = con.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(inp));
-
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null){
-                sb.append(line).append("\n");
-            }
+            String distanceMatrixJson =
+                    getJsonFromHttp(googleDistanceMatrixUrl(currentLongitude, currentLatitude));
 
             int duration;
 
-            Calendar currentDate = Calendar.getInstance();
-            Calendar partyDate = Calendar.getInstance();
-            partyDate.setTimeInMillis(event.getDate().getTimeInMillis());
-
             JSONObject gdmResult =
-            (JSONObject) new JSONTokener(sb.toString()).nextValue();
+            (JSONObject) new JSONTokener(distanceMatrixJson).nextValue();
 
             JSONArray rowsArray = gdmResult.getJSONArray("rows");
 
@@ -129,35 +108,22 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
                 JSONObject durationObj = elementsObj.getJSONObject("duration");
                 duration = durationObj.getInt("value");
 
+                Calendar partyDate = Calendar.getInstance();
+                partyDate.setTimeInMillis(event.getDate().getTimeInMillis());
                 partyDate.add(Calendar.SECOND, duration * -1);
-
                 partyDate.add(Calendar.MINUTE, TIME_THRESHOLD * -1);
 
+                Calendar currentDate = Calendar.getInstance();
                 if(partyDate.getTimeInMillis() <= currentDate.getTimeInMillis() ||
-                        currentDate.getTimeInMillis() >= event.getDate().getTimeInMillis()){
-                    result = true;
+                        currentDate.getTimeInMillis() >= event.getDate().getTimeInMillis()) {
+                    return true;
                 }
             }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (inp != null) {
-                    inp.close();
-                }
-                if (con != null) {
-                    con.disconnect();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
-        return result;
+        return false;
     }
-
 
     @Override
     protected void onPostExecute(Boolean result) {
@@ -190,5 +156,46 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
                 intent,
                 PendingIntent.FLAG_ONE_SHOT
         );
+    }
+
+    private String getJsonFromHttp(String distanceMatrixUrl) {
+        BufferedReader reader = null;
+        HttpURLConnection con = null;
+        InputStream inp = null;
+
+        try {
+            URL url = new URL(distanceMatrixUrl);
+            con = (HttpURLConnection) url.openConnection();
+            con.connect();
+            inp = con.getInputStream();
+
+            reader = new BufferedReader(new InputStreamReader(inp));
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+
+            return sb.toString();
+        }catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (inp != null) {
+                    inp.close();
+                }
+                if (con != null) {
+                    con.disconnect();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 }

@@ -14,6 +14,8 @@ import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 
 /**
  * Created by Michaelsun Baluyos on 3/10/2015.
+ *
+ *
  */
 public class MovieMemoryManagementClientTest extends ActivityInstrumentationTestCase2<MainActivity> {
 

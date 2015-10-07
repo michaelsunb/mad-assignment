@@ -11,6 +11,8 @@ import org.json.JSONTokener;
 
 /**
  * Created by Michaelsun Baluyos on 3/10/2015.
+ *
+ *
  */
 public class MovieOmdbRestTest extends TestCase {
 
@@ -32,8 +34,8 @@ public class MovieOmdbRestTest extends TestCase {
         String shortJson = movieOmdbRest.getJsonFromHttp(MovieOmdbRest.OMDB_URL_SHORT_BY_ID,"tt0770828");
         String fullJson = movieOmdbRest.getJsonFromHttp(MovieOmdbRest.OMDB_URL_FULL_BY_ID, "tt0770828");
 
-//        Log.d("Get Short Json", shortJson);
-//        Log.d("Get Full Json", shortJson);
+//        Log.e("Get Short Json", shortJson);
+//        Log.e("Get Full Json", shortJson);
 
         Log.e("Ayy lmao Process short", this.getClass().getSimpleName());
         JSONObject objShort = (JSONObject) new JSONTokener(shortJson).nextValue();

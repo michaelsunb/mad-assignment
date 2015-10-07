@@ -77,7 +77,7 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void goPartyListActivity() {
-        if(parties != null && parties.size() <= 0
+        if(parties != null && parties.size() == 0
                 || parties == null) {
             Toast.makeText(
                     getActivity(),"No parties happening!",
