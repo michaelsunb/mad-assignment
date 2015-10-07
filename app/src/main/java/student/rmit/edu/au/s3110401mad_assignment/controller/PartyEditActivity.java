@@ -1,8 +1,8 @@
 package student.rmit.edu.au.s3110401mad_assignment.controller;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
+import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
@@ -22,8 +23,10 @@ import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyEditDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
+import student.rmit.edu.au.s3110401mad_assignment.view.ContactListDialogFragment;
 
 public class PartyEditActivity extends BasePartyActivity {
+    private ContactListDialogFragment contactList = new ContactListDialogFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class PartyEditActivity extends BasePartyActivity {
 
         TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
         try {
-            Bundle extras = getIntent().getExtras();
+            final Bundle extras = getIntent().getExtras();
             partyId = extras.getInt("party_id");
             Party party =
                     PartyModel.getSingleton().getPartyById(partyId);
@@ -71,11 +74,29 @@ public class PartyEditActivity extends BasePartyActivity {
 
             ((TextView) findViewById(R.id.edit_party_invitees_text)).setText(
                     checkedContactNames.length + " " + getText(R.string.party_invitees_text));
+
             ((EditText)findViewById(R.id.edit_party_venue_edit_text)).setText(party.getVenue());
+
             ((EditText)findViewById(R.id.edit_party_longitude_edit_text)).setText(
                     "" + party.getLocation()[PartyStruct.LONGITUDE]);
+
             ((EditText)findViewById(R.id.edit_party_latitude_edit_text)).setText(
                     "" + party.getLocation()[PartyStruct.LATITUDE]);
+
+            findViewById(R.id.edit_party_invitees_view).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    contactList.setCallBack(
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    contactList.setArguments(extras);
+                    contactList.show(getSupportFragmentManager(), "Movie Select");
+                }
+            });
         } catch (Exception e) {
             viewById.setText(
                     "0 " + getText(R.string.party_movie_text)

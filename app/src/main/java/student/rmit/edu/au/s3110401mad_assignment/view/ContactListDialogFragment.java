@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.widget.ArrayAdapter;
 
-public class SingleSelectListFragment extends DialogFragment {
+import student.rmit.edu.au.s3110401mad_assignment.controller.adapter.ContactListDialogAdapter;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;
 
-    private String[] listTitle;
+public class ContactListDialogFragment extends DialogFragment {
+
+    private int partyId;
     private DialogInterface.OnClickListener onListenerSet;
 
     public void setCallBack(DialogInterface.OnClickListener onListenerSet) {
@@ -20,7 +22,7 @@ public class SingleSelectListFragment extends DialogFragment {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        listTitle = args.getStringArray("list_title");
+        partyId = args.getInt("party_id");
     }
 
     @NonNull
@@ -29,7 +31,10 @@ public class SingleSelectListFragment extends DialogFragment {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
         builderSingle.setTitle("Select:-");
 
-        builderSingle.setItems(listTitle, onListenerSet);
+        final ContactListDialogAdapter arrayAdapter = new ContactListDialogAdapter(
+                getActivity(), PartyInviteeModel.getSingleton().getByPartyId(partyId));
+
+        builderSingle.setAdapter(arrayAdapter, onListenerSet);
         builderSingle.setNegativeButton(
                 "cancel",
                 new DialogInterface.OnClickListener() {

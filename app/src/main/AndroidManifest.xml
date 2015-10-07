@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".controller.PartyListActivity"
-            android:label="@string/main_party_list_button" >
+            android:label="@string/title_party_list_button" >
         </activity>
         <activity
             android:name=".controller.MovieDetailActivity"

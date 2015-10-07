@@ -14,6 +14,7 @@ import java.util.Map;
  *
  */
 public class PartyModel {
+    public static final int LRU_PARTY_LIMIT = 5;
     private static PartyModel singleton;
 
     public static PartyModel getSingleton() {
@@ -29,6 +30,10 @@ public class PartyModel {
     }
 
     public void addParty(Party party) {
+        if(partyMap.size() > LRU_PARTY_LIMIT) {
+            int key = (int)partyMap.keySet().toArray()[0];
+            partyMap.remove(key);
+        }
         partyMap.put(party.getId(), party);
     }
     public Party getPartyById(Integer partyId) {
@@ -53,10 +58,6 @@ public class PartyModel {
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(calendar.getTime());
     }
 
-    // TODO : Possibly delete
-    public void deleteParty(String id) {
-        // TODO: add functionality
-    }
     public List<Party> getPartiesByMovieId(String imdbId) {
         List<Party> partiesByMovie = new ArrayList<>();
         for(Map.Entry<Integer,Party> entry : partyMap.entrySet())

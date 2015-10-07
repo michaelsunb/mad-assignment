@@ -3,7 +3,7 @@ package student.rmit.edu.au.s3110401mad_assignment.model.async_task;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.PartyDatabaseManager;
+import student.rmit.edu.au.s3110401mad_assignment.model.db.PartyDatabaseManager;
 
 /**
  * Created by Michaelsun Baluyos on 5/10/2015.

@@ -2,6 +2,7 @@
     <!-- TODO: Remove or search where this is used -->
     <string name="see_parties">See Parties</string>
     <string name="see_movies">See Movies</string>
+    <string name="clear_text">Clear</string>
     <!-- // Remove or search where this is used -->
 
     <string name="app_name">S3110401 MAD-Assignment</string>
@@ -12,6 +13,7 @@
     <string name="title_activity_movie_detail">Movie Detail</string>
     <string name="title_activity_create_party">Create A Party</string>
     <string name="title_activity_edit_party">Edit Party</string>
+    <string name="title_party_list_button">Party List</string>
 
     <string name="movie_id">movie_id</string>
     <string name="image_description">movie poster</string>
@@ -40,8 +42,6 @@
     <string name="main_num_parties">No. of parties: </string>
     <string name="submit_party">Submit</string>
     <string name="party_venue_text">Venue</string>
-    <string name="clear_text">Clear</string>
-    <string name="main_party_list_button">Party List</string>
     <string name="notifcation_party">Party @ </string>
 
 </resources>

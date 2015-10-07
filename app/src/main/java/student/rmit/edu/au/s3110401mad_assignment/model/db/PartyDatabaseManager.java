@@ -1,4 +1,4 @@
-package student.rmit.edu.au.s3110401mad_assignment.db;
+package student.rmit.edu.au.s3110401mad_assignment.model.db;
 
 import android.content.ContentValues;
 import android.content.Context;

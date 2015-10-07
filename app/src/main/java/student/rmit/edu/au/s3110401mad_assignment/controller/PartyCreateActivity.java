@@ -17,6 +17,8 @@ import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyCreateDB
 
 public class PartyCreateActivity extends BasePartyActivity {
 
+    public static final int START_PARTY_BEGINNING_AGAIN = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,9 @@ public class PartyCreateActivity extends BasePartyActivity {
 
         asyncContactsTask = new ContactsModel().execute(this);
         datetime = Calendar.getInstance();
-        partyId = (PartyModel.getSingleton().getAllParties().size() + 1);
+
+        partyId = (PartyModel.getSingleton().getAllParties().size() > PartyModel.LRU_PARTY_LIMIT) ?
+                START_PARTY_BEGINNING_AGAIN : (PartyModel.getSingleton().getAllParties().size()+1);
 
         try {
             Bundle extras = getIntent().getExtras();

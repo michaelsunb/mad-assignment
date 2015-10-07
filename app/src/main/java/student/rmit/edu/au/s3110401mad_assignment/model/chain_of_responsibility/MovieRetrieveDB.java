@@ -1,6 +1,6 @@
 package student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.MovieDatabaseManager;
+import student.rmit.edu.au.s3110401mad_assignment.model.db.MovieDatabaseManager;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 

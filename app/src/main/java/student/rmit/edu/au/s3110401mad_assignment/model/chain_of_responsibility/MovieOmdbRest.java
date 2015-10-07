@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.MovieDatabaseManager;
+import student.rmit.edu.au.s3110401mad_assignment.model.db.MovieDatabaseManager;
 import student.rmit.edu.au.s3110401mad_assignment.model.Movie;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieStruct;

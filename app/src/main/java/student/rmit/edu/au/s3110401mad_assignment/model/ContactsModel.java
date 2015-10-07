@@ -98,6 +98,7 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
             phone = pCur
                     .getString(pCur
                             .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            pCur.close();
         }
         return phone;
     }
@@ -109,13 +110,17 @@ public class ContactsModel extends AsyncTask<Context, Void, Map<String,Contacts>
                 ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
                 new String[]{id},
                 null);
-        // Just get the first in the list
-        if(pCur.getCount() == 0) return "";
 
+        if(pCur.getCount() == 0) {
+            pCur.close();
+            return "";
+        }
+        // Just get the first in the list
         pCur.moveToNext();
         String email = pCur
                 .getString(pCur
                         .getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+        pCur.close();
         return email;
     }
 

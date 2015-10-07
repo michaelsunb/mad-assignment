@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.PartyDatabaseManager;
+import student.rmit.edu.au.s3110401mad_assignment.model.db.PartyDatabaseManager;
 import student.rmit.edu.au.s3110401mad_assignment.model.Contacts;
 import student.rmit.edu.au.s3110401mad_assignment.model.ContactsModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyInviteeModel;

@@ -7,7 +7,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import junit.framework.Assert;
 
-import student.rmit.edu.au.s3110401mad_assignment.db.DatabaseHelper;
+import student.rmit.edu.au.s3110401mad_assignment.model.db.DatabaseHelper;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

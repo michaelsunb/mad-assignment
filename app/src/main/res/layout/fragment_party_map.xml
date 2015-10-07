@@ -16,7 +16,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_party_list_button"
+        android:text="@string/title_party_list_button"
         android:id="@+id/main_party_list_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>

@@ -38,13 +38,15 @@ public class MovieModel {
         return null;
     }
 
+    public static final int LRU_MOVIE_LIMIT = 10;
     private String query = "";
+
     public void addMovie(Movie movie,String query) {
         if(!this.query.equals(query)) {
             movieListMap = new HashMap<>();
             this.query = query;
         }
-        if(movieListMap.size() > 10) {
+        if(movieListMap.size() > LRU_MOVIE_LIMIT) {
             String key = (String)movieListMap.keySet().toArray()[0];
             movieListMap.remove(key);
         }
@@ -74,13 +76,5 @@ public class MovieModel {
         if(input == null || input.equals("")) return null;
         byte[] decodedByte = Base64.decode(input, 0);
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-    // TODO: possibly delete
-    public void deleteMovie(String id) {
-        // TODO: add functionality
-    }
-    public Map<String,Movie> getMovieListMap() {
-        return movieListMap;
     }
 }
