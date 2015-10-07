@@ -1,10 +1,4 @@
 <resources>
-    <!-- TODO: Remove or search where this is used -->
-    <string name="see_parties">See Parties</string>
-    <string name="see_movies">See Movies</string>
-    <string name="clear_text">Clear</string>
-    <!-- // Remove or search where this is used -->
-
     <string name="app_name">S3110401 MAD-Assignment</string>
 
     <string name="placeholder">Placeholder</string>
@@ -16,6 +10,10 @@
     <string name="title_party_list_button">Party List</string>
 
     <string name="movie_id">movie_id</string>
+    <string name="party_id">party_id</string>
+    <string name="dialog_hour_of_day">hourOfDay</string>
+    <string name="dialog_minute">minute</string>
+
     <string name="image_description">movie poster</string>
     <string name="add_movie_party">Create Party</string>
     <string name="search_movie">Search</string>
@@ -38,10 +36,12 @@
     <string name="party_movie_button">Change Movie</string>
     <string name="party_invitees_text">invitee&#40;s&#41; selected</string>
     <string name="party_invitees_button">Invitee&#40;s&#41;</string>
+    <string name="party_venue_text">Venue</string>
+    <string name="edit_party_view_contacts">View</string>
+    <string name="edit_party_edit_contacts">Edit</string>
     <string name="main_rating">Rating: </string>
     <string name="main_num_parties">No. of parties: </string>
+    <string name="notification_party">Party @ </string>
     <string name="submit_party">Submit</string>
-    <string name="party_venue_text">Venue</string>
-    <string name="notifcation_party">Party @ </string>
 
 </resources>

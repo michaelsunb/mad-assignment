@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
 import student.rmit.edu.au.s3110401mad_assignment.model.MovieModel;
@@ -22,6 +23,7 @@ import student.rmit.edu.au.s3110401mad_assignment.model.Party;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyEditDBTask;
+import student.rmit.edu.au.s3110401mad_assignment.model.async_task.PartyInviteeQueryDBTask;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.MovieMemoryManagementClient;
 import student.rmit.edu.au.s3110401mad_assignment.view.ContactListDialogFragment;
 
@@ -39,8 +41,10 @@ public class PartyEditActivity extends BasePartyActivity {
 
         TextView viewById = (TextView) findViewById(R.id.edit_party_movie_text);
         try {
+
             final Bundle extras = getIntent().getExtras();
             partyId = extras.getInt("party_id");
+
             Party party =
                     PartyModel.getSingleton().getPartyById(partyId);
             whichMovie = movieId = party.getImDB();
@@ -66,6 +70,10 @@ public class PartyEditActivity extends BasePartyActivity {
             viewById.setText(movieTitle + " " + getText(R.string.party_movie_text));
 
             List<Contacts> contacts = PartyInviteeModel.getSingleton().getByPartyId(partyId);
+
+            if (contacts.size() == 0)
+                contacts = new PartyInviteeQueryDBTask(this,partyId).execute().get();
+
             checkedContactNames = new String[contacts.size()];
             for(int i=0; i < contacts.size(); i++) {
                 checkedContactNames[i] = contacts.get(i).getName();

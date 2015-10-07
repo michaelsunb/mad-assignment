@@ -1,6 +1,5 @@
 package student.rmit.edu.au.s3110401mad_assignment.view;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,22 +19,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import student.rmit.edu.au.s3110401mad_assignment.R;
-import student.rmit.edu.au.s3110401mad_assignment.controller.MovieDetailActivity;
+import student.rmit.edu.au.s3110401mad_assignment.controller.PartyEditActivity;
 import student.rmit.edu.au.s3110401mad_assignment.controller.PartyListActivity;
 import student.rmit.edu.au.s3110401mad_assignment.model.Party;
+import student.rmit.edu.au.s3110401mad_assignment.model.PartyModel;
 import student.rmit.edu.au.s3110401mad_assignment.model.PartyStruct;
 import student.rmit.edu.au.s3110401mad_assignment.model.chain_of_responsibility.PartyMemoryManagementClient;
 
-public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
-    public static final Double DEFAULT_LAT = -37.807085;
-    public static final Double DEFAULT_LONG = 144.964282;
-    public static final int MAP_ZOOM_PADDING = 25;
+public class PartyMapFragment extends Fragment
+        implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    public static final Double DEFAULT_LAT = -37.8070901;
+    public static final Double DEFAULT_LONG = 144.9649695;
+    public static final float MAP_ZOOM_PADDING = 12;
 
     private GoogleMap googleMap;
 
@@ -55,25 +54,30 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
                             goPartyListActivity();
                         }
                     });
-
             if (googleMap == null) {
                 googleMap = ((MapFragment) getFragmentManager().
                         findFragmentById(R.id.map)).getMap();
             }
+            googleMap.setOnMarkerClickListener(this);
 
-            if(parties != null && parties.size() > 0) {
-                this.markers = new ArrayList<>();
-                for (Party party : parties) {
-                    this.markers.add(setPartyToMarker(party));
-                }
-            }
-            onMapReady(googleMap);
+            parties = PartyModel.getSingleton().getAllParties();
+            setMap();
 
             return rootView;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void setMap() {
+        this.markers = new ArrayList<>();
+        if(parties != null && parties.size() > 0) {
+            for (Party party : parties) {
+                this.markers.add(setPartyToMarker(party));
+            }
+        }
+        onMapReady(googleMap);
     }
 
     private void goPartyListActivity() {
@@ -93,13 +97,12 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(RMITUniversity, MAP_ZOOM_PADDING));
     }
 
-    public void onMapReady(final GoogleMap map) {
+    public void onMapReady(GoogleMap map) {
         if(map == null) return;
-        if(markers.size() <= 0) {
+        if(markers.size() == 0) {
             initialMap(map);
             return;
         }
-
         map.clear();
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -110,34 +113,18 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
         for (MarkerOptions location : markers) builder.include(location.getPosition());
         final LatLngBounds bounds = builder.build();
 
-        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MAP_ZOOM_PADDING));
-                map.setOnCameraChangeListener(null);
+                googleMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), MAP_ZOOM_PADDING));
+                googleMap.setOnCameraChangeListener(null);
             }
         });
 
-        // Dynamically add markers
-        final Map<String,Marker> markerMap = new HashMap<>();
         for (MarkerOptions marker : markers) {
-            Marker m = map.addMarker(marker);
-            markerMap.put(m.getId(),m);
+            googleMap.addMarker(marker);
         }
-
-        if(markerMap.size() <= 0) return;
-
-        final Activity context = getActivity();
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra(getString(R.string.movie_id), marker.getId());
-                startActivityForResult(intent, 1);
-                return true;
-            }
-        });
     }
 
     public void setParties(PartyMemoryManagementClient partyTask) {
@@ -154,7 +141,29 @@ public class PartyMapFragment extends Fragment implements OnMapReadyCallback {
                         party.getLocation()[PartyStruct.LONGITUDE],
                         party.getLocation()[PartyStruct.LATITUDE]
                 ))
-                .title(party.getImDB())
+                .title(party.getMovieTitle())
                 .snippet(party.getVenue());
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        int index = 0;
+        for(MarkerOptions markerOptions : markers) {
+            if (marker.getTitle().equals(markerOptions.getTitle()) &&
+                    marker.getSnippet().equals(markerOptions.getSnippet()) &&
+                    marker.getPosition().latitude == markerOptions.getPosition().latitude &&
+                    marker.getPosition().longitude == markerOptions.getPosition().longitude) {
+                try {
+                    Intent intent = new Intent(getActivity(), PartyEditActivity.class);
+                    intent.putExtra("party_id", parties.get(index).getId());
+                    startActivityForResult(intent, 1);
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            index++;
+        }
+        return false;
     }
 }

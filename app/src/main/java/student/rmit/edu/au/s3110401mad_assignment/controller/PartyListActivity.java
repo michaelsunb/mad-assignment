@@ -3,6 +3,7 @@ package student.rmit.edu.au.s3110401mad_assignment.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.ListView;
 
@@ -18,6 +19,24 @@ public class PartyListActivity extends AppCompatActivity {
     private PartyListAdapter listAdapter;
 
     @Override
+    public void onBackPressed() {
+        finishActivity();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finishActivity();
+        return true;
+    }
+    private void finishActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party_list);
@@ -30,12 +49,6 @@ public class PartyListActivity extends AppCompatActivity {
             return;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        this.finish();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

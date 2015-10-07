@@ -131,7 +131,7 @@ public class DistanceMatrixTask extends AsyncTask<Void, Void, Boolean> {
         if(result){
             Notification notif = new Notification();
             notif.contentIntent = makePartyIntent(event.getId());
-            notif.tickerText = context.getString(R.string.notifcation_party) + event.getVenue();
+            notif.tickerText = context.getString(R.string.notification_party) + event.getVenue();
             notif.icon = R.drawable.stat_happy;
 
             RemoteViews contentView = new RemoteViews(context.getPackageName(),
