@@ -74,7 +74,7 @@ public class MovieOmdbRest extends MovieMemoryManagementHandler  {
                                 objShort.getString("Plot"),
                         objFull.getString("Plot"),
                         getBitmapFromURL(objFull.getString("Poster")),
-                        0
+                        objShort.getInt("imdbRating")/2
                 );
                 if(Pattern.compile(query).matcher(movie.getTitle().toLowerCase()).find()
                         && i < 10) {

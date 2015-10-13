@@ -58,7 +58,8 @@ public class PartyMapFragment extends Fragment
                 googleMap = ((MapFragment) getFragmentManager().
                         findFragmentById(R.id.map)).getMap();
             }
-            googleMap.setOnMarkerClickListener(this);
+            if (googleMap != null)
+                googleMap.setOnMarkerClickListener(this);
 
             parties = PartyModel.getSingleton().getAllParties();
             setMap();
